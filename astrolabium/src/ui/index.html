@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASTROLABIUM CAUDAE RUBRAE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   NUIT — The Night Sky Color System
+   ═══════════════════════════════════════════════════════════ */
+:root {
+  /* --- NUIT: Structural --- */
+  --nuit-void:      #080C18;
+  --nuit-surface:   #0E1325;
+  --nuit-border:    #1A2040;
+  --nuit-dim:       #2A3060;
+  --nuit-muted:     #6B7394;
+  --nuit-text:      #C8D0E8;
+  --nuit-bright:    #E8ECF8;
+
+  /* --- ADONAJ-BA: The 8 Law Colors --- */
+  --law-synchronicity:    #FF9500;
+  --law-sole-atom:        #00E676;
+  --law-divinity:         #E8E8F0;
+  --law-geometric:        #E74C3C;
+  --law-time-matrix:      #A8B4C0;
+  --law-fall-events:      #7B68EE;
+  --law-kaos:             #FFD700;
+  --law-arrow:            #00BFFF;
+
+  /* --- Active accent (set by JS) --- */
+  --accent:               #FFD700;
+  --accent-dim:           rgba(255, 215, 0, 0.12);
+  --accent-border:        rgba(255, 215, 0, 0.35);
+  --accent-glow:          rgba(255, 215, 0, 0.06);
+
+  /* --- WU XING --- */
+  --wx-wood:    #2ECC71;
+  --wx-fire:    #E74C3C;
+  --wx-earth:   #F1C40F;
+  --wx-metal:   #ECF0F1;
+  --wx-water:   #3498DB;
+
+  /* --- Typography --- */
+  --font-mono: 'IBM Plex Mono', 'Fira Code', 'Consolas', monospace;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESET & BASE
+   ═══════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  background: var(--nuit-void);
+  color: var(--nuit-text);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.5;
+  overflow: hidden;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SCANLINE OVERLAY
+   ═══════════════════════════════════════════════════════════ */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    transparent 0px,
+    transparent 2px,
+    rgba(200, 208, 232, 0.015) 2px,
+    rgba(200, 208, 232, 0.015) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LAYOUT GRID
+   ═══════════════════════════════════════════════════════════ */
+.app {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100vh;
+  padding: 8px;
+  gap: 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 12px 16px 8px;
+  border-bottom: 1px solid var(--accent-border);
+  margin-bottom: 8px;
+}
+
+.header-left {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.header-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--nuit-bright);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.header-status {
+  font-size: 0.7rem;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.header-status .dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-right: 4px;
+  animation: status-pulse 3s ease-in-out infinite;
+}
+
+.header-right {
+  font-size: 0.7rem;
+  color: var(--nuit-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: right;
+}
+
+.header-right .cal-name {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MAIN GRID
+   ═══════════════════════════════════════════════════════════ */
+.main {
+  display: grid;
+  grid-template-columns: 240px 1fr 260px;
+  grid-template-rows: 1fr auto;
+  gap: 8px;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.col-left {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+}
+
+.col-center {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+}
+
+.col-right {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PANEL COMPONENT
+   ═══════════════════════════════════════════════════════════ */
+.panel {
+  background: var(--nuit-surface);
+  border: 1px solid var(--nuit-border);
+  border-radius: 2px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 12px;
+  background: rgba(26, 32, 64, 0.5);
+  border-bottom: 1px solid var(--nuit-border);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--nuit-muted);
+}
+
+.panel-header .dots {
+  display: flex;
+  gap: 4px;
+}
+
+.panel-header .dots span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--nuit-dim);
+}
+
+.panel-body {
+  padding: 12px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.panel.active {
+  border-color: var(--accent-border);
+  box-shadow: 0 0 24px var(--accent-glow), inset 0 0 24px var(--accent-glow);
+}
+
+.panel.active .panel-header {
+  color: var(--accent);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SOUL PANEL
+   ═══════════════════════════════════════════════════════════ */
+.soul-trigram {
+  font-size: 3rem;
+  text-align: center;
+  line-height: 1;
+  color: var(--accent);
+  animation: trigram-breathe 8s ease-in-out infinite;
+  margin: 8px 0 4px;
+}
+
+@keyframes trigram-breathe {
+  0%, 100% { text-shadow: 0 0 8px var(--accent-dim); opacity: 0.85; }
+  50%      { text-shadow: 0 0 24px var(--accent); opacity: 1; }
+}
+
+.soul-nature {
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--nuit-muted);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.trigram-bars {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin: 8px 0 12px;
+}
+
+.trigram-bar {
+  height: 3px;
+  width: 60px;
+  display: flex;
+  gap: 8px;
+}
+
+.trigram-bar.yang {
+  background: var(--accent);
+  box-shadow: 0 0 4px var(--accent-dim);
+}
+
+.trigram-bar.yin {
+  background: transparent;
+}
+
+.trigram-bar.yin::before,
+.trigram-bar.yin::after {
+  content: '';
+  flex: 1;
+  background: var(--accent);
+  opacity: 0.5;
+}
+
+.soul-law {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--nuit-bright);
+  text-align: center;
+  margin-bottom: 2px;
+}
+
+.soul-quest {
+  font-size: 0.65rem;
+  color: var(--accent);
+  text-align: center;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.soul-detail {
+  font-size: 0.7rem;
+  color: var(--nuit-muted);
+  margin-bottom: 4px;
+}
+
+.soul-detail .label {
+  color: var(--nuit-dim);
+  display: inline-block;
+  width: 50px;
+}
+
+.soul-perception {
+  font-size: 0.7rem;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--nuit-border);
+}
+
+.perception-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 3px;
+}
+
+.perception-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+
+.perception-dot.neg { background: var(--nuit-dim); }
+.perception-dot.pos { background: var(--accent); }
+
+.perception-label { color: var(--nuit-muted); font-size: 0.65rem; }
+
+/* ═══════════════════════════════════════════════════════════
+   KEYS PANEL
+   ═══════════════════════════════════════════════════════════ */
+.key-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--nuit-border);
+}
+
+.key-row:last-child { border-bottom: none; }
+
+.key-symbol {
+  font-size: 1.2rem;
+  width: 28px;
+  text-align: center;
+}
+
+.key-info {
+  flex: 1;
+}
+
+.key-name {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--nuit-bright);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.key-status {
+  font-size: 0.65rem;
+  color: var(--nuit-muted);
+}
+
+.key-status.active-key {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.key-vessel {
+  font-size: 0.6rem;
+  color: var(--nuit-muted);
+  margin-top: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   INTERPRETATION PANEL
+   ═══════════════════════════════════════════════════════════ */
+.interpret-panel {
+  flex: 1;
+  background: var(--nuit-void);
+  border: 1px solid var(--nuit-border);
+  border-radius: 2px;
+  padding: 20px 24px;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.interpret-text {
+  max-width: 62ch;
+  margin: 0 auto;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: var(--nuit-text);
+}
+
+.interpret-text p {
+  margin-bottom: 16px;
+}
+
+.interpret-text .healing-sound {
+  color: var(--accent);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+.interpret-text .law-name {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.interpret-text .vessel-name {
+  color: var(--nuit-bright);
+  font-weight: 500;
+}
+
+.interpret-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 14px;
+  background: var(--accent);
+  animation: cursor-blink 1s step-end infinite;
+  vertical-align: text-bottom;
+  margin-left: 2px;
+}
+
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ASTRAL PANEL
+   ═══════════════════════════════════════════════════════════ */
+.astral-vessel {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--nuit-bright);
+  margin-bottom: 2px;
+}
+
+.astral-law {
+  font-size: 0.7rem;
+  color: var(--nuit-muted);
+  margin-bottom: 8px;
+}
+
+.astral-trigram {
+  font-size: 2rem;
+  text-align: center;
+  line-height: 1;
+  margin: 4px 0;
+}
+
+.astral-trigram-nature {
+  text-align: center;
+  font-size: 0.65rem;
+  color: var(--nuit-muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.astral-bars {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  margin-bottom: 12px;
+}
+
+.astral-bar {
+  height: 2px;
+  width: 48px;
+  display: flex;
+  gap: 6px;
+}
+
+.astral-bar.yang { background: var(--nuit-muted); }
+.astral-bar.yin { background: transparent; }
+.astral-bar.yin::before, .astral-bar.yin::after {
+  content: ''; flex: 1; background: var(--nuit-dim);
+}
+
+.astral-section {
+  padding-top: 8px;
+  border-top: 1px solid var(--nuit-border);
+  margin-top: 4px;
+}
+
+.point-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 4px;
+}
+
+.point-label {
+  font-size: 0.6rem;
+  color: var(--nuit-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.point-code {
+  font-size: 0.75rem;
+  color: var(--nuit-bright);
+  font-weight: 500;
+}
+
+.point-meridian {
+  font-size: 0.6rem;
+  color: var(--nuit-muted);
+  text-align: right;
+  margin-bottom: 6px;
+}
+
+.point-desc {
+  font-size: 0.6rem;
+  color: var(--nuit-dim);
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+
+.astral-pair {
+  font-size: 0.65rem;
+  color: var(--nuit-muted);
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--nuit-border);
+}
+
+.astral-pair .pair-label {
+  color: var(--nuit-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.6rem;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BODY PANEL
+   ═══════════════════════════════════════════════════════════ */
+.body-organ {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--nuit-bright);
+  margin-bottom: 2px;
+}
+
+.body-element {
+  font-size: 0.7rem;
+  color: var(--nuit-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.element-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.alchemy-block {
+  text-align: center;
+  padding: 8px 0;
+  margin: 4px 0;
+  border-top: 1px solid var(--nuit-border);
+  border-bottom: 1px solid var(--nuit-border);
+}
+
+.sound-display {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  margin-bottom: 4px;
+}
+
+.alchemy-arrow {
+  font-size: 0.65rem;
+  color: var(--nuit-muted);
+}
+
+.alchemy-arrow .neg { opacity: 0.5; }
+.alchemy-arrow .arrow { color: var(--accent); margin: 0 6px; }
+.alchemy-arrow .pos { color: var(--nuit-text); }
+
+.body-meta {
+  font-size: 0.6rem;
+  color: var(--nuit-dim);
+  margin-top: 6px;
+}
+
+.body-meta div { margin-bottom: 2px; }
+
+/* ═══════════════════════════════════════════════════════════
+   BOTTOM ROW
+   ═══════════════════════════════════════════════════════════ */
+.bottom-row {
+  display: grid;
+  grid-template-columns: 240px 1fr 260px;
+  gap: 8px;
+}
+
+/* COMPOUNDS */
+.compound-grid {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.compound-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--nuit-dim);
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.compound-dot.active {
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent-dim);
+}
+
+.compound-count {
+  font-size: 0.65rem;
+  color: var(--nuit-muted);
+  margin-bottom: 4px;
+}
+
+.compound-list {
+  font-size: 0.6rem;
+  color: var(--nuit-text);
+}
+
+.compound-list div {
+  margin-bottom: 2px;
+}
+
+.compound-list .marker {
+  color: var(--accent);
+  margin-right: 4px;
+}
+
+/* RESONANCES */
+.res-category {
+  margin-bottom: 6px;
+}
+
+.res-cat-label {
+  font-size: 0.6rem;
+  color: var(--nuit-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 3px;
+}
+
+.res-dots {
+  display: flex;
+  gap: 4px;
+}
+
+.res-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--nuit-dim);
+}
+
+.res-dot.active {
+  background: var(--accent);
+  box-shadow: 0 0 4px var(--accent-dim);
+}
+
+.res-thread-count {
+  font-size: 0.65rem;
+  color: var(--nuit-muted);
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px solid var(--nuit-border);
+}
+
+/* CALENDAR */
+.cal-month {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--accent);
+  margin-bottom: 2px;
+}
+
+.cal-detail {
+  font-size: 0.7rem;
+  color: var(--nuit-muted);
+  margin-bottom: 3px;
+}
+
+.cal-detail .val {
+  color: var(--nuit-text);
+}
+
+.cal-stage {
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid var(--nuit-border);
+}
+
+.cal-stage.nigredo { color: var(--nuit-muted); }
+.cal-stage.albedo  { color: var(--nuit-text); }
+.cal-stage.rubedo  { color: var(--law-geometric); }
+
+.cal-rite {
+  font-size: 0.65rem;
+  color: var(--accent);
+  margin-top: 4px;
+}
+
+.cal-hour {
+  font-size: 0.65rem;
+  color: var(--nuit-muted);
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px solid var(--nuit-border);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════════════════════ */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 16px;
+  font-size: 0.6rem;
+  color: var(--nuit-dim);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-top: 1px solid var(--nuit-border);
+  margin-top: 8px;
+}
+
+.footer .accent-val { color: var(--nuit-muted); }
+
+/* ═══════════════════════════════════════════════════════════
+   LOADING STATE
+   ═══════════════════════════════════════════════════════════ */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 0.8rem;
+  color: var(--nuit-muted);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.loading-dots::after {
+  content: '';
+  animation: loading-dots 1.5s steps(4) infinite;
+}
+
+@keyframes loading-dots {
+  0%   { content: ''; }
+  25%  { content: '.'; }
+  50%  { content: '..'; }
+  75%  { content: '...'; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   UNITY FLASH
+   ═══════════════════════════════════════════════════════════ */
+.panel.unity-glow {
+  border-color: var(--accent-border);
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SCROLLBAR
+   ═══════════════════════════════════════════════════════════ */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--nuit-void); }
+::-webkit-scrollbar-thumb { background: var(--nuit-dim); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--nuit-muted); }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ═══ HEADER ═══ -->
+  <div class="header">
+    <div class="header-left">
+      <div class="header-title">Astrolabium Caudae Rubrae</div>
+      <div class="header-status">
+        <span class="dot"></span>
+        <span id="sys-status">CONNECTING</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <div id="header-cal"></div>
+      <div id="header-hour"></div>
+    </div>
+  </div>
+
+  <!-- ═══ MAIN GRID ═══ -->
+  <div class="main">
+
+    <!-- LEFT COLUMN -->
+    <div class="col-left">
+      <div class="panel active" id="soul-panel" style="flex: 1;">
+        <div class="panel-header">
+          <span>S O U L</span>
+          <div class="dots"><span></span><span></span><span></span></div>
+        </div>
+        <div class="panel-body" id="soul-body">
+          <div class="loading">AWAITING<span class="loading-dots"></span></div>
+        </div>
+      </div>
+
+      <div class="panel" id="keys-panel">
+        <div class="panel-header">
+          <span>K E Y S</span>
+          <div class="dots"><span></span><span></span><span></span></div>
+        </div>
+        <div class="panel-body" id="keys-body">
+          <div class="loading">AWAITING<span class="loading-dots"></span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CENTER COLUMN -->
+    <div class="col-center">
+      <div class="interpret-panel" id="interpret-panel">
+        <div class="interpret-text" id="interpret-text">
+          <div class="loading">AWAITING STATE<span class="loading-dots"></span></div>
+        </div>
+      </div>
+
+      <!-- BOTTOM ROW inside center to span full width later via grid -->
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="col-right">
+      <div class="panel" id="astral-panel" style="flex: 1;">
+        <div class="panel-header">
+          <span>A S T R A L</span>
+          <div class="dots"><span></span><span></span><span></span></div>
+        </div>
+        <div class="panel-body" id="astral-body">
+          <div class="loading">AWAITING<span class="loading-dots"></span></div>
+        </div>
+      </div>
+
+      <div class="panel" id="body-panel">
+        <div class="panel-header">
+          <span>B O D Y</span>
+          <div class="dots"><span></span><span></span><span></span></div>
+        </div>
+        <div class="panel-body" id="body-body">
+          <div class="loading">AWAITING<span class="loading-dots"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ BOTTOM ROW ═══ -->
+  <div class="bottom-row">
+    <div class="panel" id="compound-panel">
+      <div class="panel-header">
+        <span>COMPOUNDS</span>
+        <div class="dots"><span></span><span></span><span></span></div>
+      </div>
+      <div class="panel-body" id="compound-body"></div>
+    </div>
+
+    <div class="panel" id="resonance-panel">
+      <div class="panel-header">
+        <span>R E S O N A N C E S</span>
+        <div class="dots"><span></span><span></span><span></span></div>
+      </div>
+      <div class="panel-body" id="resonance-body"></div>
+    </div>
+
+    <div class="panel" id="calendar-panel">
+      <div class="panel-header">
+        <span>C A L E N D A R</span>
+        <div class="dots"><span></span><span></span><span></span></div>
+      </div>
+      <div class="panel-body" id="calendar-body"></div>
+    </div>
+  </div>
+
+  <!-- ═══ FOOTER ═══ -->
+  <div class="footer">
+    <span>ASTROLABIUM CAUDAE RUBRAE // v3.2.0</span>
+    <span id="footer-meta" class="accent-val"></span>
+    <span id="footer-lunar"></span>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   CONFIGURATION
+   ═══════════════════════════════════════════════════════════ */
+const API_BASE = 'http://localhost:8000';
+const DEFAULT_LAT = 34.0522;
+const DEFAULT_LON = -118.2437;
+const DEFAULT_TZ = 'America/Los_Angeles';
+
+const LAW_COLORS = {
+  "Synchronicity":       { accent: "#FF9500", r: 255, g: 149, b: 0 },
+  "Sole Atom":           { accent: "#00E676", r: 0,   g: 230, b: 118 },
+  "Divinity":            { accent: "#E8E8F0", r: 232, g: 232, b: 240 },
+  "Geometric Essence":   { accent: "#E74C3C", r: 231, g: 76,  b: 60 },
+  "Time Matrix":         { accent: "#A8B4C0", r: 168, g: 180, b: 192 },
+  "Fall of Events":      { accent: "#7B68EE", r: 123, g: 104, b: 238 },
+  "Kaos":                { accent: "#FFD700", r: 255, g: 215, b: 0 },
+  "Arrow of Complexity": { accent: "#00BFFF", r: 0,   g: 191, b: 255 },
+};
+
+const WX_COLORS = {
+  "Wood": "#2ECC71", "Fire": "#E74C3C", "Earth": "#F1C40F",
+  "Metal": "#ECF0F1", "Water": "#3498DB",
+};
+
+const BINARY_MAP = {
+  "000": [0,0,0], "001": [0,0,1], "010": [0,1,0], "011": [0,1,1],
+  "100": [1,0,0], "101": [1,0,1], "110": [1,1,0], "111": [1,1,1],
+};
+
+/* ═══════════════════════════════════════════════════════════
+   ACCENT COLOR SHIFT
+   ═══════════════════════════════════════════════════════════ */
+function setAccentColor(law) {
+  const c = LAW_COLORS[law];
+  if (!c) return;
+  const root = document.documentElement;
+  root.style.setProperty('--accent', c.accent);
+  root.style.setProperty('--accent-dim', `rgba(${c.r},${c.g},${c.b},0.12)`);
+  root.style.setProperty('--accent-border', `rgba(${c.r},${c.g},${c.b},0.35)`);
+  root.style.setProperty('--accent-glow', `rgba(${c.r},${c.g},${c.b},0.06)`);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TRIGRAM BARS
+   ═══════════════════════════════════════════════════════════ */
+function renderBars(binary, className) {
+  const bits = BINARY_MAP[binary] || [0,0,0];
+  // Bottom to top: bits[0] is bottom line
+  return bits.slice().reverse().map(b =>
+    `<div class="${className} ${b ? 'yang' : 'yin'}"></div>`
+  ).join('');
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RENDER FUNCTIONS
+   ═══════════════════════════════════════════════════════════ */
+function renderSoul(soul) {
+  const binary = soul.binary || '000';
+  return `
+    <div class="soul-trigram">${soul.trigram || '?'}</div>
+    <div class="soul-nature">${soul.trigram_nature || ''}</div>
+    <div class="trigram-bars">${renderBars(binary, 'trigram-bar')}</div>
+    <div class="soul-law">${soul.law || '—'}</div>
+    <div class="soul-quest">${soul.quest || ''}</div>
+    <div class="soul-detail"><span class="label">Phase</span> ${soul.phase || '—'}</div>
+    <div class="soul-detail"><span class="label">Vowel</span> ${soul.vowel || '—'}</div>
+    <div class="soul-detail"><span class="label">Mudra</span> ${soul.mudra || '—'}</div>
+    <div class="soul-detail"><span class="label">Center</span> ${soul.adonaj_ba || '—'}</div>
+    <div class="soul-perception">
+      <div class="perception-row">
+        <span class="perception-dot neg"></span>
+        <span class="perception-label">${soul.perception?.negative || '—'}</span>
+      </div>
+      <div class="perception-row">
+        <span class="perception-dot pos"></span>
+        <span class="perception-label">${soul.perception?.positive || '—'}</span>
+      </div>
+    </div>
+  `;
+}
+
+function renderKeys(keys) {
+  if (!keys.active) {
+    return `
+      <div class="key-row">
+        <div class="key-symbol" style="color: var(--law-fall-events)">☵</div>
+        <div class="key-info">
+          <div class="key-name">Gold Key</div>
+          <div class="key-status">INACTIVE</div>
+          <div class="key-vessel">Fall of Events // Yin Heel Vessel</div>
+        </div>
+      </div>
+      <div class="key-row">
+        <div class="key-symbol" style="color: var(--law-divinity)">☲</div>
+        <div class="key-info">
+          <div class="key-name">Silver Key</div>
+          <div class="key-status">INACTIVE</div>
+          <div class="key-vessel">Divinity // Yang Heel Vessel</div>
+        </div>
+      </div>
+    `;
+  }
+  const isGold = keys.key === 'Gold';
+  return `
+    <div class="key-row">
+      <div class="key-symbol" style="color: ${isGold ? 'var(--law-fall-events)' : 'var(--nuit-dim)'}">☵</div>
+      <div class="key-info">
+        <div class="key-name">Gold Key</div>
+        <div class="key-status ${isGold ? 'active-key' : ''}">${isGold ? 'ACTIVE' : 'INACTIVE'}</div>
+        ${isGold ? `<div class="key-vessel">${keys.vessel || ''}</div>` : '<div class="key-vessel">Fall of Events // Yin Heel Vessel</div>'}
+      </div>
+    </div>
+    <div class="key-row">
+      <div class="key-symbol" style="color: ${!isGold ? 'var(--law-divinity)' : 'var(--nuit-dim)'}">☲</div>
+      <div class="key-info">
+        <div class="key-name">Silver Key</div>
+        <div class="key-status ${!isGold ? 'active-key' : ''}">${!isGold ? 'ACTIVE' : 'INACTIVE'}</div>
+        ${!isGold ? `<div class="key-vessel">${keys.vessel || ''}</div>` : '<div class="key-vessel">Divinity // Yang Heel Vessel</div>'}
+      </div>
+    </div>
+  `;
+}
+
+function renderAstral(astral) {
+  const binary = astral.binary || '111';
+  return `
+    <div class="astral-vessel">${astral.vessel || '—'}</div>
+    <div class="astral-law">${astral.law || '—'}</div>
+    <div class="astral-trigram" style="color: ${LAW_COLORS[astral.law]?.accent || 'var(--nuit-text)'}">${astral.trigram || '?'}</div>
+    <div class="astral-trigram-nature">${astral.trigram_nature || ''}</div>
+    <div class="astral-bars">${renderBars(binary, 'astral-bar')}</div>
+    <div class="astral-section">
+      <div class="point-row">
+        <span class="point-label">Confluent</span>
+        <span class="point-code">${astral.confluent?.code || '—'}</span>
+      </div>
+      <div class="point-meridian">${astral.confluent?.meridian || ''}</div>
+      <div class="point-desc">${astral.confluent?.description || ''}</div>
+      <div class="point-row">
+        <span class="point-label">Coupled</span>
+        <span class="point-code">${astral.coupled?.code || '—'}</span>
+      </div>
+      <div class="point-meridian">${astral.coupled?.meridian || ''}</div>
+      <div class="point-desc">${astral.coupled?.description || ''}</div>
+    </div>
+    <div class="astral-pair">
+      <span class="pair-label">Pair: </span>${astral.pair_partner || '—'}
+    </div>
+  `;
+}
+
+function renderBody(body) {
+  const wxColor = WX_COLORS[body.element] || 'var(--nuit-muted)';
+  const alch = body.inner_alchemy || {};
+  return `
+    <div class="body-organ">${body.organ || '—'}</div>
+    <div class="body-element">
+      <span class="element-dot" style="background: ${wxColor}"></span>
+      ${body.element || '—'} // ${body.abbreviation || ''}
+    </div>
+    <div class="alchemy-block">
+      <div class="sound-display" style="color: ${wxColor}">${alch.healing_sound || '—'}</div>
+      <div class="alchemy-arrow">
+        <span class="neg">${alch.emotion_negative || '—'}</span>
+        <span class="arrow">&rarr;</span>
+        <span class="pos">${alch.emotion_positive || '—'}</span>
+      </div>
+    </div>
+    <div class="body-meta">
+      <div>Season: ${alch.season || '—'}</div>
+      <div>Sense: ${alch.sense_organ || '—'} // Tissue: ${alch.body_tissue || '—'}</div>
+      <div>Spirit: ${alch.spirit || '—'}</div>
+    </div>
+  `;
+}
+
+function renderCompounds(compounds) {
+  if (!compounds) return '';
+  const keys = Object.keys(compounds).filter(k => !k.startsWith('_'));
+  const activeList = compounds._active || [];
+  const dots = keys.map(k => {
+    const isActive = compounds[k]?.active;
+    return `<div class="compound-dot ${isActive ? 'active' : ''}" title="${compounds[k]?.name || k}"></div>`;
+  }).join('');
+
+  const activeNames = activeList.map(name =>
+    `<div><span class="marker">&#9656;</span>${name}</div>`
+  ).join('');
+
+  return `
+    <div class="compound-grid">${dots}</div>
+    <div class="compound-count">ACTIVE: ${compounds._active_count || 0} / ${keys.length}</div>
+    <div class="compound-list">${activeNames || '<div style="color: var(--nuit-dim)">None active</div>'}</div>
+  `;
+}
+
+function renderResonances(res) {
+  if (!res) return '';
+  const categories = ['elemental', 'qualitative', 'rhythmic', 'calendrical'];
+  let html = '';
+
+  for (const cat of categories) {
+    const catData = res[cat] || {};
+    const items = Object.entries(catData).filter(([k,v]) => typeof v === 'object' && 'active' in v);
+    if (items.length === 0) continue;
+    const dots = items.map(([k,v]) =>
+      `<div class="res-dot ${v.active ? 'active' : ''}" title="${v.name || k}"></div>`
+    ).join('');
+    html += `
+      <div class="res-category">
+        <div class="res-cat-label">${cat}</div>
+        <div class="res-dots">${dots}</div>
+      </div>
+    `;
+  }
+
+  const activeList = res._active || [];
+  html += `<div class="res-thread-count">THREADS: ${activeList.length} / 17</div>`;
+
+  return html;
+}
+
+function renderCalendar(cal, hour) {
+  if (!cal) return '';
+  const stage = (cal.alchemical || '').toLowerCase();
+  const rite = cal.great_rite;
+
+  let html = `
+    <div class="cal-month">${cal.month_name || '—'} // Month ${cal.month_number || '?'}</div>
+    <div class="cal-detail">${cal.sephirah || '—'} ${cal.sephirotic_symbol || ''} // <span class="val">Day ${cal.sephirotic_day || '?'}</span></div>
+    <div class="cal-detail">Year <span class="val">${cal.divine_year || '?'}</span> // Day ${cal.day_in_month || '?'} of ${cal.total_days_in_month || '?'}</div>
+    <div class="cal-stage ${stage}">${(cal.alchemical || '—').toUpperCase()}</div>
+  `;
+
+  if (rite) {
+    html += `<div class="cal-rite">${rite}</div>`;
+  }
+
+  if (hour) {
+    const roman = hour.roman || '';
+    const wing = hour.wing || '';
+    html += `<div class="cal-hour">HR.${roman} // ${wing.toUpperCase()} WING</div>`;
+
+    if (hour.remaining_minutes !== undefined) {
+      html += `<div class="cal-hour" style="color: var(--accent)">${Math.round(hour.remaining_minutes)}m remaining</div>`;
+    }
+  }
+
+  return html;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   INTERPRETATION GENERATOR (Phase 1 — deterministic)
+   ═══════════════════════════════════════════════════════════ */
+function generateInterpretation(data) {
+  const soul = data.soul || {};
+  const astral = data.astral || {};
+  const body = data.body || {};
+  const keys = data.keys || {};
+  const cal = data.calendar || {};
+  const compounds = data.compounds || {};
+  const res = data.resonances || {};
+  const alch = body.inner_alchemy || {};
+  const activeCompounds = compounds._active || [];
+  const activeRes = res._active || [];
+
+  let paras = [];
+
+  // Opening: Soul state
+  const soulLaw = soul.law || 'unknown';
+  const soulTrigram = soul.trigram || '';
+  const soulNature = soul.trigram_nature || '';
+  const soulQuest = soul.quest || '';
+  paras.push(
+    `The Soul sits in <span class="law-name">${soulLaw}</span> — ${soulTrigram} ${soulNature}, ` +
+    `the quest of ${soulQuest}. ${soul.phase || ''}.`
+  );
+
+  // Astral state
+  const vessel = astral.vessel || '';
+  const astralLaw = astral.law || '';
+  const astralNature = astral.trigram_nature || '';
+  paras.push(
+    `The <span class="vessel-name">${vessel}</span> is open, carrying ${astralLaw}. ` +
+    `${astral.trigram || ''} ${astralNature}. ` +
+    `Confluent at ${astral.confluent?.code || '—'} (${astral.confluent?.meridian || ''}), ` +
+    `coupled at ${astral.coupled?.code || '—'} (${astral.coupled?.meridian || ''}).`
+  );
+
+  // Body + Inner Alchemy
+  if (body.organ && alch.healing_sound) {
+    paras.push(
+      `${body.organ} window. ${body.element} element. ` +
+      `The sound is <span class="healing-sound">${alch.healing_sound}</span> — ` +
+      `it transforms ${alch.emotion_negative || '—'} into ${alch.emotion_positive || '—'}.`
+    );
+  }
+
+  // Calendar
+  if (cal.month_name) {
+    const stage = cal.alchemical || '';
+    let calText = `${cal.month_name}, ${cal.month_tier_0_character || ''}. ${stage}.`;
+    if (cal.great_rite) calText += ` The ${cal.great_rite} is active.`;
+    if (cal.sephirah) calText += ` ${cal.sephirah} ${cal.sephirotic_symbol || ''}, day ${cal.sephirotic_day || '?'}.`;
+    paras.push(calText);
+  }
+
+  // Keys
+  if (keys.active) {
+    paras.push(
+      `The ${keys.key} Key is active — ${keys.description || ''}`
+    );
+  }
+
+  // Compounds
+  if (activeCompounds.length > 0) {
+    paras.push(
+      `${activeCompounds.length} compound${activeCompounds.length > 1 ? 's' : ''} active: ` +
+      activeCompounds.join(', ') + '.'
+    );
+  }
+
+  // Resonances
+  if (activeRes.length > 0) {
+    paras.push(
+      `${activeRes.length} of 17 resonance threads active.`
+    );
+  }
+
+  return paras.map(p => `<p>${p}</p>`).join('');
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TYPEWRITER EFFECT
+   ═══════════════════════════════════════════════════════════ */
+let typewriterTimer = null;
+
+function typewrite(element, html, speed = 8) {
+  if (typewriterTimer) clearInterval(typewriterTimer);
+
+  // Parse HTML to extract text nodes and tags
+  const temp = document.createElement('div');
+  temp.innerHTML = html;
+  const fullText = temp.innerHTML;
+
+  element.innerHTML = '';
+  let i = 0;
+  let inTag = false;
+  let buffer = '';
+
+  typewriterTimer = setInterval(() => {
+    if (i >= fullText.length) {
+      clearInterval(typewriterTimer);
+      typewriterTimer = null;
+      // Remove cursor
+      const cursor = element.querySelector('.interpret-cursor');
+      if (cursor) cursor.remove();
+      return;
+    }
+
+    const char = fullText[i];
+    if (char === '<') inTag = true;
+    if (inTag) {
+      buffer += char;
+      if (char === '>') {
+        inTag = false;
+        element.innerHTML = fullText.substring(0, i + 1) + '<span class="interpret-cursor"></span>';
+      }
+    } else {
+      element.innerHTML = fullText.substring(0, i + 1) + '<span class="interpret-cursor"></span>';
+    }
+    i++;
+  }, speed);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   DATA FETCH AND RENDER
+   ═══════════════════════════════════════════════════════════ */
+async function fetchAndRender() {
+  const statusEl = document.getElementById('sys-status');
+  try {
+    const url = `${API_BASE}/display?lat=${DEFAULT_LAT}&lon=${DEFAULT_LON}&tz=${DEFAULT_TZ}`;
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data = await resp.json();
+
+    statusEl.textContent = 'ACTIVE';
+
+    // Set accent color from Soul Law
+    const soulLaw = data.soul?.law;
+    if (soulLaw) setAccentColor(soulLaw);
+
+    // Check for Two-Body Unity
+    const twoBody = data.compounds?.two_body_unity?.active;
+    const astralPanel = document.getElementById('astral-panel');
+    if (twoBody) {
+      astralPanel.classList.add('unity-glow');
+    } else {
+      astralPanel.classList.remove('unity-glow');
+    }
+
+    // Render panels
+    document.getElementById('soul-body').innerHTML = renderSoul(data.soul || {});
+    document.getElementById('keys-body').innerHTML = renderKeys(data.keys || {});
+    document.getElementById('astral-body').innerHTML = renderAstral(data.astral || {});
+    document.getElementById('body-body').innerHTML = renderBody(data.body || {});
+    document.getElementById('compound-body').innerHTML = renderCompounds(data.compounds);
+    document.getElementById('resonance-body').innerHTML = renderResonances(data.resonances);
+    document.getElementById('calendar-body').innerHTML = renderCalendar(data.calendar, data.hour);
+
+    // Header
+    const cal = data.calendar || {};
+    document.getElementById('header-cal').innerHTML =
+      `YR.${cal.divine_year || '?'} // <span class="cal-name">${cal.month_name || '?'}</span> // DAY ${cal.sephirotic_day || '?'}`;
+
+    const hour = data.hour || {};
+    document.getElementById('header-hour').textContent =
+      `HR.${hour.roman || '?'} // ${(hour.wing || 'DAY').toUpperCase()} WING`;
+
+    // Footer
+    document.getElementById('footer-meta').textContent =
+      `LAST FETCH: ${new Date().toLocaleTimeString()}`;
+
+    const soul = data.soul || {};
+    const illum = soul.illumination_pct;
+    if (illum !== undefined) {
+      const waxing = soul.waxing ? 'WAXING' : 'WANING';
+      document.getElementById('footer-lunar').textContent =
+        `\u263D ${illum.toFixed(1)}% ${waxing}`;
+    }
+
+    // Interpretation
+    const interpHtml = generateInterpretation(data);
+    typewrite(document.getElementById('interpret-text'), interpHtml, 6);
+
+  } catch (err) {
+    statusEl.textContent = 'OFFLINE';
+    document.getElementById('interpret-text').innerHTML =
+      `<p style="color: var(--nuit-muted)">Cannot reach engine at ${API_BASE}.<br>` +
+      `Start the API: <code style="color: var(--accent)">cd astrolabium/code && uvicorn src.api.main:app</code></p>`;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  fetchAndRender();
+
+  // Refresh on click in interpretation area
+  document.getElementById('interpret-panel').addEventListener('click', fetchAndRender);
+
+  // Refresh on any keypress
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'r' || e.key === ' ') {
+      e.preventDefault();
+      fetchAndRender();
+    }
+  });
+
+  // Auto-refresh every 2 minutes
+  setInterval(fetchAndRender, 120000);
+});
+</script>
+</body>
+</html>
