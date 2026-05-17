@@ -1,0 +1,13 @@
+{
+  "name": "astrolabium-frontend",
+  "version": "1.0.0",
+  "description": "Astrolabium Caudae Rubrae Frontend",
+  "main": "index.js",
+  "scripts": {
+    "start": "python -m http.server 3000",
+    "build": "echo 'Using standalone build'"
+  },
+  "keywords": ["astrolabium", "temporal", "sacred-time"],
+  "author": "",
+  "license": "MIT"
+}

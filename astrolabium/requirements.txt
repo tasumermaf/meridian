@@ -1,0 +1,16 @@
+# Core astronomical calculations
+astral==3.2
+ephem==4.1.6
+pytz==2025.1
+
+# Testing
+pytest==8.3.4
+pytest-cov==6.0.0
+
+# Web API
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+
+# Additional dependencies
+pydantic==2.10.4
+python-dateutil==2.9.0.post0

@@ -1,0 +1,259 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "spec": "Periodic Table of Resonances v3",
+    "generated": "2026-03-02",
+    "description": "Cross-dimensional resonance definitions for the Astrolabium. Supplements the 18 structural compounds in detect_compounds() with 13 additional resonance types covering elemental, qualitative, rhythmic, and calendrical alignments."
+  },
+  "resonance_types": {
+    "wu_xing_element_match": {
+      "id": "R_WX_01",
+      "category": "elemental",
+      "type_ab": "A",
+      "description": "Primeval Law's trigram Wu Xing matches active organ's Wu Xing element",
+      "match_rule": "exact_via_lookup",
+      "fields": ["primeval.trigram → trigrams.wu_xing", "organ_clock.element"]
+    },
+    "vessel_organ_element_match": {
+      "id": "R_WX_02",
+      "category": "elemental",
+      "type_ab": "A",
+      "description": "Derivative vessel's associated trigram Wu Xing matches active organ's Wu Xing element",
+      "match_rule": "exact_via_lookup",
+      "fields": ["derivative.vessel → vessels.law → laws.trigram → trigrams.wu_xing", "organ_clock.element"]
+    },
+    "plum_blossom_wu_xing": {
+      "id": "R_WX_03",
+      "category": "elemental",
+      "type_ab": "A",
+      "description": "Primeval trigram's Plum Blossom Wu Xing assignment matches active organ's Wu Xing element. Plum Blossom uses DIFFERENT Wu Xing mapping than standard trigram Wu Xing",
+      "match_rule": "exact_via_lookup",
+      "fields": ["primeval.trigram → trigrams.plum_blossom → plum_blossom_wu_xing_map", "organ_clock.element"]
+    },
+    "color_affinity": {
+      "id": "R_CLR_01",
+      "category": "qualitative",
+      "type_ab": "B",
+      "description": "Law color matches the organ's healing color",
+      "match_rule": "semantic_lookup",
+      "fields": ["primeval.law → laws.color", "organ_clock.element → inner_alchemy.color"]
+    },
+    "emotion_perception": {
+      "id": "R_EPR_01",
+      "category": "qualitative",
+      "type_ab": "B",
+      "description": "Organ emotional quality resonates with Law perception pair",
+      "match_rule": "semantic_lookup",
+      "fields": ["primeval.law → laws.perception_pos/neg", "organ_clock.element → inner_alchemy.pos/neg"]
+    },
+    "adonaj_ba_proximity": {
+      "id": "R_ABD_01",
+      "category": "qualitative",
+      "type_ab": "B",
+      "description": "Law's Adonaj-Ba energy center has anatomical relationship with active organ",
+      "match_rule": "semantic_lookup",
+      "fields": ["primeval.law → laws.adonaj_ba", "organ_clock.organ"]
+    },
+    "waxing_wing_alignment": {
+      "id": "R_LUN_01",
+      "category": "rhythmic",
+      "type_ab": "A",
+      "description": "Lunar phase direction matches solar wing. Waxing + Day = aligned. Waning + Night = aligned",
+      "match_rule": "boolean_map",
+      "fields": ["primeval.waxing", "organ_clock.wing"]
+    },
+    "yang_count": {
+      "id": "R_LUN_02",
+      "category": "rhythmic",
+      "type_ab": "A",
+      "description": "Lunar phase yang line count (0→1→2→3→2→1). State value tracking position in energetic wave",
+      "match_rule": "state_value",
+      "fields": ["primeval.phase_index → lunar_phases.yang_count"]
+    },
+    "sephirotic_quest_match": {
+      "id": "R_SPH_01",
+      "category": "calendrical",
+      "type_ab": "A",
+      "description": "Sephirotic day's planet matches a Law's Quest Tarot Continental attribution",
+      "match_rule": "exact_via_lookup",
+      "fields": ["calendar.sephirotic_planet", "primeval.law → laws.quest_tarot → quest_planet_map"]
+    },
+    "season_great_rite": {
+      "id": "R_SEA_01",
+      "category": "calendrical",
+      "type_ab": "A",
+      "description": "Organ season matches calendar month's seasonal position via Great Rite",
+      "match_rule": "exact_via_lookup",
+      "fields": ["organ_clock.element → inner_alchemy.season", "calendar.great_rite → season_great_rite_map"]
+    },
+    "alchemical_stage": {
+      "id": "R_CAL_01",
+      "category": "calendrical",
+      "type_ab": "A",
+      "description": "Current month's alchemical stage: Nigredo (1-4), Albedo (5-8), Rubedo (9-12), Da'ath (13)",
+      "match_rule": "state_value",
+      "fields": ["calendar.alchemical"]
+    },
+    "month_group": {
+      "id": "R_CAL_02",
+      "category": "calendrical",
+      "type_ab": "A",
+      "description": "Current month's group: Osirian, Falcon, Operative, Tappetino",
+      "match_rule": "state_value",
+      "fields": ["calendar.month_group"]
+    },
+    "iao_position": {
+      "id": "R_CAL_03",
+      "category": "calendrical",
+      "type_ab": "A",
+      "description": "Month's IAO letter: I (ISIS), O (OSIRIS), A (SET), or null",
+      "match_rule": "state_value",
+      "fields": ["calendar.month_name → divine_months.iao"]
+    },
+    "stem_trigram_polarity": {
+      "id": "R_WX_04",
+      "category": "elemental",
+      "type_ab": "A",
+      "description": "Daily stem polarity (Yang/Yin) matches primeval trigram polarity. Double-yang or double-yin amplifies the polarity signal",
+      "match_rule": "exact_via_lookup",
+      "fields": ["stem_branch.is_yang_day", "primeval.trigram → trigram_polarity"]
+    },
+    "organ_vessel_polarity": {
+      "id": "R_WX_05",
+      "category": "elemental",
+      "type_ab": "A",
+      "description": "Active organ's Yin/Yang classification matches derivative vessel's polarity. Yin organ + Yin vessel or Yang organ + Yang vessel = polarity doubling",
+      "match_rule": "exact_match",
+      "fields": ["organ_clock.yin_yang", "derivative.polarity"]
+    },
+    "paired_organ_vessel_point": {
+      "id": "R_AN_01",
+      "category": "elemental",
+      "type_ab": "A",
+      "description": "The paired organ (TCM interior/exterior pair) hosts the derivative vessel's confluent or coupled point. Extends anatomical intersection to the paired meridian",
+      "match_rule": "boolean_lookup",
+      "fields": ["organ_clock.paired → organs.branch_index/abbr", "derivative.conf_branch/conf_meridian", "derivative.coup_branch/coup_meridian"]
+    },
+    "divine_hour_law_unity": {
+      "id": "R_RHY_02",
+      "category": "rhythmic",
+      "type_ab": "A",
+      "description": "When Two-Body Unity is active, reports which Divine Hour holds it. State value providing hour context for Law Unity windows",
+      "match_rule": "state_value",
+      "fields": ["compounds.two_body_unity", "divine_hour.index", "divine_hour.roman", "divine_hour.wing"]
+    }
+  },
+  "lookup_tables": {
+    "trigram_wu_xing": {
+      "_note": "Canonical mapping from registers.json trigrams",
+      "Qián": "Metal",
+      "Kūn": "Earth",
+      "Zhèn": "Wood",
+      "Xùn": "Wood",
+      "Kǎn": "Water",
+      "Lí": "Fire",
+      "Gèn": "Earth",
+      "Duì": "Metal"
+    },
+    "plum_blossom_wu_xing_map": {
+      "_note": "Maps Plum Blossom assignment to a Wu Xing element for comparison. Imperial Fire and Min. Fire map to Fire; Yang/Yin Water map to Water; etc.",
+      "Imperial Fire": "Fire",
+      "Min. Fire Yang": "Fire",
+      "Min. Fire Yin": "Fire",
+      "Yang Water": "Water",
+      "Yin Water": "Water",
+      "Metal": "Metal",
+      "Earth": "Earth",
+      "Wood": "Wood"
+    },
+    "color_affinity_map": {
+      "_note": "Grades: EXACT (same color term), NATURAL (recognizable affinity), NONE (no meaningful match). Keyed as 'LawColor:HealingColor'.",
+      "Green:Green": "EXACT",
+      "White:White": "EXACT",
+      "Yellow Gold:Yellow": "NATURAL",
+      "Orange:Red": "NATURAL",
+      "Indigo:Blue/Black": "NATURAL",
+      "Azure Blue:Blue/Black": "NATURAL",
+      "Silver:White": "NATURAL",
+      "Brick Red:Red": "NATURAL"
+    },
+    "emotion_perception_map": {
+      "_note": "Grades semantic resonance between organ emotion and Law perception. Keyed as 'Law:Element:polarity'. polarity = pos or neg.",
+      "Divinity:Fire:neg": "EXACT",
+      "Divinity:Fire:pos": "EXACT",
+      "Sole Atom:Wood:pos": "NATURAL",
+      "Kaos:Earth:neg": "NATURAL",
+      "Fall of Events:Water:neg": "NATURAL",
+      "Arrow of Complexity:Metal:neg": "NATURAL",
+      "Time Matrix:Metal:neg": "NATURAL",
+      "Synchronicity:Fire:pos": "NATURAL"
+    },
+    "adonaj_ba_organ_map": {
+      "_note": "Grades anatomical relationship between Adonaj-Ba center and organ. EXACT = same region. ADJACENT = neighboring region. PROXIMAL = related via meridian pathway. NONE = no meaningful relationship.",
+      "Heart:Heart": "EXACT",
+      "Heart:Sm Intestine": "ADJACENT",
+      "Heart:Pericardium": "ADJACENT",
+      "Solar Plexus:Stomach": "EXACT",
+      "Solar Plexus:Spleen": "ADJACENT",
+      "Solar Plexus:Liver": "PROXIMAL",
+      "Solar Plexus:Gallbladder": "PROXIMAL",
+      "Sexual Organs:Kidney": "ADJACENT",
+      "Sexual Organs:Bladder": "ADJACENT",
+      "Sacrum:Kidney": "ADJACENT",
+      "Sacrum:Bladder": "ADJACENT",
+      "Sacrum:Lg Intestine": "PROXIMAL",
+      "Crown:San Jiao": "PROXIMAL",
+      "Third Eye:Liver": "PROXIMAL",
+      "Third Eye:Gallbladder": "PROXIMAL",
+      "Throat:Lung": "ADJACENT",
+      "Throat:Lg Intestine": "PROXIMAL",
+      "Mobile 8th:San Jiao": "PROXIMAL"
+    },
+    "quest_planet_map": {
+      "_note": "Maps Quest Tarot card names to their Continental (Lévi) planetary attribution.",
+      "Magician": "Air",
+      "Justice": "Cancer",
+      "Hierophant": "Aries",
+      "Priestess": "Moon",
+      "Emperor": "Jupiter",
+      "World": "Sun",
+      "Death/Renewal": "Water",
+      "Star": "Mercury"
+    },
+    "quest_to_sephirotic_planet": {
+      "_note": "Maps Quest Tarot Continental attributions to sephirotic planet names for R_SPH_01 matching. Only planetary attributions (not elements/signs) can match sephirotic planets.",
+      "Moon": "Luna",
+      "Jupiter": "Jupiter",
+      "Sun": "Sol",
+      "Mercury": "Mercury"
+    },
+    "trigram_polarity": {
+      "_note": "Maps the 6 cyclic trigrams to their Yin/Yang polarity. Kǎn and Lí excluded (Solar Keys, not in cycle).",
+      "Qián": "Yang",
+      "Zhèn": "Yang",
+      "Duì": "Yang",
+      "Kūn": "Yin",
+      "Xùn": "Yin",
+      "Gèn": "Yin"
+    },
+    "season_great_rite_map": {
+      "_note": "Maps organ season to Great Rite seasonal alignment.",
+      "Spring:Spring Equinox": true,
+      "Summer:Summer Solstice": true,
+      "Summer:Divine Marriage": true,
+      "Autumn:Autumn Equinox": true,
+      "Autumn:Day of the Dead": true,
+      "Winter:Winter Solstice": true,
+      "Late Summer:Divine Marriage": true
+    }
+  },
+  "_field_coverage_note": "Field categorization (resonance, compound, identity, structural) is maintained in src/meta_registry.py FIELD_REGISTRY. The dimensional_pairs_exempt list was replaced by the two-level field census approach.",
+  "elemental_silo_violations": {
+    "_note": "Wu Xing and Damanhurian elements are SEPARATE systems. Cross-comparisons are structurally prohibited, not merely exempt.",
+    "prohibited_pairs": [
+      ["organs.element", "divine_months.element"],
+      ["inner_alchemy.season", "divine_months.element"],
+      ["trigrams.wu_xing", "divine_months.element"]
+    ]
+  }
+}
