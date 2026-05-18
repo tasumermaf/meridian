@@ -39,7 +39,7 @@
 | 3 | Orchestrator integration | ✅ COMPLETE | 890e600 | 7 tests, 748 total. Full backward compat. |
 | 4 | Rules files via subagents | ✅ COMPLETE | e395b24 | 837 lines via 2 parallel subagents. |
 | 5 | Visual asset (local seasonal wheel) | ✅ COMPLETE | e395b24 | seasonal-wheel.png — daylight curve, cardinal markers, today dot. |
-| 6 | README + final test + push | ✅ COMPLETE | (7 commits) | 748 passing. Pushed to origin/feature/ecological-layer. |
+| 6 | README + final test + push | ✅ COMPLETE | (5 commits) | 748 passing. Pushed to origin/feature/ecological-layer. |
 
 Tests: 748 passing (703 → 748 = 45 new).
 
@@ -47,7 +47,7 @@ Tests: 748 passing (703 → 748 = 45 new).
 - Branch: `feature/stellar-layer` (pushed to GitHub, awaiting merge to main)
 - GitHub: https://github.com/tasumermaf/meridian/tree/feature/stellar-layer
 - PR-ready: https://github.com/tasumermaf/meridian/pull/new/feature/stellar-layer
-- 9 commits, 629 tests passing, 5 new rules files, 2 new visual assets
+- 8 commits, 629 tests passing, 5 new rules files, 2 new visual assets
 - Stellar Layer (28 mansions + 24 solar terms + festivals + Tibetan calendar) operational
 
 ### Sprint B confirmed parameters
@@ -69,7 +69,7 @@ Tests: 748 passing (703 → 748 = 45 new).
 | 6 | Rules files (4 new + updates) via subagents | ✅ COMPLETE | 7c54d30 | 1,665 lines via 4 parallel subagents + stellar-layer.md + CLAUDE.md updates. |
 | 7 | New visual asset (precession wheel) | ✅ COMPLETE | 7c54d30 | precession-wheel.png with all 12 Ages, Pisces highlighted, Aries glyph at vernal equinox. |
 | 8 | README updates | ✅ COMPLETE | c2e9825 | Deep Sky section, 7 inline images, 21-rules tree. |
-| 9 | Final test pass + push | ✅ COMPLETE | (9 commits) | 703 passing. Pushed to origin/feature/deep-sky. PR-ready. |
+| 9 | Final test pass + push | ✅ COMPLETE | (8 commits) | 703 passing. Pushed to origin/feature/deep-sky. PR-ready. |
 
 Tests: starts at 629 (Sprint A baseline), target ~660-680.
 
