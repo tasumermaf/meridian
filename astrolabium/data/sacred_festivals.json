@@ -1,0 +1,477 @@
+{
+  "_metadata": {
+    "name": "Cross-Tradition Sacred Festival Registry",
+    "version": "1.0",
+    "festival_count": 32,
+    "anchor_types_supported": [
+      "solar_date",
+      "solar_term",
+      "lunar_month_day",
+      "lunar_quarter_after_term",
+      "tibetan_lunar_month_full",
+      "tibetan_lunar_month_range",
+      "computed",
+      "fixed_window"
+    ],
+    "epistemic_tag": "[SOURCE: multi-tradition] — see per-festival source notes",
+    "design_notes": [
+      "Festival dates are computed at query time using the anchor rules. Stored dates would drift.",
+      "Lunar anchors use astronomical New Moon and Full Moon (ephem-computed).",
+      "Tibetan months use Phugpa reckoning by default (Tibetan month 4 ≈ Gregorian May/June).",
+      "Where traditions differ on dates (e.g., Vesak between Sri Lanka and Tibet), the canonical anchor is noted."
+    ]
+  },
+  "festivals": [
+    {
+      "id": "saga_dawa",
+      "name_english": "Saga Dawa",
+      "name_native": "ས་ག་ཟླ་བ་",
+      "name_native_transliteration": "Sa-ga zla-ba",
+      "tradition": "Tibetan Buddhist",
+      "description": "The month commemorating the birth, enlightenment, and parinirvana of Shakyamuni Buddha. 'Saga' refers to the star/mansion (Visakha in Indian system, Root Mansion 氐 in Chinese) under which the Buddha is said to have been born. The full month is considered sacred; the full moon day within it is the most auspicious.",
+      "anchor_type": "tibetan_lunar_month_range",
+      "anchor_data": {
+        "tibetan_month": 4,
+        "duration": "full_month"
+      },
+      "associated_lunar_mansion": 2,
+      "duration_days": 30,
+      "merit_multiplier_classical": 100000,
+      "practices": ["circumambulation of sacred mountains", "lamp offerings", "vow observance", "liberating life", "meditation", "tree planting"],
+      "source_note": "[SOURCE: Tibetan Buddhist tradition. Mama Food Forest text May 2026.]"
+    },
+    {
+      "id": "vesak",
+      "name_english": "Vesak (Buddha Day)",
+      "name_native": "वैशाख",
+      "name_native_transliteration": "Vaiśākha Purnima",
+      "tradition": "Buddhist (Theravada, Mahayana)",
+      "description": "The full moon day commemorating the Buddha's birth, enlightenment, and parinirvana. In Theravada countries (Sri Lanka, Thailand, Myanmar, etc.) this is THE Buddha day. In Tibetan tradition the full month around it is observed as Saga Dawa.",
+      "anchor_type": "tibetan_lunar_month_full",
+      "anchor_data": {
+        "tibetan_month": 4,
+        "day": "full_moon"
+      },
+      "associated_lunar_mansion": 2,
+      "duration_days": 1,
+      "source_note": "[SOURCE: Buddhist tradition; UN-recognized international observance since 1999]"
+    },
+    {
+      "id": "diwali",
+      "name_english": "Diwali (Festival of Lights)",
+      "name_native": "दीपावली",
+      "name_native_transliteration": "Dīpāvalī",
+      "tradition": "Hindu / Sikh / Jain",
+      "description": "Five-day festival of lights celebrating the victory of light over darkness. Centered on Lakshmi Puja, the worship of the goddess of prosperity. Falls on the new moon of the Hindu month of Kartika.",
+      "anchor_type": "computed",
+      "anchor_data": {
+        "rule": "new_moon_in_kartika",
+        "gregorian_window": "Oct 20 - Nov 15"
+      },
+      "duration_days": 5,
+      "source_note": "[SOURCE: Hindu / Vedic calendrical tradition]"
+    },
+    {
+      "id": "holi",
+      "name_english": "Holi (Festival of Colors)",
+      "name_native": "होली",
+      "name_native_transliteration": "Holī",
+      "tradition": "Hindu",
+      "description": "The festival of colors. Marks the arrival of spring and the victory of Prahlada over Holika. Falls on the full moon of the Hindu month of Phalguna.",
+      "anchor_type": "computed",
+      "anchor_data": {
+        "rule": "full_moon_in_phalguna",
+        "gregorian_window": "Mar 5 - Mar 25"
+      },
+      "duration_days": 2,
+      "source_note": "[SOURCE: Hindu tradition]"
+    },
+    {
+      "id": "navratri",
+      "name_english": "Navaratri (Nine Nights)",
+      "name_native": "नवरात्रि",
+      "tradition": "Hindu",
+      "description": "Nine nights of worship of the Divine Mother in her nine forms. Two major Navaratris per year (spring and autumn). Autumn (Sharad) Navaratri is the most observed.",
+      "anchor_type": "computed",
+      "anchor_data": {
+        "rule": "first_nine_days_of_ashvin_shukla",
+        "gregorian_window": "Sep 25 - Oct 25"
+      },
+      "duration_days": 9,
+      "source_note": "[SOURCE: Hindu tradition]"
+    },
+    {
+      "id": "day_of_dead",
+      "name_english": "Day of the Dead",
+      "name_native": "Día de los Muertos",
+      "tradition": "Mexican / Catholic / pre-Columbian syncretic",
+      "description": "Honoring the deceased; ofrendas, marigolds, sugar skulls. Damanhurian counterpart: the Day of the Dead Great Rite (Month 2, SADAM).",
+      "anchor_type": "solar_date",
+      "anchor_data": {
+        "month": 11,
+        "day": 2
+      },
+      "duration_days": 3,
+      "source_note": "[SOURCE: Mexican tradition; Damanhurian Great Rite calendar]"
+    },
+    {
+      "id": "easter",
+      "name_english": "Easter (Western)",
+      "tradition": "Christian (Western)",
+      "description": "First Sunday after the first full moon following the Spring Equinox. The luni-solar anchor here is the Paschal full moon (a specific computational artifact of the ecclesiastical calendar, not strict astronomy).",
+      "anchor_type": "computed",
+      "anchor_data": {
+        "rule": "first_sunday_after_paschal_full_moon",
+        "gregorian_window": "Mar 22 - Apr 25"
+      },
+      "duration_days": 1,
+      "source_note": "[SOURCE: Christian tradition; Council of Nicaea 325 CE definition]"
+    },
+    {
+      "id": "imbolc",
+      "name_english": "Imbolc (St Brigid's Day)",
+      "name_native": "Imbolc",
+      "tradition": "Celtic / Pagan / Catholic (St Brigid)",
+      "description": "Cross-quarter day midway between Winter Solstice and Spring Equinox. The quickening of the year; first stirrings of spring. Associated with Brigid (Celtic goddess, later St Brigid).",
+      "anchor_type": "solar_date",
+      "anchor_data": {
+        "month": 2,
+        "day": 1,
+        "rationale": "Conventional date; astronomically the cross-quarter day midway between Winter Solstice (~Dec 22) and Spring Equinox (~Mar 20) falls Feb 3-5, but observance has settled on Feb 1-2."
+      },
+      "duration_days": 1,
+      "source_note": "[SOURCE: Celtic / pre-Christian tradition; Catholic syncretism]"
+    },
+    {
+      "id": "beltane",
+      "name_english": "Beltane",
+      "name_native": "Bealtaine",
+      "tradition": "Celtic / Pagan",
+      "description": "Cross-quarter day midway between Spring Equinox and Summer Solstice. Fires lit to bless livestock; fertility rites.",
+      "anchor_type": "solar_date",
+      "anchor_data": {
+        "month": 5,
+        "day": 1
+      },
+      "duration_days": 1,
+      "source_note": "[SOURCE: Celtic tradition]"
+    },
+    {
+      "id": "lughnasadh",
+      "name_english": "Lughnasadh (Lammas)",
+      "name_native": "Lughnasadh",
+      "tradition": "Celtic / Pagan / Christian (Lammas)",
+      "description": "Cross-quarter day midway between Summer Solstice and Autumn Equinox. First harvest festival; named for the god Lugh.",
+      "anchor_type": "solar_date",
+      "anchor_data": {
+        "month": 8,
+        "day": 1
+      },
+      "duration_days": 1,
+      "source_note": "[SOURCE: Celtic tradition]"
+    },
+    {
+      "id": "samhain",
+      "name_english": "Samhain (Halloween, All Saints' Eve)",
+      "name_native": "Samhain",
+      "tradition": "Celtic / Pagan / Catholic (All Saints)",
+      "description": "Cross-quarter day midway between Autumn Equinox and Winter Solstice. The thinning of the veil between worlds; ancestor honoring. Catholic All Saints Day (Nov 1) is the syncretic version.",
+      "anchor_type": "solar_date",
+      "anchor_data": {
+        "month": 10,
+        "day": 31
+      },
+      "duration_days": 3,
+      "source_note": "[SOURCE: Celtic tradition; Catholic syncretism]"
+    },
+    {
+      "id": "eid_al_fitr",
+      "name_english": "Eid al-Fitr",
+      "name_native": "عيد الفطر",
+      "name_native_transliteration": "ʿĪd al-Fiṭr",
+      "tradition": "Islamic",
+      "description": "Festival breaking the fast of Ramadan. Begins on the first day of Shawwal, the month following Ramadan.",
+      "anchor_type": "computed",
+      "anchor_data": {
+        "rule": "first_day_of_shawwal_after_ramadan_new_moon",
+        "gregorian_window": "varies (Islamic lunar calendar drifts 11 days/year)"
+      },
+      "duration_days": 3,
+      "source_note": "[SOURCE: Islamic tradition]"
+    },
+    {
+      "id": "eid_al_adha",
+      "name_english": "Eid al-Adha",
+      "name_native": "عيد الأضحى",
+      "name_native_transliteration": "ʿĪd al-Aḍḥā",
+      "tradition": "Islamic",
+      "description": "Festival of sacrifice; commemorates Ibrahim's willingness to sacrifice his son. Falls on the 10th of Dhu al-Hijjah.",
+      "anchor_type": "computed",
+      "anchor_data": {
+        "rule": "10th_of_dhu_al_hijjah",
+        "gregorian_window": "varies"
+      },
+      "duration_days": 4,
+      "source_note": "[SOURCE: Islamic tradition]"
+    },
+    {
+      "id": "rosh_hashanah",
+      "name_english": "Rosh Hashanah",
+      "name_native": "ראש השנה",
+      "name_native_transliteration": "Rosh haShana",
+      "tradition": "Jewish",
+      "description": "Jewish New Year. First two days of Tishrei (lunisolar calendar).",
+      "anchor_type": "computed",
+      "anchor_data": {
+        "rule": "first_two_days_of_tishrei",
+        "gregorian_window": "Sep 5 - Oct 5"
+      },
+      "duration_days": 2,
+      "source_note": "[SOURCE: Jewish tradition]"
+    },
+    {
+      "id": "yom_kippur",
+      "name_english": "Yom Kippur",
+      "name_native": "יום כיפור",
+      "tradition": "Jewish",
+      "description": "Day of Atonement. 10th of Tishrei. Most sacred day of the Jewish year.",
+      "anchor_type": "computed",
+      "anchor_data": {
+        "rule": "10th_of_tishrei",
+        "gregorian_window": "Sep 14 - Oct 14"
+      },
+      "duration_days": 1,
+      "source_note": "[SOURCE: Jewish tradition]"
+    },
+    {
+      "id": "passover",
+      "name_english": "Passover (Pesach)",
+      "name_native": "פסח",
+      "tradition": "Jewish",
+      "description": "Commemorates the Exodus from Egypt. Begins on 15 Nisan, lasts 7 or 8 days.",
+      "anchor_type": "computed",
+      "anchor_data": {
+        "rule": "15th_of_nisan",
+        "gregorian_window": "Mar 25 - Apr 25"
+      },
+      "duration_days": 8,
+      "source_note": "[SOURCE: Jewish tradition]"
+    },
+    {
+      "id": "qingming",
+      "name_english": "Qingming (Tomb-Sweeping Day)",
+      "name_native": "清明节",
+      "name_native_transliteration": "Qīngmíng jié",
+      "tradition": "Chinese",
+      "description": "Major Chinese ancestral festival. Falls on the solar term Qingming (15° tropical longitude).",
+      "anchor_type": "solar_term",
+      "anchor_data": {
+        "term_pinyin": "Qīngmíng"
+      },
+      "duration_days": 1,
+      "source_note": "[SOURCE: Chinese tradition; aligned with solar term 4]"
+    },
+    {
+      "id": "dongzhi",
+      "name_english": "Dongzhi (Winter Solstice Festival)",
+      "name_native": "冬至",
+      "tradition": "Chinese",
+      "description": "Winter Solstice festival. Traditional family gathering; dumplings (北方) or tangyuan (南方).",
+      "anchor_type": "solar_term",
+      "anchor_data": {
+        "term_pinyin": "Dōngzhì"
+      },
+      "duration_days": 1,
+      "source_note": "[SOURCE: Chinese tradition; solar term 21]"
+    },
+    {
+      "id": "chunjie",
+      "name_english": "Spring Festival (Chinese New Year)",
+      "name_native": "春节",
+      "name_native_transliteration": "Chūnjié",
+      "tradition": "Chinese",
+      "description": "Chinese New Year. First day of the first lunar month. Begins the 60-day sexagenary cycle's new pairing.",
+      "anchor_type": "computed",
+      "anchor_data": {
+        "rule": "new_moon_nearest_lichun",
+        "gregorian_window": "Jan 21 - Feb 20"
+      },
+      "duration_days": 15,
+      "source_note": "[SOURCE: Chinese lunisolar tradition]"
+    },
+    {
+      "id": "qixi",
+      "name_english": "Qixi (Double Seventh)",
+      "name_native": "七夕",
+      "tradition": "Chinese",
+      "description": "Chinese romantic festival. 7th day of the 7th lunar month. Myth of the Weaver Girl (Vega) and the Cowherd (Altair) meeting across the Milky Way.",
+      "anchor_type": "lunar_month_day",
+      "anchor_data": {
+        "lunar_month": 7,
+        "lunar_day": 7
+      },
+      "duration_days": 1,
+      "source_note": "[SOURCE: Chinese tradition]"
+    },
+    {
+      "id": "mid_autumn",
+      "name_english": "Mid-Autumn Festival",
+      "name_native": "中秋节",
+      "name_native_transliteration": "Zhōngqiūjié",
+      "tradition": "Chinese",
+      "description": "Full moon of the 8th lunar month. Mooncakes; family gathering. Second only to Spring Festival in cultural importance.",
+      "anchor_type": "lunar_month_day",
+      "anchor_data": {
+        "lunar_month": 8,
+        "lunar_day": 15
+      },
+      "duration_days": 1,
+      "source_note": "[SOURCE: Chinese tradition]"
+    },
+    {
+      "id": "nowruz",
+      "name_english": "Nowruz (Persian New Year)",
+      "name_native": "نوروز",
+      "tradition": "Zoroastrian / Persian / Bahá'í",
+      "description": "Persian New Year. The exact moment of the spring equinox.",
+      "anchor_type": "solar_term",
+      "anchor_data": {
+        "term_pinyin": "Chūnfēn"
+      },
+      "duration_days": 13,
+      "source_note": "[SOURCE: Zoroastrian / Persian tradition; UN International Day of Nowruz]"
+    },
+    {
+      "id": "winter_solstice_damanhur",
+      "name_english": "Winter Solstice (Damanhurian Great Rite)",
+      "tradition": "Damanhurian",
+      "description": "Damanhurian Great Rite. Falls in Month 4 (EOROS — The Director).",
+      "anchor_type": "solar_term",
+      "anchor_data": {
+        "term_pinyin": "Dōngzhì"
+      },
+      "duration_days": 1,
+      "source_note": "[SOURCE: Damanhurian tradition]"
+    },
+    {
+      "id": "spring_equinox_damanhur",
+      "name_english": "Spring Equinox (Damanhurian Great Rite)",
+      "tradition": "Damanhurian",
+      "description": "Damanhurian Great Rite. Falls in Month 7 (OSIRIS — The Resurrected).",
+      "anchor_type": "solar_term",
+      "anchor_data": {
+        "term_pinyin": "Chūnfēn"
+      },
+      "duration_days": 1,
+      "source_note": "[SOURCE: Damanhurian tradition]"
+    },
+    {
+      "id": "summer_solstice_damanhur",
+      "name_english": "Summer Solstice (Damanhurian Great Rite)",
+      "tradition": "Damanhurian",
+      "description": "Damanhurian Great Rite. Falls in Month 10 (SET — The Destroyer).",
+      "anchor_type": "solar_term",
+      "anchor_data": {
+        "term_pinyin": "Xiàzhì"
+      },
+      "duration_days": 1,
+      "source_note": "[SOURCE: Damanhurian tradition]"
+    },
+    {
+      "id": "autumn_equinox_damanhur",
+      "name_english": "Autumn Equinox (Damanhurian Great Rite)",
+      "tradition": "Damanhurian",
+      "description": "Damanhurian Great Rite. Month 1 (ISIS — The Gatherer). Damanhurian Divine Year begins at the New Moon nearest this.",
+      "anchor_type": "solar_term",
+      "anchor_data": {
+        "term_pinyin": "Qiūfēn"
+      },
+      "duration_days": 1,
+      "source_note": "[SOURCE: Damanhurian tradition]"
+    },
+    {
+      "id": "divine_marriage_damanhur",
+      "name_english": "Divine Marriage (Damanhurian Great Rite)",
+      "tradition": "Damanhurian",
+      "description": "Damanhurian Great Rite. May 24 — the marriage of Oberto (Falco Tarassaco) to Damanhur. Falls in Month 9 (SAMMA — The Container / Rhombus).",
+      "anchor_type": "solar_date",
+      "anchor_data": {
+        "month": 5,
+        "day": 24
+      },
+      "duration_days": 1,
+      "source_note": "[SOURCE: Damanhurian tradition]"
+    },
+    {
+      "id": "day_of_dead_damanhur",
+      "name_english": "Day of the Dead (Damanhurian Great Rite)",
+      "tradition": "Damanhurian",
+      "description": "Damanhurian Great Rite. Approximately early November. Falls in Month 2 (SADAM — The Mirror-Operator).",
+      "anchor_type": "solar_date",
+      "anchor_data": {
+        "month": 11,
+        "day": 2
+      },
+      "duration_days": 1,
+      "source_note": "[SOURCE: Damanhurian tradition]"
+    },
+    {
+      "id": "magha_puja",
+      "name_english": "Magha Puja",
+      "name_native": "มาฆบูชา",
+      "tradition": "Theravada Buddhist",
+      "description": "Full moon of the third lunar month. Commemorates the Buddha's teaching of the Ovada-Patimokkha (the heart of the dhamma).",
+      "anchor_type": "computed",
+      "anchor_data": {
+        "rule": "full_moon_third_lunar_month",
+        "gregorian_window": "Feb 20 - Mar 20"
+      },
+      "duration_days": 1,
+      "source_note": "[SOURCE: Theravada Buddhist tradition]"
+    },
+    {
+      "id": "asalha_puja",
+      "name_english": "Asalha Puja",
+      "name_native": "อาสาฬหบูชา",
+      "tradition": "Theravada Buddhist",
+      "description": "Full moon of the eighth lunar month. Commemorates the Buddha's first sermon at Sarnath. Beginning of the rains retreat (Vassa).",
+      "anchor_type": "computed",
+      "anchor_data": {
+        "rule": "full_moon_eighth_lunar_month",
+        "gregorian_window": "Jul 1 - Jul 31"
+      },
+      "duration_days": 1,
+      "source_note": "[SOURCE: Theravada Buddhist tradition]"
+    },
+    {
+      "id": "losar",
+      "name_english": "Losar (Tibetan New Year)",
+      "name_native": "ལོ་གསར་",
+      "name_native_transliteration": "Lo-sar",
+      "tradition": "Tibetan Buddhist",
+      "description": "Tibetan New Year. First day of the first Tibetan lunar month (Phugpa reckoning).",
+      "anchor_type": "tibetan_lunar_month_full",
+      "anchor_data": {
+        "tibetan_month": 1,
+        "day": "first"
+      },
+      "duration_days": 3,
+      "source_note": "[SOURCE: Tibetan Buddhist tradition]"
+    },
+    {
+      "id": "chotrul_duchen",
+      "name_english": "Chotrul Duchen (Day of Miracles)",
+      "name_native": "ཆོ་འཕྲུལ་དུས་ཆེན",
+      "tradition": "Tibetan Buddhist",
+      "description": "Full moon of the first Tibetan lunar month. Commemorates the 15 days of miracles performed by the Buddha. Karmic actions said to be multiplied by 100,000.",
+      "anchor_type": "tibetan_lunar_month_full",
+      "anchor_data": {
+        "tibetan_month": 1,
+        "day": "full_moon"
+      },
+      "merit_multiplier_classical": 100000,
+      "duration_days": 1,
+      "source_note": "[SOURCE: Tibetan Buddhist tradition]"
+    }
+  ]
+}
