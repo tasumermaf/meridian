@@ -27,25 +27,28 @@
 | # | Phase | Status | Commit | Notes |
 |---|-------|--------|--------|-------|
 | 0 | Create feature branch | ✅ COMPLETE | (no commit yet) | branch created locally |
-| 1 | 28 Lunar Mansions engine + data + tests | ⏳ NEXT | — | — |
-| 2 | 24 Solar Terms engine + data + tests | ⏳ pending | — | — |
-| 3 | Cross-Tradition Sacred Festivals registry | ⏳ pending | — | — |
-| 4 | Tibetan Buddhist calendar layer | ⏳ pending | — | — |
-| 5 | Orchestrator integration | ⏳ pending | — | — |
-| 6 | Rules files (5 new + 3 updates) | ⏳ pending | — | delegate to subagents |
-| 7 | New visual assets (2 wheels) | ⏳ pending | — | — |
-| 8 | README updates | ⏳ pending | — | — |
+| 1 | 28 Lunar Mansions engine + data + tests | ✅ COMPLETE | 70d360d | 18 tests, 585 total passing. Sidereal via Lahiri ayanamsa. |
+| 2 | 24 Solar Terms engine + data + tests | ✅ COMPLETE | 225b92c | 16 tests, 601 total passing. Tropical. 4 cardinal terms tied to Damanhurian Great Rites. |
+| 3 | Cross-Tradition Sacred Festivals registry | ✅ COMPLETE | 23a22e8 | 16 tests, 617 total. 32 festivals across 10 traditions. Saga Dawa active on live query. |
+| 4 | Tibetan Buddhist calendar layer | ✅ COMPLETE | 216a1f7 | 4 tests, 621 total. get_tibetan_month(dt). Phugpa default. Live: May 18 = Month 4 Saga Dawa. |
+| 5 | Orchestrator integration | ✅ COMPLETE | 5dbeb31 | 8 tests, 629 total. 4 new state keys. Backward-compat verified. Perf-optimized year search. |
+| 6 | Rules files (5 new + 3 updates) | ✅ COMPLETE | e0c2b3f | 1,890 lines via 5 parallel subagents + 3 updates. Massive context savings. |
+| 7 | New visual assets (2 wheels) | ✅ COMPLETE | e0c2b3f | 28-mansion + 24-solar-term wheels, live data for Damanhur 2026-05-18. |
+| 8 | README updates | ⏳ IN PROGRESS | — | — |
 | 9 | Test suite + push to GitHub | ⏳ pending | — | — |
 
 ### Tests
 
 - Baseline (main): **567 passing**
-- Current (feature/stellar-layer): 567 passing (no changes yet)
+- Current (feature/stellar-layer): **629 passing** (567 + 18 stellar + 16 solar terms + 20 festivals/tibetan + 8 orchestrator)
 - Target at Sprint A end: ~620-650 passing
 
 ### Decisions log
 
-- (none yet — will record as they emerge)
+- **Sidereal correction:** apply Lahiri ayanamsa (~24.2° at 2026) to tropical ephem
+  longitudes before mansion lookup. Documented in `stellar.py` as `_lahiri_ayanamsa()`.
+  This aligns modern astronomical computation with the classical sidereal mansion
+  boundaries from the Han-through-Ming canon.
 
 ---
 

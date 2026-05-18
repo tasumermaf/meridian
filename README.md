@@ -1,6 +1,6 @@
 ![Astrolabium Caudae Rubrae](assets/banner.png)
 
-[![Tests](https://img.shields.io/badge/tests-567%20passing-brightgreen)](astrolabium/tests/)
+[![Tests](https://img.shields.io/badge/tests-629%20passing-brightgreen)](astrolabium/tests/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](astrolabium/pyproject.toml)
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](LICENSE)
 [![Built by TASUMER MAF](https://img.shields.io/badge/built%20by-TASUMER%20MAF-D4A845)](https://github.com/tasumermaf)
@@ -10,30 +10,35 @@
 > *What is the alchemical quality of this moment?*
 
 A working temporal navigation instrument plus the research intelligence
-that runs it. Six ancient systems synthesized into one readable display
-— integrated, regression-tested, and configured with all the context
-needed to explain itself to anyone who asks.
+that runs it. Ten ancient temporal systems synthesized into one readable
+display — integrated, regression-tested, and configured with all the
+context needed to explain itself to anyone who asks.
 
 This is the public **Claude Code harness** for the **Astrolabium Caudae
 Rubrae** (*L'Astrolabio Coda Rossa*, the Red Tail Astrolabe).
 
 ## The numbers
 
-| Component                                  | Count |
-|--------------------------------------------|-------|
-| Rhombic dodecahedron faces                 | 12    |
-| Trigram laws (6 cyclic + 2 solar keys)     | 6 + 2 |
-| Extraordinary vessels (LGBF)               | 8     |
-| Divine hours (4 day, 4 night)              | 8     |
-| Divine months (12 regular + 1 intercalary) | 13    |
-| Great rites                                | 6     |
-| Earthly branches (organ-clock windows)     | 12    |
-| Engine tests passing                       | **567** |
+| Component                                       | Count |
+|-------------------------------------------------|-------|
+| Rhombic dodecahedron faces                      | 12    |
+| Trigram laws (6 cyclic + 2 solar keys)          | 6 + 2 |
+| Extraordinary vessels (LGBF)                    | 8     |
+| Divine hours (4 day, 4 night)                   | 8     |
+| Divine months (12 regular + 1 intercalary)      | 13    |
+| Great rites                                     | 6     |
+| Earthly branches (organ-clock windows)          | 12    |
+| **Lunar mansions (28宿, sidereal)**             | **28** |
+| **Solar terms (24节气, tropical)**              | **24** |
+| **Cross-tradition sacred festivals**            | **30+** |
+| Engine tests passing                            | **629** |
 
 The geometry is the argument. Every count above lands on a rhombic
-dodecahedron face count, an LGBF vessel count, or the unequal-hour
-division of solar position at a specific location. See `docs/specs/`
-for the full Operator's Manual, Guidebook, and Periodic Table.
+dodecahedron face count, an LGBF vessel count, the unequal-hour
+division of solar position, the four-palace × seven-mansion division
+of the celestial sphere, or the 15° solar-term step around the
+ecliptic. See `docs/specs/` for the full Operator's Manual,
+Guidebook, and Periodic Table.
 
 ## What the instrument answers
 
@@ -44,8 +49,11 @@ That breaks operationally into: which Primeval Law is active in the
 open in the **Astral body** right now (Ling Gui Ba Fa), which organ
 window is active in the **Gross body** right now (Organ Clock), which
 Divine Hour we're in, whether a Solar Key is cusping, which Divine
-Month this is, and whether any of those layers happen to be saying
-the same thing at the same time (compound detection).
+Month this is, **which of the 28 lunar mansions the Sun and Moon
+currently occupy, which of the 24 solar terms is active, which
+sacred festivals are near, which Tibetan lunar month we're in**, and
+whether any of those layers happen to be saying the same thing at
+the same time (compound detection).
 
 It does not warn, prohibit, or prescribe. It does not tell you a moment
 is good or bad. The practitioner is assumed competent. The instrument
@@ -91,6 +99,49 @@ at sunrise (Gold Key, Kǎn ☵, Fall of Events) and sunset (Silver Key, Lí
 fire is most precisely controllable.
 
 ![The 6+2 architecture](assets/lunar-architecture.png)
+
+## The Stellar Layer
+
+The original Astrolabium had four temporal bodies: Soul, Solar Keys,
+Astral, Gross. In May 2026 a **fifth body** was added in response to
+two source documents: Xue Mei's white paper *Living Time Keepers*
+(Section VI named the Stellar Layer as the missing piece) and her
+*Saga Dawa — Awakening the Root of the Dragon*, which provided the
+exact stellar system to build — the **Chinese 28 Lunar Mansions**
+(二十八宿) with the Root Mansion (氐 Dī) as the foundation of the
+Tibetan Buddhist Saga Dawa month.
+
+The Stellar Layer integrates four sub-systems:
+
+- **28 Lunar Mansions (sidereal)** — where the Sun, Moon, and visible
+  planets sit in the four palaces (Azure Dragon East, Black Tortoise
+  North, White Tiger West, Vermillion Bird South). Sidereal positions
+  via Lahiri ayanamsa to align modern astronomical computation with
+  the classical Han-era mansion boundaries.
+- **24 Solar Terms (tropical)** — the canonical Chinese seasonal
+  markers at every 15° of the Sun's ecliptic longitude. The four
+  cardinal terms (equinoxes and solstices) align with four of the
+  six Damanhurian Great Rites.
+- **Cross-tradition Sacred Festival Registry** — 30+ festivals across
+  Tibetan Buddhist, Hindu, Chinese, Christian, Celtic, Islamic, Jewish,
+  Mexican, Persian, Theravada, and Damanhurian traditions, each
+  resolved by its proper anchor (solar date, solar term, lunar month +
+  day, Tibetan lunar month, or computed luni-solar rule).
+- **Tibetan Buddhist Calendar (Phugpa)** — Tibetan lunar month
+  tracking with Saga Dawa as the Buddha-month, tied directly to the
+  Root Mansion via the dragon-root regeneration thesis.
+
+![The 28 lunar mansions](assets/28-lunar-mansions.png)
+
+![The 24 solar terms](assets/24-solar-terms.png)
+
+> *Both wheels above are computed live for Damanhur, May 18 2026, by
+> the project's own engine. The Sun sits in 婁 Lóu (Bond, mansion 15)
+> sidereally, the Moon in 胃 Wèi (Stomach, mansion 16). The current
+> solar term is 立夏 Lìxià (Beginning of Summer), 81% complete; the
+> next term Xiǎomǎn arrives at 09:42 UTC on May 21. We are in Tibetan
+> Month 4 — Saga Dawa — the Buddha-month, where the dragon root
+> awakens. Eat your own cooking.*
 
 ## Quick start
 
@@ -147,9 +198,10 @@ meridian/
 ├── README.md                        # this file
 ├── LICENSE                          # MPL-2.0
 ├── CLAUDE.md                        # Astrolabium-scoped Meridian identity
-├── .claude/rules/                   # 12 dense domain rules files
-│   ├── astrolabium-core.md          # six integrated systems, vocabulary, constraints
-│   ├── temporal-bodies.md           # Soul / Solar Keys / Astral / Gross
+├── .claude/rules/                   # 17 dense domain rules files
+│   ├── astrolabium-core.md          # ten integrated systems, vocabulary, constraints
+│   ├── temporal-bodies.md           # Stellar / Soul / Solar Keys / Astral / Gross
+│   ├── stellar-layer.md             # NEW — overview of the fifth body
 │   ├── divine-hours.md              # 8-fold unequal hour system, Book of Three Responses origin
 │   ├── ling-gui-ba-fa.md            # LGBF formula, 8 vessels, stem-branch tables
 │   ├── trigram-laws.md              # 6+2 Cantong qi architecture, three-tradition convergence
@@ -157,6 +209,10 @@ meridian/
 │   ├── plum-blossom-alchemy.md      # EV → meridian → Wu Xing elemental bridge
 │   ├── tappetino-proof.md           # the geometric-context thesis (identity in the parent environment)
 │   ├── names-of-power.md            # Tier 0 character of all 13 month names
+│   ├── 28-lunar-mansions.md         # NEW — Chinese 28-mansion sidereal stellar system
+│   ├── 24-solar-terms.md            # NEW — Chinese tropical seasonal markers
+│   ├── sacred-festivals.md          # NEW — 30+ festivals across 10+ traditions
+│   ├── tibetan-buddhist-calendar.md # NEW — Phugpa Tibetan calendar, Saga Dawa as Buddha-month
 │   ├── location-and-time.md         # the non-negotiable constraint, in full
 │   ├── communication-style.md       # voice, epistemic charter, source-tagging
 │   └── how-to-use-this-instrument.md  # practical user guidance
@@ -164,14 +220,16 @@ meridian/
 │   ├── src/
 │   │   ├── astrolabium.py           # orchestrator: calculate_complete_state(dt, lat, lon, tz)
 │   │   ├── engine/                  # solar, lunar, stem_branch, twilight, calendar
+│   │   │                            # + stellar, solar_terms, festivals (Stellar Layer)
 │   │   ├── api/main.py              # FastAPI backend
 │   │   ├── registry.py              # typed lookups into registers.json
 │   │   ├── meta_registry.py         # registry validation
 │   │   ├── frequency.py             # time-series + windowing
 │   │   ├── resonance.py             # compound detection
 │   │   └── presentation.py          # state rendering
-│   ├── tests/                       # 567 passing
-│   ├── data/registers.json          # all interpretive data, locked
+│   ├── tests/                       # 629 passing
+│   ├── data/                        # registers.json, lunar_mansions.json,
+│   │                                # solar_terms.json, sacred_festivals.json
 │   ├── frontend/                    # web UI (vanilla JS + components)
 │   ├── scripts/                     # CLI helpers
 │   ├── requirements.txt
@@ -179,18 +237,20 @@ meridian/
 ├── docs/
 │   ├── specs/                       # Operator's Manual, Guidebook, Periodic Table, trigram-law spec
 │   └── sources/                     # primary source extracts (BTR Ch.4, Cantong qi, TCM EV database, etc.)
-├── assets/                          # banner.png + 3 generated diagrams
+├── assets/                          # banner.png + 5 generated diagrams
 └── scripts/
     └── generate_assets.py           # regenerates all visual assets from the engine
 ```
 
 ## Eat your own cooking
 
-The four images in this README are not stock art and not AI-generated.
+The six images in this README are not stock art and not AI-generated.
 They are produced by `scripts/generate_assets.py` from the project's
 own code, palette derived from the prime-law correspondence, RD geometry
 computed from first principles, the Divine Hours wheel computed live
-from the engine for an actual location and date. Regenerate any time:
+from the engine for an actual location and date, the 28-mansion wheel
+and the 24-solar-term wheel computed live from the stellar engine for
+the present moment in Damanhur. Regenerate any time:
 
 ```bash
 python scripts/generate_assets.py
