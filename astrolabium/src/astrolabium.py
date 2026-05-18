@@ -13,6 +13,7 @@ from typing import Dict, Optional
 import pytz
 
 from .engine import solar, lunar, stem_branch, twilight, calendar
+from .engine import stellar, solar_terms, festivals
 from . import registry
 from .resonance import detect_resonances
 
@@ -300,6 +301,24 @@ def calculate_complete_state(
 
     # ── 11. Resonance detection ──
     state["resonances"] = detect_resonances(state)
+
+    # ── 12. Stellar layer (28 Lunar Mansions) ──
+    # Where the Sun, Moon, and visible planets sit in the classical
+    # Chinese 28-mansion system. Sidereal — see engine/stellar.py.
+    state["stellar"] = stellar.get_stellar_state(dt)
+
+    # ── 13. Solar term layer (24 节气) ──
+    # Which of the 24 Chinese solar terms is currently active.
+    state["solar_term"] = solar_terms.get_solar_term_state(dt)
+
+    # ── 14. Festival proximity (cross-tradition) ──
+    # Nearby sacred festivals from the multi-tradition registry,
+    # within a 14-day window centered on the moment.
+    state["festival_proximity"] = festivals.get_festival_proximity(dt, window_days=14)
+
+    # ── 15. Tibetan lunar month (Phugpa) ──
+    # Which Tibetan lunar month contains this moment.
+    state["tibetan_month"] = festivals.get_tibetan_month(dt)
 
     return state
 

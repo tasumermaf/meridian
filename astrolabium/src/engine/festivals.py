@@ -338,24 +338,39 @@ def get_festival_proximity(dt: datetime, window_days: int = 14) -> list:
 
     For festivals that span a range (e.g., Saga Dawa), include them if
     `dt` falls inside the range OR within `window_days` of either end.
+
+    Performance: only resolves festivals for years whose calendar could
+    plausibly produce a date within the window. For small windows
+    (≤30 days), the current year is enough; only enlarges the year
+    search when dt is near a year boundary.
     """
     dt = _normalize_to_aware(dt)
     data = _load_festival_data()
     nearby = []
     window = timedelta(days=window_days)
 
-    # Resolve all festivals for current year + neighbors (handle year-wrap)
-    for year_offset in (-1, 0, 1):
-        year = dt.year + year_offset
+    # Determine which years to resolve. The current year always.
+    # Add the previous year only if dt is within (window + 14 days) of Jan 1.
+    # Add the next year only if dt is within (window + 14 days) of Dec 31.
+    # The +14 buffer handles festivals that can land up to 2 weeks into
+    # the neighboring calendar year (e.g., Chinese New Year in mid-Feb).
+    years_to_check = [dt.year]
+    boundary_buffer = timedelta(days=window_days + 14)
+    year_start = pytz.utc.localize(datetime(dt.year, 1, 1))
+    year_end = pytz.utc.localize(datetime(dt.year, 12, 31, 23, 59))
+    if dt - year_start < boundary_buffer:
+        years_to_check.append(dt.year - 1)
+    if year_end - dt < boundary_buffer:
+        years_to_check.append(dt.year + 1)
+
+    for year in years_to_check:
         for festival in data["festivals"]:
             resolved = _resolve_one(festival, year)
             if resolved is None:
                 continue
             start = resolved["start_datetime"]
             end = resolved["end_datetime"]
-            # Inside the festival window
             if start - window <= dt <= end + window:
-                # Distance: 0 if dt is inside, otherwise nearest edge
                 if start <= dt <= end:
                     distance = timedelta(0)
                     status = "active"
@@ -372,7 +387,6 @@ def get_festival_proximity(dt: datetime, window_days: int = 14) -> list:
                 })
 
     nearby.sort(key=lambda f: (f["distance_days"]))
-    # Deduplicate by festival id (in case a festival was resolved for multiple years)
     seen = set()
     deduped = []
     for f in nearby:
