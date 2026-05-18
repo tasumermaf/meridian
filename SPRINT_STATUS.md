@@ -12,7 +12,9 @@
 **Sprint:** A — Stellar Layer
 **Branch:** `feature/stellar-layer`
 **Started:** May 18, 2026
-**Status:** IN PROGRESS
+**Status:** ✅ **COMPLETE — pushed to GitHub**
+**GitHub URL:** https://github.com/tasumermaf/meridian/tree/feature/stellar-layer
+**PR ready at:** https://github.com/tasumermaf/meridian/pull/new/feature/stellar-layer
 
 ### Confirmed plan parameters
 
@@ -34,8 +36,8 @@
 | 5 | Orchestrator integration | ✅ COMPLETE | 5dbeb31 | 8 tests, 629 total. 4 new state keys. Backward-compat verified. Perf-optimized year search. |
 | 6 | Rules files (5 new + 3 updates) | ✅ COMPLETE | e0c2b3f | 1,890 lines via 5 parallel subagents + 3 updates. Massive context savings. |
 | 7 | New visual assets (2 wheels) | ✅ COMPLETE | e0c2b3f | 28-mansion + 24-solar-term wheels, live data for Damanhur 2026-05-18. |
-| 8 | README updates | ⏳ IN PROGRESS | — | — |
-| 9 | Test suite + push to GitHub | ⏳ pending | — | — |
+| 8 | README updates | ✅ COMPLETE | 8fc1179 | Stellar Layer section, 6 inline images, numbers expanded, 17-rules tree. |
+| 9 | Test suite + push to GitHub | ✅ COMPLETE | (8 commits) | 629 passing. Pushed to origin/feature/stellar-layer. PR-ready. |
 
 ### Tests
 
