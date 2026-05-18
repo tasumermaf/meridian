@@ -12,7 +12,9 @@
 **Sprint:** B — Deep Sky
 **Branch:** `feature/deep-sky` (branched from `feature/stellar-layer`)
 **Started:** May 18, 2026
-**Status:** IN PROGRESS
+**Status:** ✅ **COMPLETE — pushed to GitHub**
+**GitHub URL:** https://github.com/tasumermaf/meridian/tree/feature/deep-sky
+**PR ready at:** https://github.com/tasumermaf/meridian/pull/new/feature/deep-sky
 
 ### Sprint A: COMPLETE
 - Branch: `feature/stellar-layer` (pushed to GitHub, awaiting merge to main)
@@ -39,8 +41,8 @@
 | 5 | Orchestrator integration | ✅ COMPLETE | d730f0b | 9 tests, 703 total. 4 new state keys, full backward compat. |
 | 6 | Rules files (4 new + updates) via subagents | ✅ COMPLETE | 7c54d30 | 1,665 lines via 4 parallel subagents + stellar-layer.md + CLAUDE.md updates. |
 | 7 | New visual asset (precession wheel) | ✅ COMPLETE | 7c54d30 | precession-wheel.png with all 12 Ages, Pisces highlighted, Aries glyph at vernal equinox. |
-| 8 | README updates | ⏳ IN PROGRESS | — | — |
-| 9 | Final test pass + push | ⏳ pending | — | — |
+| 8 | README updates | ✅ COMPLETE | c2e9825 | Deep Sky section, 7 inline images, 21-rules tree. |
+| 9 | Final test pass + push | ✅ COMPLETE | (9 commits) | 703 passing. Pushed to origin/feature/deep-sky. PR-ready. |
 
 Tests: starts at 629 (Sprint A baseline), target ~660-680.
 
