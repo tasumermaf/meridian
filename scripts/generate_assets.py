@@ -1068,6 +1068,139 @@ def render_precession_wheel(save_path: Path, dt):
 
 
 # ════════════════════════════════════════════════════════════════════
+#  SEASONAL WHEEL — local photoperiod curve over the year (Sprint C)
+# ════════════════════════════════════════════════════════════════════
+
+def render_seasonal_wheel(save_path: Path, dt, lat, lon, tz, location_name):
+    """
+    Render a circular plot showing daylight hours across the year
+    at the practitioner's latitude, with the current date marked.
+
+    Computes daylight hours for every day of the year via the live
+    photoperiod engine — eat your own cooking.
+    """
+    from engine import photoperiod
+    from engine import ecological_markers as em
+    from datetime import timedelta
+
+    # Sample daylight hours for every day of the year
+    year_start = pytz.utc.localize(datetime(dt.year, 1, 1, 12, 0))
+    daylight = []
+    angles = []
+    for day in range(365):
+        sample_dt = year_start + timedelta(days=day)
+        try:
+            d = photoperiod.daylight_hours(sample_dt, lat, lon, tz)
+        except Exception:
+            d = 12.0
+        daylight.append(d)
+        # Year fraction → angle. Jan 1 at top, going clockwise.
+        angle = math.radians(90 - (day / 365) * 360)
+        angles.append(angle)
+
+    # Current day index
+    today_doy = (dt.replace(tzinfo=None) - year_start.replace(tzinfo=None)).days
+    today_doy = max(0, min(364, today_doy))
+
+    fig, ax = plt.subplots(figsize=(11, 11), facecolor=BG)
+    ax.set_facecolor(BG)
+    ax.set_xlim(-1.5, 1.5); ax.set_ylim(-1.5, 1.5)
+    ax.set_aspect("equal"); ax.set_axis_off()
+
+    base_r = 0.55          # baseline (=12h daylight)
+    scale = 0.04           # radial scale: 1 hour daylight = 0.04 units
+
+    # Polygon of daylight values
+    daylight_radii = [base_r + (d - 12.0) * scale for d in daylight]
+    daylight_x = [r * math.cos(a) for r, a in zip(daylight_radii, angles)]
+    daylight_y = [r * math.sin(a) for r, a in zip(daylight_radii, angles)]
+    ax.fill(daylight_x, daylight_y, color=GOLD, alpha=0.45, zorder=2)
+    ax.plot(daylight_x + [daylight_x[0]], daylight_y + [daylight_y[0]],
+            color=GOLD, linewidth=1.0, alpha=0.85, zorder=3)
+
+    # 12-hour reference circle
+    theta_circle = np.linspace(0, 2 * np.pi, 200)
+    ax.plot(base_r * np.cos(theta_circle), base_r * np.sin(theta_circle),
+            color=DIM, linewidth=0.8, alpha=0.6, zorder=1, linestyle="--")
+
+    # Month gridlines + labels
+    for month in range(1, 13):
+        month_start = pytz.utc.localize(datetime(dt.year, month, 1, 12, 0))
+        doy = (month_start.replace(tzinfo=None) - year_start.replace(tzinfo=None)).days
+        ang = math.radians(90 - (doy / 365) * 360)
+        # Gridline
+        ax.plot([0.4 * math.cos(ang), 1.05 * math.cos(ang)],
+                [0.4 * math.sin(ang), 1.05 * math.sin(ang)],
+                color=DIM, linewidth=0.5, alpha=0.45, zorder=1)
+        # Month label
+        ax.text(1.13 * math.cos(ang), 1.13 * math.sin(ang),
+                month_start.strftime("%b"), color=SILVER, fontsize=8,
+                ha="center", va="center", family=["Consolas"], alpha=0.75)
+
+    # Cardinal markers — equinoxes and solstices
+    cardinal = [
+        (pytz.utc.localize(datetime(dt.year, 3, 20, 12, 0)), "spring equinox", GOLD),
+        (pytz.utc.localize(datetime(dt.year, 6, 21, 12, 0)), "summer solstice", GOLD),
+        (pytz.utc.localize(datetime(dt.year, 9, 23, 12, 0)), "autumn equinox", SILVER_KEY),
+        (pytz.utc.localize(datetime(dt.year, 12, 21, 12, 0)), "winter solstice", SILVER_KEY),
+    ]
+    for cdt, label, color in cardinal:
+        doy = (cdt.replace(tzinfo=None) - year_start.replace(tzinfo=None)).days
+        ang = math.radians(90 - (doy / 365) * 360)
+        ax.scatter([0.85 * math.cos(ang)], [0.85 * math.sin(ang)],
+                   c=color, s=60, edgecolors=BONE, linewidths=1.0, zorder=5, alpha=0.9)
+
+    # Current day marker
+    today_ang = math.radians(90 - (today_doy / 365) * 360)
+    today_r = base_r + (daylight[today_doy] - 12.0) * scale
+    ax.scatter([today_r * math.cos(today_ang)], [today_r * math.sin(today_ang)],
+               c="#B34444", s=280, edgecolors=BONE, linewidths=1.6, zorder=6)
+    ax.text(today_r * math.cos(today_ang), today_r * math.sin(today_ang),
+            "•", color=BONE, fontsize=10, fontweight="bold",
+            ha="center", va="center", zorder=7)
+
+    # Center text — current state
+    state = em.ecological_markers_state(dt, lat, lon, tz)
+    arc = state["photoperiod_summary"]
+    ax.text(0, 0.28, location_name, color=BONE, fontsize=12, fontweight="bold",
+            ha="center", va="center", family=["Consolas"])
+    ax.text(0, 0.18, dt.strftime("%Y - %m - %d"), color=SILVER, fontsize=10,
+            ha="center", va="center", family=["Consolas"])
+    ax.text(0, 0.04, f"{arc['daylight_hours']:.1f}h daylight", color=GOLD,
+            fontsize=12, fontweight="bold",
+            ha="center", va="center", family=["Consolas"])
+    ax.text(0, -0.06, f"{arc['trend']} {arc['rate_min_per_day']:+.2f} min/day",
+            color=SILVER, fontsize=9, ha="center", va="center",
+            family=["Consolas"], alpha=0.85)
+    zone_name = state["climate_zone"]["zone"]
+    ax.text(0, -0.18, f"{zone_name} {state['climate_zone']['hemisphere']}",
+            color=GOLD, fontsize=10, fontweight="bold",
+            ha="center", va="center", family=["Consolas"])
+    veg = state["vegetation_stage"]["stage"]
+    frost = state["frost_risk"]["season_label"]
+    ax.text(0, -0.30, f"{veg}  ·  {frost}", color=SILVER, fontsize=9,
+            ha="center", va="center", family=["Consolas"], alpha=0.85)
+
+    # Title
+    fig.text(0.5, 0.96, "T H E   L O C A L   S E A S O N A L   W H E E L",
+             ha="center", va="top", fontsize=15, fontweight="bold",
+             color=BONE, family=["Consolas"])
+    fig.text(0.5, 0.93,
+             "your latitude  ·  daylight hours across the year  ·  dashed circle = 12h reference",
+             ha="center", va="top", fontsize=9, color=SILVER,
+             family=["Consolas"], style="italic", alpha=0.78)
+    fig.text(0.5, 0.04,
+             "computed from your actual horizon · offline · climate-norm ecological framing",
+             ha="center", va="bottom", fontsize=9, color=GOLD,
+             family=["Consolas"], alpha=0.75)
+
+    fig.savefig(save_path, dpi=200, bbox_inches="tight",
+                facecolor=BG, pad_inches=0.25)
+    plt.close(fig)
+    print(f"  seasonal wheel  → {save_path.relative_to(REPO)}")
+
+
+# ════════════════════════════════════════════════════════════════════
 #  ENTRY
 # ════════════════════════════════════════════════════════════════════
 
@@ -1107,6 +1240,14 @@ if __name__ == "__main__":
     render_precession_wheel(
         ASSETS / "precession-wheel.png",
         dt=saga_dawa_now,
+    )
+
+    # Ecological-layer asset — the local seasonal wheel (location-specific)
+    render_seasonal_wheel(
+        ASSETS / "seasonal-wheel.png",
+        dt=saga_dawa_now,
+        lat=45.4167, lon=7.7833, tz="Europe/Rome",
+        location_name="Damanhur, Italy",
     )
 
     print()

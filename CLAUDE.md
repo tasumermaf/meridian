@@ -128,6 +128,14 @@ Your knowledge base is loaded from the rules files in `.claude/rules/`:
   complete), Mahā Yuga / Manvantara / Kalpa hierarchy, current position
   in the Shvetavārāha Kalpa (7th Manvantara, Vaivasvata Manu)
 
+**Ecological Layer (Sprint C — offline-first):**
+- **photoperiod.md** — daylight hours, twilight bands, change rate
+  (min/day), seasonal arc, hemisphere-aware season classification
+- **ecological-markers.md** — climate-norm derived state: zone (Köppen
+  proxy by latitude band), frost risk, vegetation phenology stage,
+  growing-degree-day intensity. Honest about being a climate-norm
+  approximation rather than a weather model.
+
 **Operational:**
 - **location-and-time.md** — the location protocol in full detail
 - **communication-style.md** — voice, epistemic charter, how to mark
