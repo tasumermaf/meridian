@@ -9,12 +9,37 @@
 
 ## CURRENT SPRINT
 
-**Sprint:** B — Deep Sky
-**Branch:** `feature/deep-sky` (branched from `feature/stellar-layer`)
+**Sprint:** C — Ecological Layer
+**Branch:** `feature/ecological-layer` (branched from `feature/deep-sky`)
 **Started:** May 18, 2026
-**Status:** ✅ **COMPLETE — pushed to GitHub**
-**GitHub URL:** https://github.com/tasumermaf/meridian/tree/feature/deep-sky
-**PR ready at:** https://github.com/tasumermaf/meridian/pull/new/feature/deep-sky
+**Status:** IN PROGRESS
+
+### Sprint A: COMPLETE — pushed
+- https://github.com/tasumermaf/meridian/tree/feature/stellar-layer
+
+### Sprint B: COMPLETE — pushed
+- https://github.com/tasumermaf/meridian/tree/feature/deep-sky
+
+### Sprint C confirmed design decision
+- **Offline-first**: derive ecological markers from astronomy + climate norms.
+  No network calls, no API keys. Preserves the Astrolabium's design ethos
+  (offline-first throughout).
+- Live-weather integration (Open-Meteo etc) deferred to a hypothetical
+  Sprint D if/when network-dependence is acceptable.
+
+### Sprint C phase tracker
+
+| # | Phase | Status | Commit | Notes |
+|---|-------|--------|--------|-------|
+| 0 | Create feature branch | ✅ COMPLETE | (no commit) | branched from feature/deep-sky |
+| 1 | Photoperiod state engine + tests | ⏳ NEXT | — | — |
+| 2 | Climate-norm ecological markers + tests | ⏳ pending | — | — |
+| 3 | Orchestrator integration | ⏳ pending | — | — |
+| 4 | Rules files via subagents | ⏳ pending | — | — |
+| 5 | Visual asset (local seasonal wheel) | ⏳ pending | — | — |
+| 6 | README + final test + push | ⏳ pending | — | — |
+
+Tests: starts at 703 baseline, target ~735-755.
 
 ### Sprint A: COMPLETE
 - Branch: `feature/stellar-layer` (pushed to GitHub, awaiting merge to main)
