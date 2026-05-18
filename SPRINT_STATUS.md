@@ -32,14 +32,14 @@
 | # | Phase | Status | Commit | Notes |
 |---|-------|--------|--------|-------|
 | 0 | Create feature branch | ✅ COMPLETE | (no commit) | branched from feature/stellar-layer |
-| 1 | Axial precession engine + data + tests | ⏳ NEXT | — | — |
-| 2 | Heliacal risings engine + star data + tests | ⏳ pending | — | — |
-| 3 | Major lunar standstills engine + tests | ⏳ pending | — | — |
-| 4 | Vedic yuga/kalpa deep-time engine + tests | ⏳ pending | — | — |
-| 5 | Orchestrator integration | ⏳ pending | — | — |
-| 6 | Rules files (4 new + updates) via subagents | ⏳ pending | — | — |
-| 7 | New visual asset (deep-sky wheel?) | ⏳ pending | — | — |
-| 8 | README updates | ⏳ pending | — | — |
+| 1 | Axial precession engine + data + tests | ✅ COMPLETE | 61801ca | 18 tests, 647 total. Pisces 80.7%, ~414yr to Aquarius. |
+| 2 | Heliacal risings engine + star data + tests | ✅ COMPLETE | ba9857d | 15 tests, 662 total. 22-star catalog. Sirius @ Memphis = Aug 4. |
+| 3 | Major lunar standstills engine + tests | ✅ COMPLETE | aaa4359 | 15 tests, 677 total. 18.6yr cycle. Next major 2043, minor 2034. |
+| 4 | Vedic yuga/kalpa deep-time engine + tests | ✅ COMPLETE | b063ee3 | 17 tests, 694 total. Kali Yuga 1.187%, Kalpa 45.67%. |
+| 5 | Orchestrator integration | ✅ COMPLETE | d730f0b | 9 tests, 703 total. 4 new state keys, full backward compat. |
+| 6 | Rules files (4 new + updates) via subagents | ✅ COMPLETE | 7c54d30 | 1,665 lines via 4 parallel subagents + stellar-layer.md + CLAUDE.md updates. |
+| 7 | New visual asset (precession wheel) | ✅ COMPLETE | 7c54d30 | precession-wheel.png with all 12 Ages, Pisces highlighted, Aries glyph at vernal equinox. |
+| 8 | README updates | ⏳ IN PROGRESS | — | — |
 | 9 | Final test pass + push | ⏳ pending | — | — |
 
 Tests: starts at 629 (Sprint A baseline), target ~660-680.

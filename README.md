@@ -1,6 +1,6 @@
 ![Astrolabium Caudae Rubrae](assets/banner.png)
 
-[![Tests](https://img.shields.io/badge/tests-629%20passing-brightgreen)](astrolabium/tests/)
+[![Tests](https://img.shields.io/badge/tests-703%20passing-brightgreen)](astrolabium/tests/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](astrolabium/pyproject.toml)
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](LICENSE)
 [![Built by TASUMER MAF](https://img.shields.io/badge/built%20by-TASUMER%20MAF-D4A845)](https://github.com/tasumermaf)
@@ -10,9 +10,9 @@
 > *What is the alchemical quality of this moment?*
 
 A working temporal navigation instrument plus the research intelligence
-that runs it. Ten ancient temporal systems synthesized into one readable
-display — integrated, regression-tested, and configured with all the
-context needed to explain itself to anyone who asks.
+that runs it. Fourteen ancient temporal systems synthesized into one
+readable display — integrated, regression-tested, and configured with all
+the context needed to explain itself to anyone who asks.
 
 This is the public **Claude Code harness** for the **Astrolabium Caudae
 Rubrae** (*L'Astrolabio Coda Rossa*, the Red Tail Astrolabe).
@@ -31,7 +31,12 @@ Rubrae** (*L'Astrolabio Coda Rossa*, the Red Tail Astrolabe).
 | **Lunar mansions (28宿, sidereal)**             | **28** |
 | **Solar terms (24节气, tropical)**              | **24** |
 | **Cross-tradition sacred festivals**            | **30+** |
-| Engine tests passing                            | **629** |
+| **Named stars (heliacal-rising catalog)**       | **22** |
+| **Zodiacal Ages (precessional Great Year)**     | **12** |
+| **Great Year period (axial precession)**        | **25,772 yr** |
+| **Lunar standstill cycle**                      | **18.6 yr** |
+| **Kali Yuga remaining (Vedic deep-time)**       | **~426,872 yr** |
+| Engine tests passing                            | **703** |
 
 The geometry is the argument. Every count above lands on a rhombic
 dodecahedron face count, an LGBF vessel count, the unequal-hour
@@ -143,13 +148,52 @@ The Stellar Layer integrates four sub-systems:
 > Month 4 — Saga Dawa — the Buddha-month, where the dragon root
 > awakens. Eat your own cooking.*
 
+## The Deep Sky Layer
+
+Sprint A added the Stellar Layer (mansions, terms, festivals, Tibetan
+month). Sprint B extends the architecture into its full sky-deep
+reach with four further sub-systems:
+
+- **Axial precession** — the 25,772-year Great Year of Plato. We are
+  currently in the **Age of Pisces (Mīna)**, ~80% through, with about
+  **413 years remaining** before the equinox crosses into the **Age of
+  Aquarius (Kumbha)** around **2440 CE**. Polaris is the closest pole
+  star (closest approach ~2100 CE); Vega will be the pole star around
+  14,000 CE.
+- **Heliacal risings** — a catalog of 22 culturally-significant named
+  stars (Sirius/Sopdet, the Pleiades/Mǎo, Spica/Citrā, Antares,
+  Aldebaran, Vega/Zhīnǚ, Altair/Niúláng, and many more) with their
+  next first-dawn appearances at the practitioner's location. The
+  canonical anchor: **Sirius rises heliacally at Memphis, Egypt on
+  August 4, 2026** — the Sothic-cycle marker the pharaohs used to
+  predict the Nile flood.
+- **Major lunar standstills** — the 18.6-year nodal cycle. We are
+  ~6% past the **March 2025 major standstill peak**; the next major
+  is around **November 2043**, the next minor June 2034. This is the
+  cycle that Stonehenge, Callanish, and Chimney Rock were built to mark.
+- **Vedic yuga / kalpa deep-time** — the cosmological frame that
+  situates ordinary historical time within the Sanskrit tradition's
+  nested cycles. We are in the **Kali Yuga (~5,127 years in, 1.187%
+  complete)**, **28th Mahā Yuga** of the **7th Manvantara**
+  (Vaivasvata Manu), **45.67% through the Shvetavārāha Kalpa** —
+  the current Day of Brahmā.
+
+![The Precessional Great Year](assets/precession-wheel.png)
+
+> *The precession wheel above is computed live for May 18, 2026 by
+> the project's own engine. The 12 zodiacal Ages run around the wheel
+> with their Sanskrit names; the Aries glyph (♈) marks the current
+> sidereal position of the vernal equinox in late Pisces. The center
+> shows the live state: Age of Pisces, 80.7% through, ~413 years to
+> the Age of Aquarius (~2440 CE).*
+
 ## Quick start
 
 ```bash
 git clone https://github.com/tasumermaf/meridian.git
 cd meridian/astrolabium
 pip install -r requirements.txt
-pytest                       # 567 passing
+pytest                       # 703 passing
 ```
 
 Run the API:
@@ -198,10 +242,10 @@ meridian/
 ├── README.md                        # this file
 ├── LICENSE                          # MPL-2.0
 ├── CLAUDE.md                        # Astrolabium-scoped Meridian identity
-├── .claude/rules/                   # 17 dense domain rules files
+├── .claude/rules/                   # 21 dense domain rules files
 │   ├── astrolabium-core.md          # ten integrated systems, vocabulary, constraints
 │   ├── temporal-bodies.md           # Stellar / Soul / Solar Keys / Astral / Gross
-│   ├── stellar-layer.md             # NEW — overview of the fifth body
+│   ├── stellar-layer.md             # overview of the Stellar + Deep Sky layers
 │   ├── divine-hours.md              # 8-fold unequal hour system, Book of Three Responses origin
 │   ├── ling-gui-ba-fa.md            # LGBF formula, 8 vessels, stem-branch tables
 │   ├── trigram-laws.md              # 6+2 Cantong qi architecture, three-tradition convergence
@@ -209,10 +253,14 @@ meridian/
 │   ├── plum-blossom-alchemy.md      # EV → meridian → Wu Xing elemental bridge
 │   ├── tappetino-proof.md           # the geometric-context thesis (identity in the parent environment)
 │   ├── names-of-power.md            # Tier 0 character of all 13 month names
-│   ├── 28-lunar-mansions.md         # NEW — Chinese 28-mansion sidereal stellar system
-│   ├── 24-solar-terms.md            # NEW — Chinese tropical seasonal markers
-│   ├── sacred-festivals.md          # NEW — 30+ festivals across 10+ traditions
-│   ├── tibetan-buddhist-calendar.md # NEW — Phugpa Tibetan calendar, Saga Dawa as Buddha-month
+│   ├── 28-lunar-mansions.md         # Chinese 28-mansion sidereal stellar system (Sprint A)
+│   ├── 24-solar-terms.md            # Chinese tropical seasonal markers (Sprint A)
+│   ├── sacred-festivals.md          # 30+ festivals across 10+ traditions (Sprint A)
+│   ├── tibetan-buddhist-calendar.md # Phugpa Tibetan calendar, Saga Dawa as Buddha-month (Sprint A)
+│   ├── axial-precession.md          # NEW (Sprint B) — 25,772-yr Great Year, 12 Ages, pole stars
+│   ├── heliacal-risings.md          # NEW (Sprint B) — 22 named stars, Sothic cycle, agricultural markers
+│   ├── lunar-standstills.md         # NEW (Sprint B) — 18.6-yr nodal cycle, megalithic alignments
+│   ├── vedic-yuga.md                # NEW (Sprint B) — Sanskrit deep-time, Kalpa/Manvantara/Yuga
 │   ├── location-and-time.md         # the non-negotiable constraint, in full
 │   ├── communication-style.md       # voice, epistemic charter, source-tagging
 │   └── how-to-use-this-instrument.md  # practical user guidance
@@ -221,15 +269,17 @@ meridian/
 │   │   ├── astrolabium.py           # orchestrator: calculate_complete_state(dt, lat, lon, tz)
 │   │   ├── engine/                  # solar, lunar, stem_branch, twilight, calendar
 │   │   │                            # + stellar, solar_terms, festivals (Stellar Layer)
+│   │   │                            # + precession, heliacal, lunar_standstills, vedic_yuga (Deep Sky)
 │   │   ├── api/main.py              # FastAPI backend
 │   │   ├── registry.py              # typed lookups into registers.json
 │   │   ├── meta_registry.py         # registry validation
 │   │   ├── frequency.py             # time-series + windowing
 │   │   ├── resonance.py             # compound detection
 │   │   └── presentation.py          # state rendering
-│   ├── tests/                       # 629 passing
+│   ├── tests/                       # 703 passing
 │   ├── data/                        # registers.json, lunar_mansions.json,
-│   │                                # solar_terms.json, sacred_festivals.json
+│   │                                # solar_terms.json, sacred_festivals.json,
+│   │                                # named_stars.json
 │   ├── frontend/                    # web UI (vanilla JS + components)
 │   ├── scripts/                     # CLI helpers
 │   ├── requirements.txt
@@ -237,14 +287,14 @@ meridian/
 ├── docs/
 │   ├── specs/                       # Operator's Manual, Guidebook, Periodic Table, trigram-law spec
 │   └── sources/                     # primary source extracts (BTR Ch.4, Cantong qi, TCM EV database, etc.)
-├── assets/                          # banner.png + 5 generated diagrams
+├── assets/                          # banner.png + 6 generated diagrams (incl. precession wheel)
 └── scripts/
     └── generate_assets.py           # regenerates all visual assets from the engine
 ```
 
 ## Eat your own cooking
 
-The six images in this README are not stock art and not AI-generated.
+The seven images in this README are not stock art and not AI-generated.
 They are produced by `scripts/generate_assets.py` from the project's
 own code, palette derived from the prime-law correspondence, RD geometry
 computed from first principles, the Divine Hours wheel computed live
