@@ -181,3 +181,39 @@ def test_proximity_window_excludes_far_festivals():
     nearby = festivals.get_festival_proximity(dt, window_days=7)
     dod = next((f for f in nearby if f["id"] == "day_of_dead"), None)
     assert dod is None
+
+
+# ── Tibetan calendar API ────────────────────────────────────────────
+
+def test_tibetan_month_on_2026_05_18_is_saga_dawa():
+    """May 18, 2026 should fall in the Tibetan 4th month — Saga Dawa."""
+    dt = pytz.utc.localize(datetime(2026, 5, 18, 12, 0))
+    m = festivals.get_tibetan_month(dt)
+    assert m["month_number"] == 4
+    assert m["is_saga_dawa"] is True
+    assert "Saga Dawa" in m["month_name_english"]
+
+
+def test_tibetan_month_returns_required_keys():
+    dt = pytz.utc.localize(datetime(2026, 5, 18, 12, 0))
+    m = festivals.get_tibetan_month(dt)
+    for key in ("month_number", "month_name_transliteration", "month_name_tibetan",
+                "month_name_english", "month_start", "month_end", "is_saga_dawa",
+                "tibetan_year", "losar_datetime"):
+        assert key in m, f"Missing key: {key}"
+
+
+def test_tibetan_month_start_before_end():
+    dt = pytz.utc.localize(datetime(2026, 5, 18, 12, 0))
+    m = festivals.get_tibetan_month(dt)
+    assert m["month_start"] < m["month_end"]
+    # The given dt should fall inside
+    assert m["month_start"] <= dt < m["month_end"]
+
+
+def test_tibetan_month_handles_pre_losar():
+    """A January date should map to the PREVIOUS Tibetan year's 11th or 12th month."""
+    dt = pytz.utc.localize(datetime(2026, 1, 20, 12, 0))
+    m = festivals.get_tibetan_month(dt)
+    assert m["tibetan_year"] == 2025  # previous Gregorian year's Losar applies
+    assert m["month_number"] >= 11   # late in Tibetan year

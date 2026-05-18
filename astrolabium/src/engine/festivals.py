@@ -383,6 +383,90 @@ def get_festival_proximity(dt: datetime, window_days: int = 14) -> list:
     return deduped
 
 
+# ── Tibetan calendar API ─────────────────────────────────────────────
+
+# Tibetan month names (Phugpa). Standard 12-month sequence; intercalary
+# months exist but are handled implicitly by the lunation-counting logic.
+TIBETAN_MONTH_NAMES = [
+    ("Dawa Dangpo",       "ཟླ་བ་དང་པོ་",     "First Month (Mchu)"),
+    ("Dawa Nyipa",        "ཟླ་བ་གཉིས་པ་",     "Second Month (Dbo)"),
+    ("Dawa Sumpa",        "ཟླ་བ་གསུམ་པ་",     "Third Month (Nag-pa)"),
+    ("Dawa Zhipa",        "ཟླ་བ་བཞི་པ་",      "Fourth Month — Saga Dawa"),
+    ("Dawa Ngapa",        "ཟླ་བ་ལྔ་པ་",       "Fifth Month (Snron)"),
+    ("Dawa Drukpa",       "ཟླ་བ་དྲུག་པ་",      "Sixth Month (Chu-stod)"),
+    ("Dawa Dunpa",        "ཟླ་བ་བདུན་པ་",     "Seventh Month (Gro-bzhin)"),
+    ("Dawa Gyepa",        "ཟླ་བ་བརྒྱད་པ་",    "Eighth Month (Khrums)"),
+    ("Dawa Gupa",         "ཟླ་བ་དགུ་པ་",      "Ninth Month (Tha-skar)"),
+    ("Dawa Chupa",        "ཟླ་བ་བཅུ་པ་",      "Tenth Month (Smin-drug)"),
+    ("Dawa Chu Chigpa",   "ཟླ་བ་བཅུ་གཅིག་པ་", "Eleventh Month (Mgo)"),
+    ("Dawa Chu Nyipa",    "ཟླ་བ་བཅུ་གཉིས་པ་", "Twelfth Month (Rgyal)"),
+]
+
+
+def get_tibetan_month(dt: datetime) -> dict:
+    """
+    Return the Tibetan lunar month containing the given datetime.
+
+    Uses Phugpa reckoning (the most widely-used Tibetan calendar variant).
+    The first Tibetan month begins at the first New Moon after Feb 10 of
+    the same Gregorian year (Losar/Tibetan New Year typically falls
+    between mid-February and early March).
+
+    Note: this is a practical approximation that treats months as
+    consecutive lunations. The full Phugpa system handles skipped and
+    doubled days that affect calendar-display ordering but do not affect
+    which lunar month a given moment falls in.
+
+    Returns dict with:
+      - month_number (1-12; 13 for intercalary if applicable)
+      - month_name_transliteration / month_name_tibetan / month_name_english
+      - month_start (UTC datetime, New Moon)
+      - month_end (UTC datetime, next New Moon)
+      - is_saga_dawa (bool — convenience flag for Tibetan month 4)
+    """
+    dt = _normalize_to_aware(dt)
+
+    # Find the Losar for the calendar year. If dt is before this year's Losar,
+    # we're actually in the previous year's Tibetan calendar.
+    year = dt.year
+    feb_anchor = pytz.utc.localize(datetime(year, 2, 10, 0, 0))
+    losar = _find_next_new_moon(feb_anchor)
+
+    if dt < losar:
+        # Use previous year's Losar
+        year -= 1
+        feb_anchor = pytz.utc.localize(datetime(year, 2, 10, 0, 0))
+        losar = _find_next_new_moon(feb_anchor)
+
+    # Walk lunations from Losar to find which month dt is in
+    cur_start = losar
+    for month_idx in range(13):  # support up to 13 lunations (intercalary years)
+        cur_end = _find_next_new_moon(cur_start + timedelta(hours=1))
+        if cur_start <= dt < cur_end:
+            month_number = month_idx + 1
+            if month_number <= 12:
+                name = TIBETAN_MONTH_NAMES[month_idx]
+            else:
+                name = ("Intercalary", "ཟླ་བཤོལ་", "Intercalary Month")
+            return {
+                "month_number": month_number,
+                "month_name_transliteration": name[0],
+                "month_name_tibetan": name[1],
+                "month_name_english": name[2],
+                "month_start": cur_start,
+                "month_end": cur_end,
+                "is_saga_dawa": (month_number == 4),
+                "tibetan_year": year,
+                "losar_datetime": losar,
+            }
+        cur_start = cur_end
+
+    # Should be unreachable
+    raise RuntimeError(
+        f"Could not locate Tibetan month for {dt}. This indicates a bug."
+    )
+
+
 # ── Introspection ────────────────────────────────────────────────────
 
 def get_festival_count() -> int:
