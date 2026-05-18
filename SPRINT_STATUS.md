@@ -9,12 +9,40 @@
 
 ## CURRENT SPRINT
 
-**Sprint:** A — Stellar Layer
-**Branch:** `feature/stellar-layer`
+**Sprint:** B — Deep Sky
+**Branch:** `feature/deep-sky` (branched from `feature/stellar-layer`)
 **Started:** May 18, 2026
-**Status:** ✅ **COMPLETE — pushed to GitHub**
-**GitHub URL:** https://github.com/tasumermaf/meridian/tree/feature/stellar-layer
-**PR ready at:** https://github.com/tasumermaf/meridian/pull/new/feature/stellar-layer
+**Status:** IN PROGRESS
+
+### Sprint A: COMPLETE
+- Branch: `feature/stellar-layer` (pushed to GitHub, awaiting merge to main)
+- GitHub: https://github.com/tasumermaf/meridian/tree/feature/stellar-layer
+- PR-ready: https://github.com/tasumermaf/meridian/pull/new/feature/stellar-layer
+- 9 commits, 629 tests passing, 5 new rules files, 2 new visual assets
+- Stellar Layer (28 mansions + 24 solar terms + festivals + Tibetan calendar) operational
+
+### Sprint B confirmed parameters
+- Branch strategy: branch off `feature/stellar-layer` (Sprint B depends on Sprint A's stellar engine)
+- Scope: Tier 2 from the original plan — axial precession, heliacal risings, major lunar standstills, Vedic deep-time
+- Save strategy: same as Sprint A — per-phase commits, subagent delegation for verbose rules files
+- Sprint C (ecological) deferred to its own planning round
+
+### Sprint B phase tracker
+
+| # | Phase | Status | Commit | Notes |
+|---|-------|--------|--------|-------|
+| 0 | Create feature branch | ✅ COMPLETE | (no commit) | branched from feature/stellar-layer |
+| 1 | Axial precession engine + data + tests | ⏳ NEXT | — | — |
+| 2 | Heliacal risings engine + star data + tests | ⏳ pending | — | — |
+| 3 | Major lunar standstills engine + tests | ⏳ pending | — | — |
+| 4 | Vedic yuga/kalpa deep-time engine + tests | ⏳ pending | — | — |
+| 5 | Orchestrator integration | ⏳ pending | — | — |
+| 6 | Rules files (4 new + updates) via subagents | ⏳ pending | — | — |
+| 7 | New visual asset (deep-sky wheel?) | ⏳ pending | — | — |
+| 8 | README updates | ⏳ pending | — | — |
+| 9 | Final test pass + push | ⏳ pending | — | — |
+
+Tests: starts at 629 (Sprint A baseline), target ~660-680.
 
 ### Confirmed plan parameters
 
