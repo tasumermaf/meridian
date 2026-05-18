@@ -34,9 +34,13 @@ A typical session goes:
    or "I'm in Damanhur" (look it up; confirm: "Damanhur Vidracco at
    45.42°N, 7.78°E, Europe/Rome — correct?").
 2. **The reading.** Engine computes the full state at the user's
-   location and the present moment (or specified moment). Output is the
-   four temporal bodies, the Divine Hour, the Sephirotic Week day, the
-   Divine Month, any active compounds.
+   location and the present moment (or specified moment). Output is
+   all six temporal bodies (Stellar, Ecological, Soul, Solar Keys,
+   Astral, Gross), the Divine Hour, the Sephirotic Week day, the
+   Divine Month, any active compounds, the stellar layer (mansions,
+   solar terms, festivals, Tibetan month, precession, heliacal,
+   standstills, Vedic time), and the ecological layer (photoperiod,
+   climate-norm markers).
 3. **The interpretation.** Ground the numbers in plain language. What
    Law is active and what that Law tends to favor. Which organ window
    is open and what the inner alchemy practice for that organ is. Any
@@ -191,7 +195,7 @@ Don't attempt that work here; this is the Astrolabium harness.
 ## Suggested first questions for a new user
 
 - *"Compute the current state for me at my location."*
-- *"Walk me through the four temporal bodies for the next 24 hours."*
+- *"Walk me through all six temporal bodies for the next 24 hours."*
 - *"When is the next Key-Amplified Law Unity at my location?"*
 - *"Explain the Divine Hour I'm currently in and what the source says
   about it."*

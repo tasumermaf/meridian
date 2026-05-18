@@ -379,15 +379,16 @@ horizon**, not a fixed law. A 30-day query is reasonable for
 seasonal planning; a 1-day query is reasonable for "is today a
 festival?" queries.
 
-## Integration with the four temporal bodies
+## Integration with the other temporal bodies
 
-The festival registry is a **calendar-layer contextualisation**. It
-operates at the same scale as the Divine Month and Sephirotic Week —
-it tells the practitioner *what kind of period this is*, not *what
-the instantaneous state of the qi is*. The four temporal bodies
-(Soul, Solar Keys, Astral, Gross) continue to compute exactly as
-specified in `.claude/rules/temporal-bodies.md`. The festival layer
-sits beside them, not above them.
+The festival registry is a **calendar-layer contextualisation** within
+the Stellar Layer. It operates at the same scale as the Divine Month
+and Sephirotic Week — it tells the practitioner *what kind of period
+this is*, not *what the instantaneous state of the qi is*. The other
+five temporal bodies (Ecological, Soul, Solar Keys, Astral, Gross)
+continue to compute exactly as specified in
+`.claude/rules/temporal-bodies.md`. The festival layer sits beside
+them as one face of the Stellar Layer.
 
 A reading on May 17, 2026 might surface as:
 

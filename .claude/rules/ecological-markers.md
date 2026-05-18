@@ -308,10 +308,10 @@ The Ecological Markers layer is built for these questions:
 
 ---
 
-## Connection to the four temporal bodies
+## Connection to the other five temporal bodies
 
-The Ecological Markers layer is the **Gross layer's local-environment
-face**. The four temporal bodies cooperate:
+The Ecological Markers layer is the **sixth body**, the Gross layer's
+local-environment face. All six bodies cooperate:
 
 - The **Stellar Layer** says what cosmic moment we are in — which
   Buddha-month, which lunar mansion, which solar term, which yuga.

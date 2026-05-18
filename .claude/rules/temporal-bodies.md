@@ -1,12 +1,15 @@
-# The Five Temporal Bodies
+# The Six Temporal Bodies
 
 > The architectural structure the Astrolabium reads. Three bodies of
 > the practitioner (Soul, Astral, Gross), a permanent-Law layer
-> (Solar Keys) that activates only at the two solar cusps, and a
-> Stellar Layer (mansions, terms, festivals, Tibetan calendar) that
-> situates the moment in the longest cycles. Added May 2026 in
-> response to the *Living Time Keepers* and *Saga Dawa* source
-> documents.
+> (Solar Keys) that activates only at the two solar cusps, a
+> Stellar Layer (mansions, terms, festivals, Tibetan calendar, plus
+> deep-sky precession/heliacal/standstills/Vedic-yuga in Sprint B)
+> that situates the moment in the longest cycles, and an Ecological
+> Layer (Sprint C) that grounds the moment in the practitioner's
+> local seasonal-ecological state. Added across three sprints in
+> May 2026 in response to the *Living Time Keepers* and *Saga Dawa*
+> source documents.
 
 ---
 
@@ -16,7 +19,7 @@ The Damanhurian tradition distinguishes three bodies that operate the
 practitioner: a Soul body (slowest, deepest), an Astral body (middle),
 and a Gross body (the physical organism, fastest in time-scale).
 [SOURCE: Damanhurian]. The Astrolabium reads each body's currently
-active state simultaneously and reports them as five parallel layers.
+active state simultaneously and reports them as six parallel layers.
 
 The "fourth body" is not really a body — it is the **Solar Keys**
 layer, which represents the two Permanent Laws (Divinity and Fall of
@@ -25,19 +28,32 @@ sunrise and sunset cusps, briefly each day. Treating them as their own
 layer lets the engine detect when their activation amplifies whatever
 the other three layers are doing.
 
-The **fifth body** is the **Stellar Layer**, added in May 2026. It
-situates the moment within architectures slower and deeper than the
-lunar month: the position of the Sun, Moon, and visible planets in the
-28 Chinese Lunar Mansions; the current and upcoming Chinese 24 Solar
-Term; the cross-tradition sacred festival calendar; and the Tibetan
-lunar month (Phugpa). See `.claude/rules/stellar-layer.md` for the
-architectural overview.
+The **fifth body** is the **Stellar Layer**, added in Sprints A and B
+(May 2026). It situates the moment within architectures slower and
+deeper than the lunar month: the position of the Sun, Moon, and visible
+planets in the 28 Chinese Lunar Mansions; the current and upcoming
+Chinese 24 Solar Term; the cross-tradition sacred festival calendar;
+the Tibetan lunar month (Phugpa); plus the deep-sky sub-systems —
+axial precession (25,772-yr Great Year), heliacal star risings, the
+18.6-year lunar standstill cycle, and Vedic yuga/kalpa cosmological
+deep-time. See `.claude/rules/stellar-layer.md` for the architectural
+overview.
+
+The **sixth body** is the **Ecological Layer**, added in Sprint C
+(May 2026). It grounds the moment in the practitioner's local
+seasonal-ecological state: photoperiod (daylight hours, twilight
+bands, daylight gain/loss rate, seasonal arc) and climate-norm
+derived markers (Köppen-proxy climate zone, frost risk by zone ×
+season, vegetation phenology stage, growing-degree-day intensity).
+Offline-first by design — no live weather. See
+`.claude/rules/photoperiod.md` and `.claude/rules/ecological-markers.md`.
 
 ## The Layer Table
 
 | Body         | Layer            | Rhythm           | Period          | Source for state                                       |
 |--------------|------------------|------------------|-----------------|--------------------------------------------------------|
-| **Stellar**  | Mansions / Terms / Festivals / Tibetan Month | Stellar + Solar + Lunisolar | ~13 days (term, mansion of sun) / 1-30 days (festival proximity) / ~30 days (Tibetan month) | Sun/Moon/planet ecliptic longitudes; festival anchor resolution |
+| **Stellar**  | Mansions / Terms / Festivals / Tibetan Month / Deep Sky | Stellar + Solar + Lunisolar | ~13 days (mansion of sun) / ~13-15 days (solar term) / 1-30 days (festival) / 18.6 yr (standstill) / 2,148 yr (Age) / 432,000 yr (Yuga) | Sun/Moon/planet ecliptic longitudes; festival anchor resolution; precession; node regression; static Vedic constants |
+| **Ecological** | Photoperiod + Climate-Norm Markers | Solar (daylight curve) + climate norms | Daily (photoperiod), seasonal (vegetation stage, frost risk) | Sunrise/sunset times; latitude band; day of year |
 | **Soul**     | Primeval Law     | Lunar            | ~4.9 days/phase | Moon phase index → trigram → Law (6 cyclic)            |
 | **Solar Keys** | Permanent Laws  | Solar cusps      | Daily, brief    | Sunrise → Gold Key / Sunset → Silver Key (with cusping window) |
 | **Astral**   | Derivative Law   | LGBF             | ~2 hours/vessel | Stem-branch substitution + solar branch → vessel → Law |

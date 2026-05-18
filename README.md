@@ -67,7 +67,7 @@ It does not warn, prohibit, or prescribe. It does not tell you a moment
 is good or bad. The practitioner is assumed competent. The instrument
 displays what is available.
 
-![The four temporal bodies](assets/temporal-bodies.png)
+![The temporal bodies architecture (Sprint A — shows the original four; Sprints B and C added the Stellar and Ecological layers)](assets/temporal-bodies.png)
 
 ## The non-negotiable constraint
 
@@ -290,8 +290,8 @@ meridian/
 ├── LICENSE                          # MPL-2.0
 ├── CLAUDE.md                        # Astrolabium-scoped Meridian identity
 ├── .claude/rules/                   # 23 dense domain rules files
-│   ├── astrolabium-core.md          # ten integrated systems, vocabulary, constraints
-│   ├── temporal-bodies.md           # Stellar / Soul / Solar Keys / Astral / Gross
+│   ├── astrolabium-core.md          # sixteen integrated systems, vocabulary, constraints
+│   ├── temporal-bodies.md           # Stellar / Ecological / Soul / Solar Keys / Astral / Gross
 │   ├── stellar-layer.md             # overview of the Stellar + Deep Sky layers
 │   ├── divine-hours.md              # 8-fold unequal hour system, Book of Three Responses origin
 │   ├── ling-gui-ba-fa.md            # LGBF formula, 8 vessels, stem-branch tables

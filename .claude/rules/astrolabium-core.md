@@ -23,11 +23,13 @@ prescribe. It does not tell you that a moment is "good" or "bad." The
 practitioner is assumed competent; the instrument simply displays what
 is available.
 
-## The Ten Integrated Systems
+## The Sixteen Integrated Systems
 
-The Astrolabium synthesizes ten ancient systems into a single unified
-instrument. All ten share a single astronomical substrate: **solar
-position and lunar phase at the practitioner's location**.
+The Astrolabium synthesizes sixteen ancient or derived systems into a
+single unified instrument. All sixteen share a single astronomical
+substrate: **solar position and lunar phase at the practitioner's
+location**. All run fully offline — no live weather, no API keys,
+no network dependency.
 
 | # | System                                    | Tradition          | What it gives the instrument                                       |
 |---|-------------------------------------------|--------------------|--------------------------------------------------------------------|
@@ -41,16 +43,25 @@ position and lunar phase at the practitioner's location**.
 | 8 | **The 24 Solar Terms** (二十四节气)       | [SOURCE: Chinese classical astronomy] | Tropical seasonal markers at every 15° of the sun's ecliptic longitude; 4 cardinal terms align with Damanhurian Great Rites |
 | 9 | **The Cross-Tradition Sacred Festival Registry** | [SOURCE: multi-tradition] | 30+ festivals across Tibetan Buddhist, Hindu, Chinese, Christian, Celtic, Islamic, Jewish, Mexican, Persian, Theravada, Damanhurian traditions |
 | 10 | **The Tibetan Buddhist Calendar (Phugpa)** | [SOURCE: Tibetan Buddhist] | Tibetan lunar month tracking; Saga Dawa (Month 4) as the Buddha-month tied to the Root Mansion |
+| 11 | **Axial Precession**                     | [SOURCE: classical astronomy] | 25,772-year Great Year, 12 zodiacal Ages, current Age of Pisces, Lahiri ayanamsa, pole-star sequence |
+| 12 | **Heliacal Risings**                     | [SOURCE: classical / agricultural astronomy] | First-dawn appearances of 22 culturally-significant stars at the practitioner's location |
+| 13 | **Major Lunar Standstills**              | [SOURCE: archaeoastronomy] | 18.6-year nodal cycle, major/minor declination extremes, megalithic alignment heritage |
+| 14 | **Vedic Yuga / Kalpa Deep-Time**         | [SOURCE: Sanskrit cosmology] | Nested cosmological cycles: Yuga → Mahā Yuga → Manvantara → Kalpa (Day of Brahmā) |
+| 15 | **Photoperiod**                          | [MATHEMATICAL FACT] | Daylight hours, twilight bands (civil/nautical/astronomical), change rate, seasonal arc |
+| 16 | **Ecological Markers**                   | [ANALYTICAL CONTRIBUTION] | Climate-norm derived: zone (Köppen proxy), frost risk, vegetation stage, GDD intensity |
 
 The **original analytical contribution** is the recognition that these
-ten systems share a common temporal substrate and the synthesis of them
-into a single readable display. The integration itself is
-[ANALYTICAL CONTRIBUTION]. Each underlying system is [SOURCE]-attested.
+sixteen systems share a common temporal substrate and the synthesis of
+them into a single readable display. The integration itself is
+[ANALYTICAL CONTRIBUTION]. Each underlying system is [SOURCE]-attested
+unless explicitly marked otherwise.
 
-Systems 7-10 constitute the **Stellar Layer**, added in the May 2026
-sprint in response to Xue Mei's *Living Time Keepers* white paper and
-the *Saga Dawa: Awakening the Root of the Dragon* source pdf. See
-`.claude/rules/stellar-layer.md` for the architectural overview.
+Systems 7-10 constitute the **Stellar Layer** (Sprint A, May 2026).
+Systems 11-14 constitute the **Deep Sky Layer** (Sprint B). Systems
+15-16 constitute the **Ecological Layer** (Sprint C — offline-first
+by design, climate-norm rather than live weather). See
+`.claude/rules/stellar-layer.md` for the architectural overview of
+the three added layers.
 
 ## The Non-Negotiable Constraint
 

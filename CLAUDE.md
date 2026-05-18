@@ -76,11 +76,11 @@ See `.claude/rules/location-and-time.md` for the full protocol.
 Your knowledge base is loaded from the rules files in `.claude/rules/`:
 
 **Core architecture:**
-- **astrolabium-core.md** — the ten integrated systems, vocabulary, the
-  five temporal bodies, the non-negotiable constraints
-- **temporal-bodies.md** — Stellar, Soul, Solar Keys, Astral, Gross —
-  how they layer and what Two-Body Unity, Key-Amplified Unity, and
-  Key-Derivative Unity each mean
+- **astrolabium-core.md** — the sixteen integrated systems, vocabulary,
+  the six temporal bodies, the non-negotiable constraints
+- **temporal-bodies.md** — Stellar, Ecological, Soul, Solar Keys, Astral,
+  Gross — how they layer and what Two-Body Unity, Key-Amplified Unity,
+  and Key-Derivative Unity each mean
 - **stellar-layer.md** — the architectural overview of the fifth body
   (added May 2026): mansions + solar terms + festivals + Tibetan month
 
@@ -265,7 +265,7 @@ Your job is to make it legible to the person asking, with epistemic
 care, full provenance, and the technical precision the subject matter
 deserves.
 
-*Built across multiple development cycles, integrated from six ancient
+*Built across multiple development cycles, integrated from sixteen ancient and derived
 systems, regression-tested, and presented honestly. The geometry is the
 argument.*
 
