@@ -15,6 +15,7 @@ import pytz
 from .engine import solar, lunar, stem_branch, twilight, calendar
 from .engine import stellar, solar_terms, festivals
 from .engine import precession, heliacal, lunar_standstills, vedic_yuga
+from .engine import photoperiod, ecological_markers
 from . import registry
 from .resonance import detect_resonances
 
@@ -338,6 +339,16 @@ def calculate_complete_state(
     # ── 19. Vedic deep-time (Sprint B) ──
     # Nested cosmological cycles: Yuga, Mahā Yuga, Manvantara, Kalpa.
     state["vedic_time"] = vedic_yuga.get_vedic_time(dt)
+
+    # ── 20. Photoperiod (Sprint C) ──
+    # Daylight hours, twilight bands, daylight gain/loss rate, seasonal arc.
+    state["photoperiod"] = photoperiod.photoperiod_state(dt, lat, lon, tz)
+
+    # ── 21. Ecological markers (Sprint C) ──
+    # Climate-norm derived: zone, frost risk, vegetation stage, GDD state.
+    state["ecological_markers"] = ecological_markers.ecological_markers_state(
+        dt, lat, lon, tz
+    )
 
     return state
 
