@@ -14,6 +14,7 @@ import pytz
 
 from .engine import solar, lunar, stem_branch, twilight, calendar
 from .engine import stellar, solar_terms, festivals
+from .engine import precession, heliacal, lunar_standstills, vedic_yuga
 from . import registry
 from .resonance import detect_resonances
 
@@ -319,6 +320,24 @@ def calculate_complete_state(
     # ── 15. Tibetan lunar month (Phugpa) ──
     # Which Tibetan lunar month contains this moment.
     state["tibetan_month"] = festivals.get_tibetan_month(dt)
+
+    # ── 16. Axial precession (Sprint B) ──
+    # The 25,772-year Great Year: ayanamsa, vernal-equinox position,
+    # current zodiacal Age, transition projection, pole star.
+    state["precession"] = precession.precession_summary(dt)
+
+    # ── 17. Heliacal risings (Sprint B) ──
+    # Upcoming heliacal star risings at the practitioner's location,
+    # within the next 60 days. Sirius's next rising included separately.
+    state["heliacal"] = heliacal.heliacal_state(lat, lon, tz, dt, window_days=60)
+
+    # ── 18. Lunar standstills (Sprint B) ──
+    # 18.6-year nodal cycle: where we are in major/minor standstill phasing.
+    state["lunar_standstills"] = lunar_standstills.get_lunar_standstill_state(dt)
+
+    # ── 19. Vedic deep-time (Sprint B) ──
+    # Nested cosmological cycles: Yuga, Mahā Yuga, Manvantara, Kalpa.
+    state["vedic_time"] = vedic_yuga.get_vedic_time(dt)
 
     return state
 
