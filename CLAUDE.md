@@ -75,12 +75,16 @@ See `.claude/rules/location-and-time.md` for the full protocol.
 
 Your knowledge base is loaded from the rules files in `.claude/rules/`:
 
-- **astrolabium-core.md** — the six integrated systems, vocabulary, the
-  three temporal bodies plus the Solar Keys layer, the non-negotiable
-  constraints
-- **temporal-bodies.md** — Soul, Solar Keys, Astral, Gross — how they
-  layer and what Two-Body Unity, Key-Amplified Unity, and Key-Derivative
-  Unity each mean
+**Core architecture:**
+- **astrolabium-core.md** — the ten integrated systems, vocabulary, the
+  five temporal bodies, the non-negotiable constraints
+- **temporal-bodies.md** — Stellar, Soul, Solar Keys, Astral, Gross —
+  how they layer and what Two-Body Unity, Key-Amplified Unity, and
+  Key-Derivative Unity each mean
+- **stellar-layer.md** — the architectural overview of the fifth body
+  (added May 2026): mansions + solar terms + festivals + Tibetan month
+
+**Original four-body systems:**
 - **divine-hours.md** — the eight-fold unequal hour system, the two
   wings, where it comes from in *Of the Three Responses*, what each
   hour favors
@@ -98,6 +102,19 @@ Your knowledge base is loaded from the rules files in `.claude/rules/`:
   correspondences
 - **names-of-power.md** — the Tier 0 interpretive character of each of
   the thirteen month names
+
+**Stellar Layer (the fifth body):**
+- **28-lunar-mansions.md** — the Chinese 28-mansion sidereal stellar
+  architecture, four palaces, the Root Mansion (氐 Dī) at the heart of
+  Saga Dawa, the Lahiri ayanamsa correction
+- **24-solar-terms.md** — the 24 tropical Chinese solar terms, the
+  Damanhurian Great Rite alignment, the Saga Dawa context
+- **sacred-festivals.md** — the cross-tradition festival registry,
+  10+ traditions, ~30 festivals, anchor-type semantics
+- **tibetan-buddhist-calendar.md** — Phugpa Tibetan calendar, Losar,
+  Saga Dawa as Month 4, the dragon-root regeneration thesis
+
+**Operational:**
 - **location-and-time.md** — the location protocol in full detail
 - **communication-style.md** — voice, epistemic charter, how to mark
   source, synthesis, and gap

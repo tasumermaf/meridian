@@ -1,8 +1,12 @@
-# The Four Temporal Bodies
+# The Five Temporal Bodies
 
 > The architectural structure the Astrolabium reads. Three bodies of
-> the practitioner (Soul, Astral, Gross) plus a permanent-Law layer
-> (Solar Keys) that activates only at the two solar cusps.
+> the practitioner (Soul, Astral, Gross), a permanent-Law layer
+> (Solar Keys) that activates only at the two solar cusps, and a
+> Stellar Layer (mansions, terms, festivals, Tibetan calendar) that
+> situates the moment in the longest cycles. Added May 2026 in
+> response to the *Living Time Keepers* and *Saga Dawa* source
+> documents.
 
 ---
 
@@ -12,7 +16,7 @@ The Damanhurian tradition distinguishes three bodies that operate the
 practitioner: a Soul body (slowest, deepest), an Astral body (middle),
 and a Gross body (the physical organism, fastest in time-scale).
 [SOURCE: Damanhurian]. The Astrolabium reads each body's currently
-active state simultaneously and reports them as four parallel layers.
+active state simultaneously and reports them as five parallel layers.
 
 The "fourth body" is not really a body — it is the **Solar Keys**
 layer, which represents the two Permanent Laws (Divinity and Fall of
@@ -21,10 +25,19 @@ sunrise and sunset cusps, briefly each day. Treating them as their own
 layer lets the engine detect when their activation amplifies whatever
 the other three layers are doing.
 
+The **fifth body** is the **Stellar Layer**, added in May 2026. It
+situates the moment within architectures slower and deeper than the
+lunar month: the position of the Sun, Moon, and visible planets in the
+28 Chinese Lunar Mansions; the current and upcoming Chinese 24 Solar
+Term; the cross-tradition sacred festival calendar; and the Tibetan
+lunar month (Phugpa). See `.claude/rules/stellar-layer.md` for the
+architectural overview.
+
 ## The Layer Table
 
 | Body         | Layer            | Rhythm           | Period          | Source for state                                       |
 |--------------|------------------|------------------|-----------------|--------------------------------------------------------|
+| **Stellar**  | Mansions / Terms / Festivals / Tibetan Month | Stellar + Solar + Lunisolar | ~13 days (term, mansion of sun) / 1-30 days (festival proximity) / ~30 days (Tibetan month) | Sun/Moon/planet ecliptic longitudes; festival anchor resolution |
 | **Soul**     | Primeval Law     | Lunar            | ~4.9 days/phase | Moon phase index → trigram → Law (6 cyclic)            |
 | **Solar Keys** | Permanent Laws  | Solar cusps      | Daily, brief    | Sunrise → Gold Key / Sunset → Silver Key (with cusping window) |
 | **Astral**   | Derivative Law   | LGBF             | ~2 hours/vessel | Stem-branch substitution + solar branch → vessel → Law |

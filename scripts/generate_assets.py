@@ -22,6 +22,7 @@ Dim accent    #2A2A3A  panel edges
 
 from __future__ import annotations
 
+import math
 import sys
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -664,6 +665,262 @@ def render_temporal_bodies(save_path: Path):
 
 
 # ════════════════════════════════════════════════════════════════════
+#  28 LUNAR MANSIONS WHEEL — sidereal, with live Sun + Moon positions
+# ════════════════════════════════════════════════════════════════════
+
+# Palette for the four palaces — derived from the prime-law correspondence
+PALACE_COLORS = {
+    "azure_dragon":    "#3D6B8E",  # Azure / blue-green for the East
+    "vermillion_bird": "#B34444",  # Vermillion red for the South
+    "white_tiger":     "#C0C0C0",  # White / silver for the West
+    "black_tortoise":  "#3D3D6B",  # Dark indigo for the North
+}
+
+
+def render_28_mansion_wheel(save_path: Path, dt, lat, lon, tz, location_name):
+    """
+    Render the 28-mansion wheel with the four palaces, each mansion's
+    Chinese character, and the LIVE positions of the Sun and Moon
+    computed for the given moment.
+    """
+    from engine import stellar  # noqa: F401  (live engine import)
+
+    data = stellar._load_mansion_data()
+    mansions = data["mansions"]
+    sun = stellar.get_solar_mansion(dt)
+    moon = stellar.get_lunar_mansion(dt)
+
+    fig, ax = plt.subplots(figsize=(11, 11), facecolor=BG)
+    ax.set_facecolor(BG)
+    ax.set_xlim(-1.55, 1.55); ax.set_ylim(-1.55, 1.55)
+    ax.set_aspect("equal"); ax.set_axis_off()
+
+    outer_r = 1.1
+    inner_r = 0.78
+    label_r = 1.24
+
+    # Draw each mansion as a wedge sized to its true width in degrees.
+    # Mansion 0 (Horn) starts at 195°; we orient so 0° (Wall start) is at
+    # the top of the wheel (12 o'clock), going counter-clockwise like the
+    # classical Chinese sky chart.
+    for m in mansions:
+        start_lon = m["ecliptic_longitude_start"]
+        end_lon = m["ecliptic_longitude_end"]
+        width = m["width_degrees"]
+        # Convert ecliptic longitude → matplotlib angle (0° at +x axis, ccw)
+        # Place ecliptic 0° at the top (90° matplotlib) for a sky-chart feel.
+        theta_start = (90 - start_lon) % 360
+        theta_end = (theta_start - width) % 360  # going clockwise visually
+        palace_color = PALACE_COLORS[m["palace"]]
+        w = Wedge((0, 0), outer_r,
+                  theta_end, theta_start,
+                  width=outer_r - inner_r,
+                  facecolor=palace_color, edgecolor=BONE,
+                  linewidth=0.6, alpha=0.55)
+        ax.add_patch(w)
+        # Chinese character at mid-point
+        mid_lon = (start_lon + width / 2) % 360
+        mid_theta = math.radians(90 - mid_lon)
+        r_mid = (outer_r + inner_r) / 2
+        ax.text(r_mid * math.cos(mid_theta), r_mid * math.sin(mid_theta),
+                m["chinese"], color=BONE, fontsize=10, fontweight="bold",
+                ha="center", va="center",
+                family=["Microsoft YaHei", "DejaVu Sans"])
+        # Pinyin outside
+        ax.text(label_r * math.cos(mid_theta), label_r * math.sin(mid_theta),
+                m["pinyin"], color=BONE, fontsize=7,
+                ha="center", va="center", family=["Consolas"], alpha=0.7)
+
+    # Palace dividers — heavier lines at 0°, 90°, 180°, 270° boundaries
+    # between consecutive palace zones. The 4 palaces split the 360° into
+    # 4 quadrants (rough approximation; mansions don't divide evenly).
+    # We mark approximate quadrant boundaries based on the data palace
+    # assignment.
+    palace_starts = {}
+    for p_key, p in data["palaces"].items():
+        first_idx = p["mansion_indices"][0]
+        palace_starts[p_key] = mansions[first_idx]["ecliptic_longitude_start"]
+    for p_key, lon in palace_starts.items():
+        theta = math.radians(90 - lon)
+        ax.plot([inner_r * math.cos(theta), (outer_r + 0.05) * math.cos(theta)],
+                [inner_r * math.sin(theta), (outer_r + 0.05) * math.sin(theta)],
+                color=BONE, linewidth=1.5, alpha=0.85)
+
+    # Inner circle — palace summary
+    center_circle = plt.Circle((0, 0), inner_r, color=BG, ec=BONE, lw=1.2)
+    ax.add_patch(center_circle)
+
+    # Mark sun + moon positions on the wheel
+    def _mark_body(lon_deg, body_label, color, body_radius_offset):
+        theta = math.radians(90 - lon_deg)
+        r = inner_r + body_radius_offset
+        ax.scatter([r * math.cos(theta)], [r * math.sin(theta)],
+                   c=color, s=200, edgecolors=BONE, linewidths=1.2,
+                   zorder=5)
+        ax.text(r * math.cos(theta), r * math.sin(theta), body_label,
+                color=BG, fontsize=10, fontweight="bold",
+                ha="center", va="center", zorder=6,
+                family=["Segoe UI Symbol", "DejaVu Sans"])
+
+    _mark_body(sun["ecliptic_longitude"], "☉", GOLD, 0.18)
+    _mark_body(moon["ecliptic_longitude"], "☽", SILVER_KEY, 0.30)
+
+    # Center text
+    ax.text(0, 0.13, location_name, color=BONE, fontsize=12, fontweight="bold",
+            ha="center", va="center", family=["Consolas"])
+    ax.text(0, 0.02, dt.strftime("%Y - %m - %d"), color=SILVER, fontsize=10,
+            ha="center", va="center", family=["Consolas"])
+    ax.text(0, -0.10, f"☉ {sun['chinese']} {sun['pinyin']}",
+            color=GOLD, fontsize=10, ha="center", va="center", family=["Consolas", "Microsoft YaHei"])
+    ax.text(0, -0.22, f"☽ {moon['chinese']} {moon['pinyin']}",
+            color=SILVER_KEY, fontsize=10, ha="center", va="center", family=["Consolas", "Microsoft YaHei"])
+
+    # Palace legend (bottom)
+    legend_text = "  ·  ".join([
+        "東方蒼龍 Azure Dragon (E)",
+        "南方朱雀 Vermillion Bird (S)",
+        "西方白虎 White Tiger (W)",
+        "北方玄武 Black Tortoise (N)",
+    ])
+    fig.text(0.5, 0.04, legend_text, ha="center", va="center", fontsize=9,
+             color=SILVER, family=["Consolas", "Microsoft YaHei"], alpha=0.78)
+
+    # Title
+    fig.text(0.5, 0.96, "T H E   2 8   L U N A R   M A N S I O N S",
+             ha="center", va="top", fontsize=16, fontweight="bold",
+             color=BONE, family=["Consolas"])
+    fig.text(0.5, 0.925,
+             "the stellar layer  ·  sidereal  ·  four palaces × seven mansions",
+             ha="center", va="top", fontsize=10, color=SILVER,
+             family=["Consolas"], style="italic", alpha=0.78)
+
+    fig.savefig(save_path, dpi=200, bbox_inches="tight",
+                facecolor=BG, pad_inches=0.25)
+    plt.close(fig)
+    print(f"  28 mansions     → {save_path.relative_to(REPO)}")
+
+
+# ════════════════════════════════════════════════════════════════════
+#  24 SOLAR TERMS WHEEL — tropical, with live solar position
+# ════════════════════════════════════════════════════════════════════
+
+def render_24_solar_terms_wheel(save_path: Path, dt):
+    """
+    Render the 24 solar terms as a wheel. Each term is one 15° slice.
+    Color the wheel by season; mark the LIVE solar position.
+    """
+    from engine import solar_terms
+
+    SEASON_COLORS = {
+        "Spring": "#6B8E5E",  # Geometric Essence green
+        "Summer": "#B34444",  # Synchronicity red
+        "Autumn": "#9E6B4F",  # Time Matrix bronze
+        "Winter": "#3D3D6B",  # Sole Atom indigo
+    }
+
+    terms = solar_terms.list_terms()
+    current = solar_terms.get_current_solar_term(dt)
+    next_term = solar_terms.get_next_solar_term(dt)
+    current_lon = current["sun_longitude_deg"]
+
+    fig, ax = plt.subplots(figsize=(11, 11), facecolor=BG)
+    ax.set_facecolor(BG)
+    ax.set_xlim(-1.55, 1.55); ax.set_ylim(-1.55, 1.55)
+    ax.set_aspect("equal"); ax.set_axis_off()
+
+    outer_r = 1.1
+    inner_r = 0.78
+    label_r = 1.26
+
+    # Each term = 15° slice. Place tropical 0° (Spring Equinox) at the LEFT
+    # so the year reads spring → summer → autumn → winter clockwise.
+    # Alternative: place 0° at top. Let's put it at 9 o'clock (180°) so the
+    # progression matches the classical Chinese chart's seasonal feel.
+    for t in terms:
+        start_lon = t["ecliptic_longitude_deg"]
+        end_lon = (start_lon + 15) % 360
+        # ecliptic 0° at top, going clockwise
+        theta_start = (90 - start_lon) % 360
+        theta_end = (theta_start - 15) % 360
+        season = t["season"]
+        is_current = (t["index"] == current["index"])
+        color = SEASON_COLORS[season]
+        alpha = 0.92 if is_current else 0.55
+        w = Wedge((0, 0), outer_r,
+                  theta_end, theta_start,
+                  width=outer_r - inner_r,
+                  facecolor=color, edgecolor=BONE,
+                  linewidth=0.7, alpha=alpha)
+        ax.add_patch(w)
+        # Chinese name
+        mid_lon = (start_lon + 7.5) % 360
+        mid_theta = math.radians(90 - mid_lon)
+        r_mid = (outer_r + inner_r) / 2
+        ax.text(r_mid * math.cos(mid_theta), r_mid * math.sin(mid_theta),
+                t["chinese"], color=BONE if is_current else BG,
+                fontsize=10, fontweight="bold",
+                ha="center", va="center",
+                family=["Microsoft YaHei", "DejaVu Sans"])
+        # Pinyin outside
+        ax.text(label_r * math.cos(mid_theta), label_r * math.sin(mid_theta),
+                t["pinyin"], color=BONE if is_current else SILVER,
+                fontsize=7, ha="center", va="center",
+                family=["Consolas"], alpha=0.95 if is_current else 0.65)
+
+    # Inner circle
+    center_circle = plt.Circle((0, 0), inner_r, color=BG, ec=BONE, lw=1.2)
+    ax.add_patch(center_circle)
+
+    # Sun marker at current ecliptic longitude
+    theta_sun = math.radians(90 - current_lon)
+    r_sun = inner_r + 0.18
+    ax.scatter([r_sun * math.cos(theta_sun)], [r_sun * math.sin(theta_sun)],
+               c=GOLD, s=240, edgecolors=BONE, linewidths=1.5, zorder=5)
+    ax.text(r_sun * math.cos(theta_sun), r_sun * math.sin(theta_sun),
+            "☉", color=BG, fontsize=12, fontweight="bold",
+            ha="center", va="center", zorder=6,
+            family=["Segoe UI Symbol", "DejaVu Sans"])
+
+    # Center text — current term + next transition
+    ax.text(0, 0.18,
+            f"{current['chinese']} {current['pinyin']}",
+            color=BONE, fontsize=13, fontweight="bold",
+            ha="center", va="center", family=["Consolas", "Microsoft YaHei"])
+    ax.text(0, 0.06, current["english"], color=BONE, fontsize=10,
+            ha="center", va="center", family=["Consolas"])
+    ax.text(0, -0.06,
+            f"{current['fraction_into_term']*100:.0f}% through",
+            color=SILVER, fontsize=9, ha="center", va="center",
+            family=["Consolas"], alpha=0.75)
+    ax.text(0, -0.20,
+            f"next: {next_term['chinese']} {next_term['pinyin']}",
+            color=GOLD, fontsize=9, ha="center", va="center",
+            family=["Consolas", "Microsoft YaHei"], alpha=0.85)
+    ax.text(0, -0.32,
+            next_term["transition_datetime"].strftime("%Y-%m-%d %H:%M UTC"),
+            color=SILVER, fontsize=8, ha="center", va="center",
+            family=["Consolas"], alpha=0.65)
+
+    # Title
+    fig.text(0.5, 0.96, "T H E   2 4   S O L A R   T E R M S",
+             ha="center", va="top", fontsize=16, fontweight="bold",
+             color=BONE, family=["Consolas"])
+    fig.text(0.5, 0.925,
+             "tropical  ·  the sun every 15°  ·  four seasons × six terms",
+             ha="center", va="top", fontsize=10, color=SILVER,
+             family=["Consolas"], style="italic", alpha=0.78)
+    fig.text(0.5, 0.04,
+             "every term is the sun crossing a multiple of 15° on the ecliptic",
+             ha="center", va="bottom", fontsize=9, color=GOLD,
+             family=["Consolas"], alpha=0.75)
+
+    fig.savefig(save_path, dpi=200, bbox_inches="tight",
+                facecolor=BG, pad_inches=0.25)
+    plt.close(fig)
+    print(f"  24 solar terms  → {save_path.relative_to(REPO)}")
+
+
+# ════════════════════════════════════════════════════════════════════
 #  ENTRY
 # ════════════════════════════════════════════════════════════════════
 
@@ -685,6 +942,19 @@ if __name__ == "__main__":
 
     render_lunar_architecture(ASSETS / "lunar-architecture.png")
     render_temporal_bodies(ASSETS / "temporal-bodies.png")
+
+    # Stellar layer assets — computed for Damanhur, May 18 2026 (mid Saga Dawa)
+    saga_dawa_now = rome.localize(datetime(2026, 5, 18, 12, 0, 0))
+    render_28_mansion_wheel(
+        ASSETS / "28-lunar-mansions.png",
+        dt=saga_dawa_now,
+        lat=45.4167, lon=7.7833, tz="Europe/Rome",
+        location_name="Damanhur, Italy",
+    )
+    render_24_solar_terms_wheel(
+        ASSETS / "24-solar-terms.png",
+        dt=saga_dawa_now,
+    )
 
     print()
     print("All assets generated. Eat your own cooking.")

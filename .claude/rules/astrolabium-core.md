@@ -23,10 +23,10 @@ prescribe. It does not tell you that a moment is "good" or "bad." The
 practitioner is assumed competent; the instrument simply displays what
 is available.
 
-## The Six Integrated Systems
+## The Ten Integrated Systems
 
-The Astrolabium synthesizes six ancient systems into a single unified
-instrument. All six share a single astronomical substrate: **solar
+The Astrolabium synthesizes ten ancient systems into a single unified
+instrument. All ten share a single astronomical substrate: **solar
 position and lunar phase at the practitioner's location**.
 
 | # | System                                    | Tradition          | What it gives the instrument                                       |
@@ -37,11 +37,20 @@ position and lunar phase at the practitioner's location**.
 | 4 | **The Divine Hours**                      | [SOURCE: Damanhurian — Book of Three Responses] | Eight-fold unequal-hour division: 4 day, 4 night                    |
 | 5 | **The Sephirotic Week**                   | [SOURCE: Hellenistic / Kabbalistic] | Seven-to-nine day naming inside each lunar quarter                  |
 | 6 | **The Divine Calendar**                   | [SOURCE: Damanhurian] | Thirteen lunar months with the Names of Power, six Great Rites, astronomical intercalation |
+| 7 | **The 28 Lunar Mansions** (二十八宿)      | [SOURCE: Chinese classical astronomy] | Sidereal stellar layer: Sun/Moon/planets in 28 mansions across 4 palaces (Azure Dragon, Black Tortoise, White Tiger, Vermillion Bird) |
+| 8 | **The 24 Solar Terms** (二十四节气)       | [SOURCE: Chinese classical astronomy] | Tropical seasonal markers at every 15° of the sun's ecliptic longitude; 4 cardinal terms align with Damanhurian Great Rites |
+| 9 | **The Cross-Tradition Sacred Festival Registry** | [SOURCE: multi-tradition] | 30+ festivals across Tibetan Buddhist, Hindu, Chinese, Christian, Celtic, Islamic, Jewish, Mexican, Persian, Theravada, Damanhurian traditions |
+| 10 | **The Tibetan Buddhist Calendar (Phugpa)** | [SOURCE: Tibetan Buddhist] | Tibetan lunar month tracking; Saga Dawa (Month 4) as the Buddha-month tied to the Root Mansion |
 
 The **original analytical contribution** is the recognition that these
-six systems share a common temporal substrate and the synthesis of them
+ten systems share a common temporal substrate and the synthesis of them
 into a single readable display. The integration itself is
 [ANALYTICAL CONTRIBUTION]. Each underlying system is [SOURCE]-attested.
+
+Systems 7-10 constitute the **Stellar Layer**, added in the May 2026
+sprint in response to Xue Mei's *Living Time Keepers* white paper and
+the *Saga Dawa: Awakening the Root of the Dragon* source pdf. See
+`.claude/rules/stellar-layer.md` for the architectural overview.
 
 ## The Non-Negotiable Constraint
 
