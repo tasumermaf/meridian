@@ -1,0 +1,281 @@
+{
+  "_metadata": {
+    "name": "24 Solar Terms (二十四节气)",
+    "convention": "Each term marks the Sun's tropical ecliptic longitude at a multiple of 15°",
+    "term_count": 24,
+    "grouping": "12 'sectional' (节) terms and 12 'mid' (气 / zhōngqì) terms, alternating",
+    "source_notes": [
+      "The 24 Solar Terms are the canonical seasonal markers of the Chinese calendar.",
+      "Each term begins when the Sun's tropical ecliptic longitude reaches an exact multiple of 15°.",
+      "Unlike the lunar-mansion system, solar terms are TROPICAL — anchored to the equinoxes and solstices, not to stars.",
+      "Modern China still publishes these on every calendar; UNESCO inscribed them on the Intangible Cultural Heritage list in 2016."
+    ],
+    "epistemic_tag": "[SOURCE: Chinese classical astronomy — Han dynasty canon]"
+  },
+  "terms": [
+    {
+      "index": 0,
+      "chinese": "立春",
+      "pinyin": "Lìchūn",
+      "english": "Beginning of Spring",
+      "ecliptic_longitude_deg": 315,
+      "approximate_gregorian_date": "Feb 3-5",
+      "category": "sectional",
+      "season": "Spring",
+      "notes": "First of the 24 terms. The day the Sun reaches 315° tropical longitude. Marks the astronomical start of spring; agricultural year begins. Damanhurian counterpart: roughly midway between Winter Solstice and Spring Equinox."
+    },
+    {
+      "index": 1,
+      "chinese": "雨水",
+      "pinyin": "Yǔshuǐ",
+      "english": "Rain Water",
+      "ecliptic_longitude_deg": 330,
+      "approximate_gregorian_date": "Feb 18-20",
+      "category": "mid",
+      "season": "Spring",
+      "notes": "Snow gives way to rain. Soil begins to thaw in temperate latitudes."
+    },
+    {
+      "index": 2,
+      "chinese": "惊蛰",
+      "pinyin": "Jīngzhé",
+      "english": "Awakening of Insects",
+      "ecliptic_longitude_deg": 345,
+      "approximate_gregorian_date": "Mar 5-7",
+      "category": "sectional",
+      "season": "Spring",
+      "notes": "Hibernating insects emerge. Thunder begins. The first stirrings — connects thematically to the 'dragon root awakening' of Saga Dawa one month later."
+    },
+    {
+      "index": 3,
+      "chinese": "春分",
+      "pinyin": "Chūnfēn",
+      "english": "Spring Equinox",
+      "ecliptic_longitude_deg": 0,
+      "approximate_gregorian_date": "Mar 20-21",
+      "category": "mid",
+      "season": "Spring",
+      "notes": "Equal day and night. The Sun crosses the celestial equator going north. Damanhurian Great Rite: Spring Equinox (Month 7, OSIRIS — The Resurrected)."
+    },
+    {
+      "index": 4,
+      "chinese": "清明",
+      "pinyin": "Qīngmíng",
+      "english": "Clear and Bright",
+      "ecliptic_longitude_deg": 15,
+      "approximate_gregorian_date": "Apr 4-6",
+      "category": "sectional",
+      "season": "Spring",
+      "notes": "Tomb-Sweeping Day (清明节) — major Chinese ancestral festival. The air is clear, sky bright, vegetation greens. Tea harvest begins (清明茶 Qingming tea)."
+    },
+    {
+      "index": 5,
+      "chinese": "谷雨",
+      "pinyin": "Gǔyǔ",
+      "english": "Grain Rain",
+      "ecliptic_longitude_deg": 30,
+      "approximate_gregorian_date": "Apr 19-21",
+      "category": "mid",
+      "season": "Spring",
+      "notes": "Rains nourish the grain. Sowing season for many crops in temperate China."
+    },
+    {
+      "index": 6,
+      "chinese": "立夏",
+      "pinyin": "Lìxià",
+      "english": "Beginning of Summer",
+      "ecliptic_longitude_deg": 45,
+      "approximate_gregorian_date": "May 5-7",
+      "category": "sectional",
+      "season": "Summer",
+      "notes": "Astronomical start of summer. Falls just before Saga Dawa typically begins. Yang energy ascendant."
+    },
+    {
+      "index": 7,
+      "chinese": "小满",
+      "pinyin": "Xiǎomǎn",
+      "english": "Lesser Fullness",
+      "ecliptic_longitude_deg": 60,
+      "approximate_gregorian_date": "May 20-22",
+      "category": "mid",
+      "season": "Summer",
+      "notes": "Grains begin to fill out but are not yet full. Falls during Saga Dawa in most years."
+    },
+    {
+      "index": 8,
+      "chinese": "芒种",
+      "pinyin": "Mángzhòng",
+      "english": "Grain in Ear",
+      "ecliptic_longitude_deg": 75,
+      "approximate_gregorian_date": "Jun 5-7",
+      "category": "sectional",
+      "season": "Summer",
+      "notes": "Wheat ripens; rice transplanting. The bearded grain — wheat awns visible."
+    },
+    {
+      "index": 9,
+      "chinese": "夏至",
+      "pinyin": "Xiàzhì",
+      "english": "Summer Solstice",
+      "ecliptic_longitude_deg": 90,
+      "approximate_gregorian_date": "Jun 20-22",
+      "category": "mid",
+      "season": "Summer",
+      "notes": "Longest day, shortest night. The Sun reaches its highest declination. Damanhurian Great Rite: Summer Solstice (Month 10, SET — The Destroyer / the peak that initiates decline)."
+    },
+    {
+      "index": 10,
+      "chinese": "小暑",
+      "pinyin": "Xiǎoshǔ",
+      "english": "Lesser Heat",
+      "ecliptic_longitude_deg": 105,
+      "approximate_gregorian_date": "Jul 6-8",
+      "category": "sectional",
+      "season": "Summer",
+      "notes": "Heat begins to build. The 'three fú' (三伏) period of greatest heat begins around this time."
+    },
+    {
+      "index": 11,
+      "chinese": "大暑",
+      "pinyin": "Dàshǔ",
+      "english": "Greater Heat",
+      "ecliptic_longitude_deg": 120,
+      "approximate_gregorian_date": "Jul 22-24",
+      "category": "mid",
+      "season": "Summer",
+      "notes": "Peak heat. The dog days of summer. Monsoon at its strongest in subtropical China."
+    },
+    {
+      "index": 12,
+      "chinese": "立秋",
+      "pinyin": "Lìqiū",
+      "english": "Beginning of Autumn",
+      "ecliptic_longitude_deg": 135,
+      "approximate_gregorian_date": "Aug 7-9",
+      "category": "sectional",
+      "season": "Autumn",
+      "notes": "Astronomical start of autumn. Heat persists but yin begins to grow. Traditional 'autumn-jin' (秋筋) marker."
+    },
+    {
+      "index": 13,
+      "chinese": "处暑",
+      "pinyin": "Chǔshǔ",
+      "english": "End of Heat",
+      "ecliptic_longitude_deg": 150,
+      "approximate_gregorian_date": "Aug 22-24",
+      "category": "mid",
+      "season": "Autumn",
+      "notes": "Heat retreats; cooler mornings. 'Chǔ' means to dwell or pause — heat pauses its dominance."
+    },
+    {
+      "index": 14,
+      "chinese": "白露",
+      "pinyin": "Báilù",
+      "english": "White Dew",
+      "ecliptic_longitude_deg": 165,
+      "approximate_gregorian_date": "Sep 7-9",
+      "category": "sectional",
+      "season": "Autumn",
+      "notes": "Morning dew becomes visibly white. First clear sign of approaching cold."
+    },
+    {
+      "index": 15,
+      "chinese": "秋分",
+      "pinyin": "Qiūfēn",
+      "english": "Autumn Equinox",
+      "ecliptic_longitude_deg": 180,
+      "approximate_gregorian_date": "Sep 22-24",
+      "category": "mid",
+      "season": "Autumn",
+      "notes": "Equal day and night. Sun crosses celestial equator going south. Damanhurian Great Rite: Autumn Equinox (Month 1, ISIS — The Gatherer). The Damanhurian Divine Year begins at the New Moon nearest this term."
+    },
+    {
+      "index": 16,
+      "chinese": "寒露",
+      "pinyin": "Hánlù",
+      "english": "Cold Dew",
+      "ecliptic_longitude_deg": 195,
+      "approximate_gregorian_date": "Oct 8-9",
+      "category": "sectional",
+      "season": "Autumn",
+      "notes": "Dew turns cold. Migratory birds head south."
+    },
+    {
+      "index": 17,
+      "chinese": "霜降",
+      "pinyin": "Shuāngjiàng",
+      "english": "Frost's Descent",
+      "ecliptic_longitude_deg": 210,
+      "approximate_gregorian_date": "Oct 23-24",
+      "category": "mid",
+      "season": "Autumn",
+      "notes": "First frost in northern China. Close to the Damanhurian Day of the Dead (Month 2, SADAM)."
+    },
+    {
+      "index": 18,
+      "chinese": "立冬",
+      "pinyin": "Lìdōng",
+      "english": "Beginning of Winter",
+      "ecliptic_longitude_deg": 225,
+      "approximate_gregorian_date": "Nov 7-8",
+      "category": "sectional",
+      "season": "Winter",
+      "notes": "Astronomical start of winter. Field work ends; storage begins."
+    },
+    {
+      "index": 19,
+      "chinese": "小雪",
+      "pinyin": "Xiǎoxuě",
+      "english": "Lesser Snow",
+      "ecliptic_longitude_deg": 240,
+      "approximate_gregorian_date": "Nov 22-23",
+      "category": "mid",
+      "season": "Winter",
+      "notes": "First snow possible in northern China."
+    },
+    {
+      "index": 20,
+      "chinese": "大雪",
+      "pinyin": "Dàxuě",
+      "english": "Greater Snow",
+      "ecliptic_longitude_deg": 255,
+      "approximate_gregorian_date": "Dec 6-8",
+      "category": "sectional",
+      "season": "Winter",
+      "notes": "Heavy snow common. Deep winter approaches."
+    },
+    {
+      "index": 21,
+      "chinese": "冬至",
+      "pinyin": "Dōngzhì",
+      "english": "Winter Solstice",
+      "ecliptic_longitude_deg": 270,
+      "approximate_gregorian_date": "Dec 21-23",
+      "category": "mid",
+      "season": "Winter",
+      "notes": "Shortest day, longest night. Sun reaches lowest declination; cycle begins to ascend again. Damanhurian Great Rite: Winter Solstice (Month 4, EOROS — The Director). One of the most important festivals of the Chinese year (冬至 dumpling tradition)."
+    },
+    {
+      "index": 22,
+      "chinese": "小寒",
+      "pinyin": "Xiǎohán",
+      "english": "Lesser Cold",
+      "ecliptic_longitude_deg": 285,
+      "approximate_gregorian_date": "Jan 5-7",
+      "category": "sectional",
+      "season": "Winter",
+      "notes": "Cold deepens. The 'three nines' (三九) — coldest 27 days of the year — begin around this point."
+    },
+    {
+      "index": 23,
+      "chinese": "大寒",
+      "pinyin": "Dàhán",
+      "english": "Greater Cold",
+      "ecliptic_longitude_deg": 300,
+      "approximate_gregorian_date": "Jan 20-21",
+      "category": "mid",
+      "season": "Winter",
+      "notes": "Peak cold. The final term of the year; Lìchūn (Beginning of Spring) follows."
+    }
+  ]
+}
