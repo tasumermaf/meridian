@@ -1,6 +1,6 @@
 ![Astrolabium Caudae Rubrae](assets/banner.png)
 
-[![Tests](https://img.shields.io/badge/tests-703%20passing-brightgreen)](astrolabium/tests/)
+[![Tests](https://img.shields.io/badge/tests-748%20passing-brightgreen)](astrolabium/tests/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](astrolabium/pyproject.toml)
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](LICENSE)
 [![Built by TASUMER MAF](https://img.shields.io/badge/built%20by-TASUMER%20MAF-D4A845)](https://github.com/tasumermaf)
@@ -10,9 +10,10 @@
 > *What is the alchemical quality of this moment?*
 
 A working temporal navigation instrument plus the research intelligence
-that runs it. Fourteen ancient temporal systems synthesized into one
-readable display — integrated, regression-tested, and configured with all
-the context needed to explain itself to anyone who asks.
+that runs it. Sixteen temporal and ecological systems synthesized into
+one readable display — integrated, regression-tested, and configured
+with all the context needed to explain itself to anyone who asks.
+Fully offline by design.
 
 This is the public **Claude Code harness** for the **Astrolabium Caudae
 Rubrae** (*L'Astrolabio Coda Rossa*, the Red Tail Astrolabe).
@@ -36,7 +37,9 @@ Rubrae** (*L'Astrolabio Coda Rossa*, the Red Tail Astrolabe).
 | **Great Year period (axial precession)**        | **25,772 yr** |
 | **Lunar standstill cycle**                      | **18.6 yr** |
 | **Kali Yuga remaining (Vedic deep-time)**       | **~426,872 yr** |
-| Engine tests passing                            | **703** |
+| **Climate zones (Köppen-proxy bands)**          | **5** |
+| **Twilight bands (civil / nautical / astronomical)** | **3** |
+| Engine tests passing                            | **748** |
 
 The geometry is the argument. Every count above lands on a rhombic
 dodecahedron face count, an LGBF vessel count, the unequal-hour
@@ -187,13 +190,57 @@ reach with four further sub-systems:
 > shows the live state: Age of Pisces, 80.7% through, ~413 years to
 > the Age of Aquarius (~2440 CE).*
 
+## The Ecological Layer
+
+Sprint C adds a **sixth body** to the Astrolabium — the Ecological
+Layer — derived entirely from astronomy + latitude bands, offline,
+no live weather data. The design choice was deliberate: live weather
+integration would have been the first violation of the project's
+offline-first ethos. Climate-norm honesty was the better fit.
+
+The Ecological Layer gives the practitioner:
+
+- **Photoperiod state** — daylight hours, night hours, the three
+  twilight bands (civil / nautical / astronomical, in minutes), the
+  signed rate of daylight gain or loss (min/day), the seasonal arc
+  (hemisphere-aware: October in Sydney is spring, in Damanhur is
+  autumn).
+- **Climate zone** — Köppen-derived latitude bands (tropical /
+  subtropical / temperate / boreal / polar) with hemisphere flag.
+- **Frost risk** — climate-norm classification of "are we in the
+  frost season here?" by zone × month. Tropics: never. Temperate:
+  hemisphere-flipped Oct-Apr / Apr-Oct windows.
+- **Vegetation phenology** — temperate cycle: dormant → awakening →
+  leafing → flowering → fruiting → ripening → senescing. Southern
+  hemisphere flipped. Tropical "continuous" exception.
+- **Growing-degree-day intensity** — none / low / moderate / high,
+  by zone × month. A coarse proxy without actual temperature data.
+
+![The Local Seasonal Wheel](assets/seasonal-wheel.png)
+
+> *The seasonal wheel above plots daylight hours across the full year
+> at Damanhur (45.42°N), computed live by the photoperiod engine. The
+> gold polygon bulges outward toward the June solstice and contracts
+> toward December. Four cardinal markers sit at the equinoxes and
+> solstices. The red dot is today — 15.0h daylight, lengthening at
+> +2.16 min/day, temperate northern spring, vegetation flowering,
+> frost-unlikely.*
+
+**Honest about scope:** the Ecological Layer is a **climate-norm
+approximation**, not weather data. It tells you whether you're in the
+climate-norm frost season at your latitude; it does not tell you a
+heat wave is coming. Live-weather integration (Open-Meteo / NOAA /
+MODIS) is reserved for a hypothetical Sprint D, where the offline-
+first constraint would be relaxed only for an explicitly opt-in
+network layer.
+
 ## Quick start
 
 ```bash
 git clone https://github.com/tasumermaf/meridian.git
 cd meridian/astrolabium
 pip install -r requirements.txt
-pytest                       # 703 passing
+pytest                       # 748 passing
 ```
 
 Run the API:
@@ -242,7 +289,7 @@ meridian/
 ├── README.md                        # this file
 ├── LICENSE                          # MPL-2.0
 ├── CLAUDE.md                        # Astrolabium-scoped Meridian identity
-├── .claude/rules/                   # 21 dense domain rules files
+├── .claude/rules/                   # 23 dense domain rules files
 │   ├── astrolabium-core.md          # ten integrated systems, vocabulary, constraints
 │   ├── temporal-bodies.md           # Stellar / Soul / Solar Keys / Astral / Gross
 │   ├── stellar-layer.md             # overview of the Stellar + Deep Sky layers
@@ -257,10 +304,12 @@ meridian/
 │   ├── 24-solar-terms.md            # Chinese tropical seasonal markers (Sprint A)
 │   ├── sacred-festivals.md          # 30+ festivals across 10+ traditions (Sprint A)
 │   ├── tibetan-buddhist-calendar.md # Phugpa Tibetan calendar, Saga Dawa as Buddha-month (Sprint A)
-│   ├── axial-precession.md          # NEW (Sprint B) — 25,772-yr Great Year, 12 Ages, pole stars
-│   ├── heliacal-risings.md          # NEW (Sprint B) — 22 named stars, Sothic cycle, agricultural markers
-│   ├── lunar-standstills.md         # NEW (Sprint B) — 18.6-yr nodal cycle, megalithic alignments
-│   ├── vedic-yuga.md                # NEW (Sprint B) — Sanskrit deep-time, Kalpa/Manvantara/Yuga
+│   ├── axial-precession.md          # Sprint B — 25,772-yr Great Year, 12 Ages, pole stars
+│   ├── heliacal-risings.md          # Sprint B — 22 named stars, Sothic cycle, agricultural markers
+│   ├── lunar-standstills.md         # Sprint B — 18.6-yr nodal cycle, megalithic alignments
+│   ├── vedic-yuga.md                # Sprint B — Sanskrit deep-time, Kalpa/Manvantara/Yuga
+│   ├── photoperiod.md               # NEW (Sprint C) — daylight, twilight, seasonal arc
+│   ├── ecological-markers.md        # NEW (Sprint C) — climate-norm derived state
 │   ├── location-and-time.md         # the non-negotiable constraint, in full
 │   ├── communication-style.md       # voice, epistemic charter, source-tagging
 │   └── how-to-use-this-instrument.md  # practical user guidance
@@ -270,13 +319,14 @@ meridian/
 │   │   ├── engine/                  # solar, lunar, stem_branch, twilight, calendar
 │   │   │                            # + stellar, solar_terms, festivals (Stellar Layer)
 │   │   │                            # + precession, heliacal, lunar_standstills, vedic_yuga (Deep Sky)
+│   │   │                            # + photoperiod, ecological_markers (Ecological Layer)
 │   │   ├── api/main.py              # FastAPI backend
 │   │   ├── registry.py              # typed lookups into registers.json
 │   │   ├── meta_registry.py         # registry validation
 │   │   ├── frequency.py             # time-series + windowing
 │   │   ├── resonance.py             # compound detection
 │   │   └── presentation.py          # state rendering
-│   ├── tests/                       # 703 passing
+│   ├── tests/                       # 748 passing
 │   ├── data/                        # registers.json, lunar_mansions.json,
 │   │                                # solar_terms.json, sacred_festivals.json,
 │   │                                # named_stars.json
@@ -287,14 +337,14 @@ meridian/
 ├── docs/
 │   ├── specs/                       # Operator's Manual, Guidebook, Periodic Table, trigram-law spec
 │   └── sources/                     # primary source extracts (BTR Ch.4, Cantong qi, TCM EV database, etc.)
-├── assets/                          # banner.png + 6 generated diagrams (incl. precession wheel)
+├── assets/                          # banner.png + 7 generated diagrams (incl. seasonal wheel)
 └── scripts/
     └── generate_assets.py           # regenerates all visual assets from the engine
 ```
 
 ## Eat your own cooking
 
-The seven images in this README are not stock art and not AI-generated.
+The eight images in this README are not stock art and not AI-generated.
 They are produced by `scripts/generate_assets.py` from the project's
 own code, palette derived from the prime-law correspondence, RD geometry
 computed from first principles, the Divine Hours wheel computed live

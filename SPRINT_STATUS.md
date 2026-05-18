@@ -12,7 +12,9 @@
 **Sprint:** C — Ecological Layer
 **Branch:** `feature/ecological-layer` (branched from `feature/deep-sky`)
 **Started:** May 18, 2026
-**Status:** IN PROGRESS
+**Status:** ✅ **COMPLETE — pushed to GitHub**
+**GitHub URL:** https://github.com/tasumermaf/meridian/tree/feature/ecological-layer
+**PR ready at:** https://github.com/tasumermaf/meridian/pull/new/feature/ecological-layer
 
 ### Sprint A: COMPLETE — pushed
 - https://github.com/tasumermaf/meridian/tree/feature/stellar-layer
@@ -32,14 +34,14 @@
 | # | Phase | Status | Commit | Notes |
 |---|-------|--------|--------|-------|
 | 0 | Create feature branch | ✅ COMPLETE | (no commit) | branched from feature/deep-sky |
-| 1 | Photoperiod state engine + tests | ⏳ NEXT | — | — |
-| 2 | Climate-norm ecological markers + tests | ⏳ pending | — | — |
-| 3 | Orchestrator integration | ⏳ pending | — | — |
-| 4 | Rules files via subagents | ⏳ pending | — | — |
-| 5 | Visual asset (local seasonal wheel) | ⏳ pending | — | — |
-| 6 | README + final test + push | ⏳ pending | — | — |
+| 1 | Photoperiod state engine + tests | ✅ COMPLETE | aa467d7 | 18 tests, 721 total. 15h daylight at Damanhur, +2.16 min/day. |
+| 2 | Climate-norm ecological markers + tests | ✅ COMPLETE | ca0e89c | 20 tests, 741 total. 5 zones × season × hemisphere. |
+| 3 | Orchestrator integration | ✅ COMPLETE | 890e600 | 7 tests, 748 total. Full backward compat. |
+| 4 | Rules files via subagents | ✅ COMPLETE | e395b24 | 837 lines via 2 parallel subagents. |
+| 5 | Visual asset (local seasonal wheel) | ✅ COMPLETE | e395b24 | seasonal-wheel.png — daylight curve, cardinal markers, today dot. |
+| 6 | README + final test + push | ✅ COMPLETE | (7 commits) | 748 passing. Pushed to origin/feature/ecological-layer. |
 
-Tests: starts at 703 baseline, target ~735-755.
+Tests: 748 passing (703 → 748 = 45 new).
 
 ### Sprint A: COMPLETE
 - Branch: `feature/stellar-layer` (pushed to GitHub, awaiting merge to main)
