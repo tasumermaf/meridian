@@ -921,6 +921,153 @@ def render_24_solar_terms_wheel(save_path: Path, dt):
 
 
 # ════════════════════════════════════════════════════════════════════
+#  PRECESSION WHEEL — the 25,772-year Great Year, current Age marked
+# ════════════════════════════════════════════════════════════════════
+
+def render_precession_wheel(save_path: Path, dt):
+    """
+    Render the precessional Great Year as a wheel with the 12 zodiacal
+    Ages, the current vernal-equinox position marked, and the next Age
+    transition projected. Live data from the precession engine.
+
+    Eat your own cooking — produced by the project's own code.
+    """
+    from engine import precession
+
+    summary = precession.precession_summary(dt)
+    eq_lon = summary["equinox_position"]["sidereal_longitude_deg"]
+    current_age = summary["current_age"]
+    next_age = summary["next_age_transition"]
+
+    # AGES list in canonical order — start at Aries (0°) going westward
+    # through Pisces, Aquarius, etc. We render with Aries at 9 o'clock
+    # so the cycle reads counterclockwise visually (matching the
+    # westward direction of precession).
+    AGES_PALETTE = [
+        # (english, color)
+        ("Aries",       "#B34444"),  # Mars red
+        ("Pisces",      "#3A6B8E"),  # water blue
+        ("Aquarius",    "#9FA7B3"),  # silver — air
+        ("Capricorn",   "#3D3D6B"),  # earth indigo
+        ("Sagittarius", "#D4A845"),  # fire gold
+        ("Scorpio",     "#8A6B8E"),  # water mauve
+        ("Libra",       "#6B8E5E"),  # air green
+        ("Virgo",       "#9E6B4F"),  # earth bronze
+        ("Leo",         "#B34444"),  # fire red
+        ("Cancer",      "#2A3D6B"),  # water deep blue
+        ("Gemini",      "#D4A845"),  # air gold
+        ("Taurus",      "#6B8E5E"),  # earth green
+    ]
+
+    fig, ax = plt.subplots(figsize=(11, 11), facecolor=BG)
+    ax.set_facecolor(BG)
+    ax.set_xlim(-1.6, 1.6); ax.set_ylim(-1.6, 1.6)
+    ax.set_aspect("equal"); ax.set_axis_off()
+
+    outer_r = 1.1
+    inner_r = 0.72
+    label_r = 1.30
+
+    # Each Age = 30° wedge. Aries 0-30°, Pisces 330-360, etc.
+    # On the wheel: place Aries at 9 o'clock (180° matplotlib).
+    # Then going counterclockwise (which is westward through the zodiac).
+    for age_english, color in AGES_PALETTE:
+        # Find this age's sidereal-lon range from the engine's AGES table
+        age_record = next(
+            (a for a in precession.AGES if a[0] == age_english), None
+        )
+        if age_record is None:
+            continue
+        _, sanskrit, lon_start, lon_end = age_record
+        width = lon_end - lon_start
+        if lon_start > lon_end:
+            width = (360 - lon_start) + lon_end
+        # Matplotlib angle: ecliptic 0° at top (90° matplotlib), going CW
+        theta_start = (90 - lon_start) % 360
+        theta_end = (theta_start - width) % 360
+        is_current = (age_english == current_age["age_english"])
+        alpha = 0.95 if is_current else 0.55
+        w = Wedge((0, 0), outer_r,
+                  theta_end, theta_start,
+                  width=outer_r - inner_r,
+                  facecolor=color, edgecolor=BONE,
+                  linewidth=0.8 if not is_current else 1.8,
+                  alpha=alpha)
+        ax.add_patch(w)
+        # English name inside
+        mid_lon = (lon_start + width / 2) % 360
+        mid_theta = math.radians(90 - mid_lon)
+        r_mid = (outer_r + inner_r) / 2
+        ax.text(r_mid * math.cos(mid_theta), r_mid * math.sin(mid_theta),
+                age_english, color=BONE if is_current else BG,
+                fontsize=11 if is_current else 9,
+                fontweight="bold",
+                ha="center", va="center",
+                family=["Consolas"])
+        # Sanskrit outside
+        ax.text(label_r * math.cos(mid_theta), label_r * math.sin(mid_theta),
+                sanskrit, color=BONE if is_current else SILVER,
+                fontsize=9, ha="center", va="center",
+                family=["Consolas"], alpha=0.9 if is_current else 0.65)
+
+    # Vernal equinox marker — at the current sidereal longitude
+    theta_eq = math.radians(90 - eq_lon)
+    r_eq = inner_r + 0.20
+    ax.scatter([r_eq * math.cos(theta_eq)], [r_eq * math.sin(theta_eq)],
+               c=GOLD, s=260, edgecolors=BONE, linewidths=1.6, zorder=5)
+    ax.text(r_eq * math.cos(theta_eq), r_eq * math.sin(theta_eq),
+            "♈", color=BG, fontsize=12, fontweight="bold",
+            ha="center", va="center", zorder=6,
+            family=["Segoe UI Symbol", "DejaVu Sans"])
+
+    # Inner circle
+    center_circle = plt.Circle((0, 0), inner_r, color=BG, ec=BONE, lw=1.2)
+    ax.add_patch(center_circle)
+
+    # Center text — the current Age and the next transition
+    ax.text(0, 0.30, f"Age of {current_age['age_english']}",
+            color=BONE, fontsize=15, fontweight="bold",
+            ha="center", va="center", family=["Consolas"])
+    ax.text(0, 0.18, f"({current_age['age_sanskrit']})",
+            color=BONE, fontsize=10, ha="center", va="center",
+            family=["Consolas"])
+    ax.text(0, 0.04,
+            f"{current_age['fraction_through_age']*100:.1f}% through",
+            color=SILVER, fontsize=10, ha="center", va="center",
+            family=["Consolas"], alpha=0.85)
+    ax.text(0, -0.08,
+            f"~{int(current_age['years_remaining'])} yr to next Age",
+            color=SILVER, fontsize=10, ha="center", va="center",
+            family=["Consolas"], alpha=0.85)
+    ax.text(0, -0.22,
+            f"next: Age of {next_age['next_age_english']}",
+            color=GOLD, fontsize=11, fontweight="bold",
+            ha="center", va="center", family=["Consolas"])
+    ax.text(0, -0.32,
+            f"~{int(next_age['approximate_year_ce'])} CE",
+            color=GOLD, fontsize=10, ha="center", va="center",
+            family=["Consolas"], alpha=0.85)
+
+    # Title
+    fig.text(0.5, 0.96, "T H E   P R E C E S S I O N A L   G R E A T   Y E A R",
+             ha="center", va="top", fontsize=15, fontweight="bold",
+             color=BONE, family=["Consolas"])
+    fig.text(0.5, 0.93,
+             "25,772 years  ·  vernal equinox drifts westward at 50.3″/year  ·  12 Ages × ~2,148 years",
+             ha="center", va="top", fontsize=9, color=SILVER,
+             family=["Consolas"], style="italic", alpha=0.78)
+    fig.text(0.5, 0.04,
+             "♈ = current sidereal position of the vernal equinox",
+             ha="center", va="bottom", fontsize=9, color=GOLD,
+             family=["Consolas", "Segoe UI Symbol"], alpha=0.75)
+
+    fig.savefig(save_path, dpi=200, bbox_inches="tight",
+                facecolor=BG, pad_inches=0.25)
+    plt.close(fig)
+    print(f"  precession      → {save_path.relative_to(REPO)}")
+
+
+# ════════════════════════════════════════════════════════════════════
 #  ENTRY
 # ════════════════════════════════════════════════════════════════════
 
@@ -953,6 +1100,12 @@ if __name__ == "__main__":
     )
     render_24_solar_terms_wheel(
         ASSETS / "24-solar-terms.png",
+        dt=saga_dawa_now,
+    )
+
+    # Deep-sky asset — the precession Great Year (location-independent)
+    render_precession_wheel(
+        ASSETS / "precession-wheel.png",
         dt=saga_dawa_now,
     )
 

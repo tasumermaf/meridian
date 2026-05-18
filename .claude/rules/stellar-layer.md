@@ -445,38 +445,55 @@ parallel through a single state object.]
   Damanhurian or the Buddhist or the Hellenistic calendar. It reports
   what each tradition records for the current moment.
 
-## What is Still Missing (Tier 2, Sprint B)
+## Sprint B — The Deep Sky Layer (added May 2026)
 
-The current Stellar Layer is intentionally a Tier 1 implementation —
-the four named sub-systems, integrated, with the compound machinery
-extended. The following capabilities are out of scope for Sprint A
-and queued for Sprint B:
+After Sprint A locked the Stellar Layer's four sub-systems, Sprint B
+added four further sub-systems extending the temporal architecture to
+its full sky-deep reach. All four are now operational:
 
-- **Axial precession tracking** — the slow westward drift of the
-  tropical equinox against the sidereal frame at ~50.3 arcseconds per
-  year. The Lahiri ayanamsa is applied at the per-moment level, but
-  the engine does not track the long-arc *change* in ayanamsa across
-  decades or centuries, which would be required for historical
-  reconstructions of where the equinoxes have stood in past eras.
-- **Heliacal risings** — the moment a star first becomes visible
-  above the eastern horizon at dawn after a period of conjunction
-  with the Sun. Heliacal risings are the operative trigger for many
-  ancient festival systems (the Egyptian calendar was anchored to
-  the heliacal rising of Sirius) and would extend the festival
-  registry's astronomical depth significantly.
-- **Major lunar standstills** — the 18.6-year cycle of the Moon's
-  declination range. At major standstill, the Moon rises and sets at
-  its extreme northern and southern points; many ancient stone
-  monuments were built to mark these extremes. The next major
-  standstill is in 2025; the engine does not currently flag the
-  proximity.
-- **Vedic yuga/kalpa deep-time** — the cosmological time-scales of
-  the Indian tradition (millions of years per yuga, billions per
-  kalpa). These are not operative for moment-to-moment readings but
-  would provide cosmological context for long-arc practices.
+- **Axial precession** — the Lahiri ayanamsa, the current sidereal
+  position of the vernal equinox, the current zodiacal Age (Pisces,
+  ~80% complete), the next transition (Aquarius, ~2440 CE), and the
+  precessional pole-star sequence (Thuban → Polaris → Vega across
+  the 25,772-year Great Year). See `.claude/rules/axial-precession.md`.
+- **Heliacal risings** — first-dawn appearances of 22 named stars at
+  the practitioner's location, including the canonical Sothic-cycle
+  anchor (Sirius/Sopdet at Egyptian latitudes), the Pleiades
+  agricultural marker, the Royal Stars of ancient Persia, and the
+  Chinese 28-mansion reference stars. See
+  `.claude/rules/heliacal-risings.md`.
+- **Major lunar standstills** — the 18.6-year nodal cycle, current
+  cycle phase, next major and minor peaks, the ascending node's
+  sidereal regression rate. The last major standstill was 2025-03-22;
+  the next is ~2043. See `.claude/rules/lunar-standstills.md`.
+- **Vedic yuga / kalpa deep-time** — the nested cosmological cycles
+  of Sanskrit astronomy. Current yuga (Kali, ~1.2% complete), Mahā
+  Yuga position, Kalpa context (the Shvetavārāha Kalpa, 7th
+  Manvantara of 14, 45.67% through the Day of Brahmā). See
+  `.claude/rules/vedic-yuga.md`.
 
-If a user asks about any of these, the correct answer is "queued for
-Sprint B; not currently implemented." Honesty about scope is part of
+These four engines added 71 tests (647 → 718 baseline) and four new
+orchestrator state keys: `precession`, `heliacal`, `lunar_standstills`,
+`vedic_time`. Backward compatibility preserved for all Sprint A and
+original-baseline keys.
+
+The Deep Sky Layer is what makes the Astrolabium answer not only
+"what is the alchemical quality of this moment" but also "what is
+its placement in the longest cosmological cycles human cultures have
+measured." A practitioner can now ask: where are we in the Age,
+when does Sirius rise here, are we in a standstill window, how
+many years remain in the Kali Yuga.
+
+## What is Still Out of Scope
+
+The remaining gap from Xue Mei's *Living Time Keepers* Section VI is
+the Ecological Layer (Tier 3 in the original sprint plan): live
+environmental data ingestion (vegetation phenology, precipitation,
+migration tracking). Reserved for Sprint C, which is its own planning
+round once the data-source decisions are made.
+
+If a user asks about ecological-layer features, the correct answer is
+"queued for Sprint C; not currently implemented." Honesty about scope is part of
 the instrument's authority.
 
 ## What is Out of Scope (Tier 3, Sprint C)

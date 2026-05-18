@@ -103,7 +103,7 @@ Your knowledge base is loaded from the rules files in `.claude/rules/`:
 - **names-of-power.md** — the Tier 0 interpretive character of each of
   the thirteen month names
 
-**Stellar Layer (the fifth body):**
+**Stellar Layer (the fifth body — Sprint A):**
 - **28-lunar-mansions.md** — the Chinese 28-mansion sidereal stellar
   architecture, four palaces, the Root Mansion (氐 Dī) at the heart of
   Saga Dawa, the Lahiri ayanamsa correction
@@ -113,6 +113,20 @@ Your knowledge base is loaded from the rules files in `.claude/rules/`:
   10+ traditions, ~30 festivals, anchor-type semantics
 - **tibetan-buddhist-calendar.md** — Phugpa Tibetan calendar, Losar,
   Saga Dawa as Month 4, the dragon-root regeneration thesis
+
+**Deep Sky Layer (Sprint B):**
+- **axial-precession.md** — the 25,772-year Great Year, 12 zodiacal
+  Ages, Lahiri ayanamsa, current Age of Pisces (~80% complete), next
+  transition to Aquarius (~2440 CE), pole-star sequence over millennia
+- **heliacal-risings.md** — 22 named stars with cultural attestations,
+  the Sothic cycle anchor (Sirius/Sopdet at Egyptian latitudes),
+  Pleiades agricultural marker, the four Royal Stars of ancient Persia
+- **lunar-standstills.md** — the 18.6-year nodal cycle, major/minor
+  standstill geometry (±28.72° / ±18.30° declination), megalithic
+  alignments (Stonehenge, Callanish, Chimney Rock), live cycle position
+- **vedic-yuga.md** — Sanskrit cosmological deep-time, Kali Yuga (~1.2%
+  complete), Mahā Yuga / Manvantara / Kalpa hierarchy, current position
+  in the Shvetavārāha Kalpa (7th Manvantara, Vaivasvata Manu)
 
 **Operational:**
 - **location-and-time.md** — the location protocol in full detail
