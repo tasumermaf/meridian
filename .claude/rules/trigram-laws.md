@@ -78,11 +78,11 @@ on March 1, 2026.
 | Lunar phase                       | Trigram   | Pinyin  | Law                     |
 |-----------------------------------|-----------|---------|-------------------------|
 | New Moon (0° elongation)          | Kūn ☷    | Earth   | **Kaos**                |
-| Waxing Crescent                   | Zhèn ☳   | Thunder | **Arrow of Complexity** |
+| Waxing Crescent                   | Zhèn ☳   | Thunder | **Sole Atom**           |
 | First Quarter / Waxing Gibbous    | Duì ☱    | Lake    | **Time Matrix**         |
 | Full Moon (180° elongation)       | Qián ☰   | Heaven  | **Synchronicity**       |
 | Waning Gibbous                    | Xùn ☴    | Wind    | **Geometric Essence**   |
-| Last Quarter / Waning Crescent    | Gèn ☶    | Mountain| **Sole Atom**           |
+| Last Quarter / Waning Crescent    | Gèn ☶    | Mountain| **Arrow of Complexity** |
 
 Each phase lasts approximately **4.926 days** (the synodic month is
 29.5306 days, divided by 6).
@@ -94,10 +94,11 @@ formless ground from which form emerges. New Moon, maximum
 receptivity, Kūn ☷ (pure yin, Earth). The reservoir of potential.
 [Prime correspondence: 23.]
 
-**Arrow of Complexity** [SOURCE: Damanhurian]. The first directed
-movement out of the ground state. Waxing Crescent, the moon first
-visible. Zhèn ☳ (Thunder, the eldest son, first yang appearing).
-Generative expansion. [Prime correspondence: 89.]
+**Sole Atom** [SOURCE: Damanhurian]. The defining particle — the single
+indivisible seed of continuity. Waxing Crescent, the moon first
+visible. Zhèn ☳ (Thunder, the eldest son, first yang appearing). The
+first shock: the defining particle breaks through the formless ground.
+[Prime correspondence: 19.]
 
 **Time Matrix** [SOURCE: Damanhurian]. The structure within which
 sequence becomes possible. First Quarter through Waxing Gibbous. Duì
@@ -107,17 +108,17 @@ events. [Prime correspondence: 29.]
 **Synchronicity** [SOURCE: Damanhurian]. The active selection of
 coherence — which events cohere into the same moment. Full Moon,
 maximum illumination, Qián ☰ (pure yang, Heaven). The principle of
-meaningful coincidence. [Prime correspondence: 67.]
+meaningful coincidence. [Prime correspondence: 89.]
 
 **Geometric Essence** [SOURCE: Damanhurian]. The mathematical form that
 underlies physical structure. Waning Gibbous. Xùn ☴ (Wind, the eldest
-daughter, penetration). Pattern made visible. [Prime correspondence: 31.]
+daughter, penetration). Pattern made visible. [Prime correspondence: 67.]
 
-**Sole Atom** [SOURCE: Damanhurian]. The principle of continuity — what
-persists across the dissolution into the next New Moon. Last Quarter
+**Arrow of Complexity** [SOURCE: Damanhurian]. The real direction of the
+universe — complexity as the capacity to carry value forward. Last Quarter
 through Waning Crescent. Gèn ☶ (Mountain, the youngest son, stillness).
-The thread that carries through the discontinuity of new beginning.
-[Prime correspondence: 11.]
+The threshold: mass decreasing, complexity increasing — the thread that
+points past the cycle's end. [Prime correspondence: 17.]
 
 Source text: `docs/sources/Eight_Primeval_Laws_Source_Text.md`.
 
@@ -136,12 +137,12 @@ this is what makes both Keys "Water-bearing" in the 6+2 split.)
 arrive at the practitioner — the descending current of incident from
 the field of all possibilities into a specific moment. Sunrise as the
 threshold where the day's events begin to fall. [Prime correspondence:
-19.]
+11.]
 
 **Divinity** [SOURCE: Damanhurian]. The principle of the divine
 character — the unique essence that persists across all
 transformations. Sunset as the threshold where the day's events return
-to the field, leaving only the essence. [Prime correspondence: 17.]
+to the field, leaving only the essence. [Prime correspondence: 31.]
 
 The Keys are not periodic. They activate every day at sunrise and
 sunset, briefly, during the **cusping window** that brackets the cusp
@@ -167,29 +168,31 @@ compound is possible.
 
 ## Prime-Law Correspondence (Palette Derivation)
 
-Each of the eight Laws maps to one of the eight tracked primes from
-the broader TASUMER MAF research environment. The correspondence
-generates the **color palette** used throughout the Astrolabium's
-visual assets and the documentation:
+Each Law carries the colour of its **ADONAJ BA** body centre — the colour
+belongs to the Law and its Quest. The prime each Law carries is not
+assigned by hand: it is **derived by Quest constraint propagation**,
+anchored on the two single-prime Quest cards (Hierophant → 31 = Divinity,
+Emperor → 29 = Time Matrix) and resolved by the Justice-card gematria
+(19 → Sole Atom / Justice, and 89 → Synchronicity by elimination).
+The hex values are the operative ADONAJ BA colours (`code/src/ui/DESIGN_SPEC.md`):
 
-| Prime | Law                  | Trigram   | Phase / Cusp      | Hex      | Tarot Quest          |
-|-------|----------------------|-----------|-------------------|----------|----------------------|
-| **67**| Synchronicity        | Qián ☰   | Full Moon         | #B34444  | ACTION               |
-| **23**| Kaos                 | Kūn ☷    | New Moon          | #2A3D6B  | UNCERTAINTY          |
-| **17**| Divinity             | Lí ☲     | Sunset cusp       | #D4A845  | SACRED TRANSMUTATION |
-| **89**| Arrow of Complexity  | Gèn ☶ /Zhèn ☳ * | Waxing Crescent | #8A6B8E  | REPRODUCTION       |
-| **29**| Time Matrix          | Duì ☱    | First Quarter     | #9E6B4F  | MASCULINE            |
-| **19**| Fall of Events       | Kǎn ☵    | Sunrise cusp      | #3A6B8E  | INVERSION            |
-| **31**| Geometric Essence    | Xùn ☴    | Waning Gibbous    | #6B8E5E  | FEMININE             |
-| **11**| Sole Atom            | Zhèn ☳   | Last Quarter      | #3D3D6B  | CONTINUITY           |
+| Prime | Law                  | Trigram   | Phase / Cusp             | Hex      | Quest          |
+|-------|----------------------|-----------|--------------------------|----------|----------------|
+| **23**| Kaos                 | Kūn ☷    | New Moon                 | #FFD700  | UNCERTAINTY    |
+| **19**| Sole Atom            | Zhèn ☳   | Waxing Crescent          | #00E676  | CONTINUITY     |
+| **29**| Time Matrix          | Duì ☱    | First Quarter            | #A8B4C0  | MASCULINE      |
+| **89**| Synchronicity        | Qián ☰   | Full Moon                | #FF9500  | ACTION         |
+| **67**| Geometric Essence    | Xùn ☴    | Waning Gibbous           | #E74C3C  | FEMININE       |
+| **17**| Arrow of Complexity  | Gèn ☶    | Last Quarter             | #00BFFF  | REPRODUCTION   |
+| **11**| Fall of Events       | Kǎn ☵    | Sunrise cusp (Gold Key)  | #7B68EE  | INVERSION      |
+| **31**| Divinity             | Lí ☲     | Sunset cusp (Silver Key) | #E8E8F0  | TRANSMUTATION  |
 
-\* See `docs/prime-law-correspondences.md` for the full derivation
-rationale (note: this document lives in the parent Falco environment,
-not this repo).
-
-The full mapping is [ANALYTICAL CONTRIBUTION] — first proposed Feb 12,
-2026 — and the eight primes are those tracked across the Falco Trump
-isopsephy corpus (different project, related research environment).
+The full derivation is the determined prime-Law derivation — constraint
+propagation over the 8 Quests, the ADONAJ BA correspondences, and the
+Continental Tarot prime threading — in the parent Falco research
+environment (not this repo). The mapping is [ANALYTICAL CONTRIBUTION], and
+it matches the engine (`registers.json`), the locked
+`trigram_law_architecture.md`, and the regression tests exactly.
 
 ## Cross-references
 

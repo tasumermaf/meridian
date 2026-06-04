@@ -10,13 +10,15 @@ Outputs:
   assets/lunar-architecture.png  — 6+2 Cantong qi trigram-law cycle
   assets/temporal-bodies.png     — The four temporal bodies, concentric
 
-Palette derived from the prime-law correspondence (eight tracked primes →
-eight Primeval Laws). See docs/PRIME_LAW_PALETTE.md.
+Law colours are the eight ADONAJ BA correspondences — one body-centre
+colour per Primeval Law. The prime each Law carries is derived by Quest
+constraint propagation (the determined derivation, parent Falco environment); see
+docs/specs/trigram_law_architecture.md.
 
 Background    #0D0D0D  void
 Bone          #E8E8E0  text
-Gold          #D4A845  Divinity (17), the sunrise key
-Silver        #9FA7B3  the sunset key
+Gold          #D4A845  the sunrise key accent (Gold Key / Fall of Events)
+Silver        #9FA7B3  the sunset key accent (Silver Key / Divinity)
 Dim accent    #2A2A3A  panel edges
 """
 
@@ -61,16 +63,18 @@ for fname in ["msyh.ttc", "seguisym.ttf", "cambria.ttc", "consola.ttf"]:
 plt.rcParams["font.family"] = ["Consolas", "Microsoft YaHei", "Segoe UI Symbol", "DejaVu Sans Mono"]
 plt.rcParams["font.monospace"] = ["Consolas", "Microsoft YaHei", "Segoe UI Symbol", "DejaVu Sans Mono"]
 
-# ── Palette (prime-law correspondence) ──
+# ── Palette: the eight ADONAJ BA Law colours ──
+# The colour belongs to the Law (its body-centre / Quest colour). The prime
+# is derived by Quest constraint propagation (determined in the parent Falco environment).
 LAW_COLORS = {
-    "Synchronicity":        "#B34444",  # 67  Qian   Full Moon       (primary thread red)
-    "Kaos":                 "#2A3D6B",  # 23  Kun    New Moon        (dimensional ground)
-    "Divinity":             "#D4A845",  # 17  Li     Silver Key      (divine spark gold)
-    "Geometric Essence":    "#6B8E5E",  # 31  Xun                    (form green)
-    "Sole Atom":            "#3D3D6B",  # 11  Zhen                   (continuity indigo)
-    "Fall of Events":       "#3A6B8E",  # 19  Kan    Gold Key        (events blue)
-    "Time Matrix":          "#9E6B4F",  # 29  Dui                    (rhythm bronze)
-    "Arrow of Complexity":  "#8A6B8E",  # 89  Gen                    (expansion mauve)
+    "Synchronicity":        "#FF9500",  # 89  Qian ☰  Full Moon       orange / Heart
+    "Sole Atom":            "#00E676",  # 19  Zhen ☳  First Crescent  green  / Sexual Organs
+    "Divinity":             "#E8E8F0",  # 31  Li ☲    Silver Key      white  / Crown
+    "Geometric Essence":    "#E74C3C",  # 67  Xun ☴  Waning Gibbous  brick  / Sacrum
+    "Time Matrix":          "#A8B4C0",  # 29  Dui ☱  First Quarter   silver / Mobile 8th
+    "Fall of Events":       "#7B68EE",  # 11  Kan ☵  Gold Key        indigo / Third Eye
+    "Kaos":                 "#FFD700",  # 23  Kun ☷  New Moon        gold   / Solar Plexus
+    "Arrow of Complexity":  "#00BFFF",  # 17  Gen ☶  Last Quarter    azure  / Throat
 }
 BG          = "#0D0D0D"
 BONE        = "#E8E8E0"
@@ -83,11 +87,11 @@ DIM         = "#2A2A3A"
 # Six cyclic Laws (in lunar-phase order, starting at New Moon)
 SIX_PHASE_LAWS = [
     ("Kaos",                "Kun",  "☷", "New Moon"),
-    ("Arrow of Complexity", "Zhen", "☳", "Waxing Crescent"),
+    ("Sole Atom",           "Zhen", "☳", "Waxing Crescent"),
     ("Time Matrix",         "Dui",  "☱", "First Quarter / Waxing Gibbous"),
     ("Synchronicity",       "Qian", "☰", "Full Moon"),
     ("Geometric Essence",   "Xun",  "☴", "Waning Gibbous"),
-    ("Sole Atom",           "Gen",  "☶", "Last Quarter / Waning Crescent"),
+    ("Arrow of Complexity", "Gen",  "☶", "Last Quarter / Waning Crescent"),
 ]
 
 # Twelve Earthly Branches (organ-clock windows), in canonical order from 子
@@ -812,10 +816,10 @@ def render_24_solar_terms_wheel(save_path: Path, dt):
     from engine import solar_terms
 
     SEASON_COLORS = {
-        "Spring": "#6B8E5E",  # Geometric Essence green
-        "Summer": "#B34444",  # Synchronicity red
-        "Autumn": "#9E6B4F",  # Time Matrix bronze
-        "Winter": "#3D3D6B",  # Sole Atom indigo
+        "Spring": "#6B8E5E",  # Wood / Azure Dragon green
+        "Summer": "#B34444",  # Fire / Vermillion Bird red
+        "Autumn": "#9E6B4F",  # Metal / White Tiger bronze
+        "Winter": "#3D3D6B",  # Water / Black Tortoise indigo
     }
 
     terms = solar_terms.list_terms()

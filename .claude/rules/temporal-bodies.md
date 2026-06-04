@@ -68,11 +68,11 @@ each carried by a different trigram:
 | Phase                             | Trigram   | Law                  |
 |-----------------------------------|-----------|----------------------|
 | New Moon (0° elongation)          | Kūn ☷    | **Kaos**             |
-| Waxing Crescent                   | Zhèn ☳   | **Arrow of Complexity** |
+| Waxing Crescent                   | Zhèn ☳   | **Sole Atom**           |
 | First Quarter / Waxing Gibbous    | Duì ☱    | **Time Matrix**      |
 | Full Moon (180° elongation)       | Qián ☰   | **Synchronicity**    |
 | Waning Gibbous                    | Xùn ☴    | **Geometric Essence** |
-| Last Quarter / Waning Crescent    | Gèn ☶    | **Sole Atom**        |
+| Last Quarter / Waning Crescent    | Gèn ☶    | **Arrow of Complexity** |
 
 The mapping comes from the *Cantong qi* (參同契), the foundational
 Daoist alchemical text. The six trigrams here are exactly the ones that
