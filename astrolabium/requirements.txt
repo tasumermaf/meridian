@@ -12,5 +12,4 @@ fastapi==0.115.6
 uvicorn[standard]==0.34.0
 
 # Additional dependencies
-pydantic==2.10.4
-python-dateutil==2.9.0.post0
+# pydantic — transitive via FastAPI; unpinned 2026-07-30 (see pyproject.toml)

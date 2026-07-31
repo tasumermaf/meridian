@@ -19,8 +19,11 @@ from pathlib import Path
 # Ensure src is importable
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from src.astrolabium import calculate_complete_state
-from src.frequency import COMPOUND_TYPES
+from src.astrolabium import calculate_complete_state  # noqa: F401 (re-export)
+# Shared DST-skip helper: naive civil scans land on nonexistent/ambiguous
+# instants twice a year per DST zone; the engine refuses to fabricate a
+# state for them (AUDIT_2026-07-24 C-03). Skip and report the count as data.
+from src.frequency import COMPOUND_TYPES, _state_skipping_dst
 from src.resonance import RESONANCE_BOOLEAN_TYPES, RESONANCE_STATE_TYPES
 from src.engine.calendar import get_divine_year, next_new_moon
 
@@ -115,6 +118,15 @@ def compute_periodic_table(interval_minutes: int = 15) -> dict:
     month_group_dist = defaultdict(int)
     iao_dist = defaultdict(int)
     yang_count_dist = defaultdict(int)
+    # divine_hour_law_unity (AUDIT_2026-07-24 D-09, added 2026-07-30):
+    # hour-index distribution over Two-Body-Unity steps (R_RHY_02).
+    dh_law_unity_dist = defaultdict(int)
+
+    # ── Solar Key activity (AUDIT_2026-07-24 C-18, added 2026-07-30) ──
+    # Artifact-backed gold/silver key-active step counts, so figures like
+    # the periodic table's "~4.2% of the year" are never orphaned again.
+    gold_key_active_count = 0
+    silver_key_active_count = 0
 
     # ── Per-month profiles ──
     # month_number -> {type_name -> count, "_total" -> step_count}
@@ -127,9 +139,14 @@ def compute_periodic_table(interval_minutes: int = 15) -> dict:
     # ── Timing ──
     t0 = time.time()
     report_every = 2000
+    skipped = 0
 
     while current < end_dt:
-        state = calculate_complete_state(current, LAT, LON, TZ)
+        state = _state_skipping_dst(current, LAT, LON, TZ)
+        if state is None:
+            skipped += 1
+            current += delta
+            continue
         total += 1
 
         # Distributions
@@ -193,6 +210,19 @@ def compute_periodic_table(interval_minutes: int = 15) -> dict:
         if yc is not None:
             yang_count_dist[int(yc)] += 1
 
+        # divine_hour_law_unity: non-null exactly when two_body_unity fires
+        dhlu = resonances.get("rhythmic", {}).get("divine_hour_law_unity")
+        if dhlu is not None:
+            dh_law_unity_dist[dhlu.get("hour_index")] += 1
+
+        # Solar Key activity
+        solar_key = state.get("solar_key", {})
+        if solar_key.get("active"):
+            if solar_key.get("key") == "gold":
+                gold_key_active_count += 1
+            elif solar_key.get("key") == "silver":
+                silver_key_active_count += 1
+
         # Progress
         if total % report_every == 0:
             elapsed = time.time() - t0
@@ -253,6 +283,7 @@ def compute_periodic_table(interval_minutes: int = 15) -> dict:
             "duration_days": round(duration_days, 2),
             "interval_minutes": interval_minutes,
             "total_steps": total,
+            "skipped_nonexistent_steps": skipped,
             "location": {"name": "Damanhur", "lat": LAT, "lon": LON, "tz": TZ},
             "computation_time_seconds": round(elapsed_total, 1),
         },
@@ -276,6 +307,23 @@ def compute_periodic_table(interval_minutes: int = 15) -> dict:
             "month_group": dict(month_group_dist),
             "iao_position": dict(iao_dist),
             "yang_count": {str(k): v for k, v in sorted(yang_count_dist.items())},
+            "divine_hour_law_unity": {
+                str(k): v
+                for k, v in sorted(
+                    dh_law_unity_dist.items(),
+                    key=lambda kv: (kv[0] is None, kv[0]),
+                )
+            },
+        },
+        "solar_key_activity": {
+            "gold_key_active": {
+                "count": gold_key_active_count,
+                "pct": _pct(gold_key_active_count),
+            },
+            "silver_key_active": {
+                "count": silver_key_active_count,
+                "pct": _pct(silver_key_active_count),
+            },
         },
         "month_profiles": month_profiles_clean,
     }

@@ -21,6 +21,12 @@ class TestHealth:
         assert data["laws_loaded"] == 8
         assert data["vessels_loaded"] == 8
 
+    def test_version_is_3_3_0(self):
+        """B-05 (2026-07-30): version bumped when /display became the
+        Output Law surface."""
+        response = client.get("/health")
+        assert response.json()["version"] == "3.3.0"
+
 
 class TestState:
     def test_state_returns_all_layers(self):
@@ -46,6 +52,62 @@ class TestState:
     def test_state_default_now(self):
         response = client.get("/state", params=LA_PARAMS)
         assert response.status_code == 200
+
+
+class TestDisplay:
+    """B-05 (2026-07-30): /display serves the Output Law shape."""
+
+    DT = "2026-03-01T14:00:00"
+
+    def _get(self, **extra):
+        return client.get("/display", params={**LA_PARAMS, "dt": self.DT, **extra})
+
+    def test_display_returns_output_law_shape(self):
+        response = self._get()
+        assert response.status_code == 200
+        data = response.json()
+        for key in ("readout", "typed_state", "story_gate", "display"):
+            assert key in data, f"missing Output Law key: {key}"
+
+    def test_readout_is_the_verbatim_block(self):
+        data = self._get().json()
+        text = data["readout"]
+        assert text.startswith("=== ASTROLABIUM READOUT ===")
+        assert text.rstrip().endswith("=== END READOUT ===")
+
+    def test_typed_state_is_the_machine_core(self):
+        data = self._get().json()
+        typed = data["typed_state"]
+        assert typed.startswith("=== VERIFIED STATE: ASTROLABIUM ===")
+        assert "vessel.open" in typed
+
+    def test_story_gate_shape(self):
+        gate = self._get().json()["story_gate"]
+        assert set(gate.keys()) == {"licensed", "subjects", "max_sentences", "rule"}
+        assert isinstance(gate["licensed"], bool)
+        assert isinstance(gate["subjects"], list)
+        assert gate["max_sentences"] == 3
+
+    def test_precision_defaults_to_coarse(self):
+        """Coarse: clock times rounded and marked '~', no minute-exact claim."""
+        text = self._get().json()["readout"]
+        assert "~" in text
+        assert "min remaining" not in text
+
+    def test_precision_exact_opt_in(self):
+        text = self._get(precision="exact").json()["readout"]
+        assert "min remaining" in text
+
+    def test_precision_invalid_rejected(self):
+        response = self._get(precision="verbose")
+        assert response.status_code == 422
+
+    def test_display_block_is_prose_free(self):
+        """C-05 (2026-07-30): the structured display block carries no
+        dynamic prose sentences."""
+        display = self._get().json()["display"]
+        assert "description" not in display["astral"]
+        assert "is open, carrying" not in str(display)
 
 
 class TestProjection:

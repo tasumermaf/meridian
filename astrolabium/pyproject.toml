@@ -1,6 +1,17 @@
-[build-system]
-requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
-build-backend = "setuptools.build_meta"
+# NOT AN INSTALLABLE PACKAGE — run from checkout (AUDIT_2026-07-24 B-14,
+# applied 2026-07-30). setup.py was deleted: it declared only api/ and
+# engine/, omitting every root module and data/registers.json, and the
+# universal `from src.X` import convention cannot resolve from an installed
+# distribution. This file is the single metadata/tooling authority.
+#
+# The real run story:
+#   cd astrolabium/code
+#   C:\miniconda3\envs\falco\python.exe  (conda env `falco`)
+#   imports resolve via the checkout root on sys.path (`from src.X import ...`;
+#   scripts bootstrap with sys.path.insert(0, ...))
+#   pytest -q  · uvicorn src.api.main:app
+# Do not add a [build-system]/packages layout without actually restructuring
+# the package — an installed wheel would be broken by construction.
 
 [project]
 name = "astrolabium"
@@ -8,14 +19,17 @@ version = "0.1.0"
 description = "A temporal navigation system for sacred time calculations"
 authors = [{name = "Timothy Paul Bielec"}]
 readme = "README.md"
-requires-python = ">=3.8"
+# >=3.9: scripts/tests use zoneinfo (stdlib since 3.9) — AUDIT D-03
+requires-python = ">=3.9"
 dependencies = [
     "astral>=3.2",
     "ephem>=4.1.6",
+    "pytz>=2025.1",
     "fastapi>=0.115.6",
     "uvicorn[standard]>=0.34.0",
-    "pydantic>=2.10.4",
-    "python-dateutil>=2.9.0.post0",
+    # pydantic: NOT imported directly — transitive via FastAPI (AUDIT D-03).
+    # Pin removed 2026-07-30; FastAPI resolves its own compatible version.
+    # python-dateutil: removed 2026-07-30 — never imported anywhere (AUDIT D-03).
 ]
 
 [project.optional-dependencies]

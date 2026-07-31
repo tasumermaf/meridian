@@ -69,3 +69,10 @@ secrets/
 # Astrolabium-specific
 # (registers.json IS data; keep it in version control)
 # (assets/*.png ARE generated but kept in version control for README rendering)
+
+# Corpus boundary: the trump corpus never enters this repository
+astrolabium/data/*.private.json*
+
+# Client localizations are private working material, never committed here
+localizations/
+scan_pvs.py

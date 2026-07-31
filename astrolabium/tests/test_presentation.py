@@ -172,10 +172,12 @@ class TestVesselPresentation:
         vessel = display["astral"]["vessel"]
         assert vessel in VESSEL_ENGLISH.values(), f"Vessel name not English: {vessel!r}"
 
-    def test_vessel_description_sentence(self):
+    def test_vessel_carries_no_prose_description(self):
+        """C-05 (2026-07-30): the dynamic 'is open, carrying' sentence is
+        deleted — the presentation layer is prose-free. Static register
+        glosses (point descriptions, compound/resonance descriptions) stay."""
         display = _get_display()
-        desc = display["astral"]["description"]
-        assert "is open, carrying" in desc
+        assert "description" not in display["astral"]
 
     def test_vessel_law_present(self):
         display = _get_display()
@@ -255,14 +257,15 @@ class TestKeyPresentation:
         assert display["keys"]["active"] is False
 
     def test_active_gold_key(self):
-        # Near sunrise
+        # Near sunrise. C-05 (2026-07-30): the dynamic Key description
+        # sentence is deleted — facts are typed fields, not prose.
         display = _get_display(hour=7, minute=2)
         keys = display["keys"]
         if keys["active"]:
             assert keys["key"] == "Gold"
             assert keys["vessel"] == "Yin Heel Vessel"
-            assert "Fall of Events" in keys["description"]
-            assert "Yin Heel Vessel" in keys["description"]
+            assert keys["law"] == "Fall of Events"
+            assert "description" not in keys
 
     def test_active_silver_key(self):
         # Near sunset (March in LA ~ 7:10 PM)
@@ -271,7 +274,8 @@ class TestKeyPresentation:
         if keys["active"]:
             assert keys["key"] == "Silver"
             assert keys["vessel"] == "Yang Heel Vessel"
-            assert "Divinity" in keys["description"]
+            assert keys["law"] == "Divinity"
+            assert "description" not in keys
 
 
 # ── Body Presentation ─────────────────────────────────────────────

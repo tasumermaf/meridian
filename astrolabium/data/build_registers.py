@@ -1,13 +1,22 @@
 """
-Build registers.json from the Phase 2 dispatch data.
+Build a registers skeleton from the Phase 2 dispatch data — HISTORICAL TOOL.
+
+⚠ registers.json is LOCKED and HAND-ENRICHED (meta.version 1.1.0: the
+2026-03-19 enrichment fields — tier_0_character, english_name, sense_organ,
+clinical_domain, and the rest — exist ONLY in the shipped file, not in the
+dispatch source this script parses). This script reproduces the ORIGINAL
+1.0.0 skeleton and also emits inner-alchemy under its pre-rename key.
+Overwriting registers.json with its output breaks every
+calculate_complete_state call (AUDIT_2026-07-24 B-04).
+
+It therefore now writes registers.generated.json for inspection, and will
+only touch registers.json with --overwrite AND when the live file does not
+carry a newer meta.version.
 
 Source: astrolabium/docs/interpretive/dispatch/dispatch_phase2_data.md
-Output: astrolabium/code/data/registers.json
+Output: astrolabium/code/data/registers.generated.json
 
-The dispatch file contains all 9 registers in markdown table format.
-This script parses those tables into structured JSON.
-
-Run: python data/build_registers.py
+Run: python data/build_registers.py [--overwrite]
 """
 
 import json
@@ -279,6 +288,8 @@ def build_registers(dispatch_path):
 
 
 if __name__ == "__main__":
+    import sys
+
     here = Path(__file__).parent
     project_root = here.parent.parent  # astrolabium/
     dispatch = project_root / "docs" / "interpretive" / "dispatch" / "dispatch_phase2_data.md"
@@ -288,12 +299,34 @@ if __name__ == "__main__":
         raise SystemExit(1)
 
     data = build_registers(dispatch)
-    out = here / "registers.json"
+
+    # Guard (B-04): the live registers.json is locked and hand-enriched.
+    # Default target is a sidecar; --overwrite is refused when the live
+    # file carries a newer meta.version than this script can reproduce.
+    overwrite = "--overwrite" in sys.argv
+    live = here / "registers.json"
+    if overwrite:
+        try:
+            live_version = json.loads(live.read_text(encoding="utf-8"))["meta"]["version"]
+        except Exception:
+            live_version = None
+        built_version = data.get("meta", {}).get("version", "1.0.0")
+        if live_version and live_version > built_version:
+            print(
+                f"REFUSED: live registers.json is meta.version {live_version}, "
+                f"hand-enriched beyond what this script reproduces ({built_version}). "
+                f"Remove the guard only if you genuinely intend to discard the enrichment."
+            )
+            raise SystemExit(1)
+        out = live
+    else:
+        out = here / "registers.generated.json"
+
     with open(out, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
 
     # Summary
-    print(f"registers.json written to {out}")
+    print(f"written to {out}")
     print(f"  Laws: {len(data['laws'])}")
     print(f"  Trigrams: {len(data['trigrams'])}")
     print(f"  Vessels: {len(data['vessels'])}")

@@ -52,7 +52,21 @@ def calculate_complete_state(
     """
     timezone = pytz.timezone(tz)
     if dt.tzinfo is None:
-        dt = timezone.localize(dt)
+        # is_dst=None: nonexistent civil times (spring-forward gap) and
+        # ambiguous ones (fall-back hour) raise explicitly instead of
+        # silently fabricating a state (AUDIT_2026-07-24 C-03).
+        try:
+            dt = timezone.localize(dt, is_dst=None)
+        except pytz.exceptions.NonExistentTimeError:
+            raise ValueError(
+                f"{dt} does not exist in {tz}: it falls inside the DST "
+                f"spring-forward gap. Supply a real civil time."
+            )
+        except pytz.exceptions.AmbiguousTimeError:
+            raise ValueError(
+                f"{dt} is ambiguous in {tz}: it occurs twice across the DST "
+                f"fall-back. Supply a timezone-aware datetime to disambiguate."
+            )
     else:
         dt = dt.astimezone(timezone)
 
@@ -176,7 +190,11 @@ def calculate_complete_state(
         "symbol": phase_data["symbol"],
         "elongation_deg": round(elong, 2),
         "illumination_pct": round(illum, 1),
-        "waxing": phase_data["waxing"],
+        # Computed from real elongation (R6 ruling, 2026-07-24): the moon
+        # is waxing iff elongation < 180°. The register band flag grouped
+        # the Full Moon band (180–240°) with the yang half, which reported
+        # "waxing" ~4.9 days of every lunation while illumination fell.
+        "waxing": elong < 180.0,
         "yang_count": phase_data["yang_count"],
         # Primeval Law practice context [SOURCE: DAM]
         # — the Soul body's operative qualities
@@ -203,7 +221,13 @@ def calculate_complete_state(
 
     # ── 5. Solar Keys ──
     cusping = twilight.get_cusping_windows(dt, lat, lon, tz)
-    key_state = {"active": cusping["active"], "key": cusping["key"]}
+    key_state = {
+        "active": cusping["active"],
+        "key": cusping["key"],
+        # Absence is reportable data (B-03): surfaced, never swallowed.
+        "polar_conditions": cusping.get("polar_conditions", False),
+        "twilight_undefined": cusping.get("twilight_undefined", False),
+    }
     if cusping["active"] and cusping["key"]:
         key_data = registry.get_solar_key(cusping["key"])
         key_law_data = registry.get_law(key_data["law"])
@@ -277,6 +301,7 @@ def calculate_complete_state(
             "sunset": solar_pos["sunset"].isoformat(),
             "noon": solar_pos["solar_noon"].isoformat(),
             "midnight": solar_pos["solar_midnight"].isoformat(),
+            "midnight_approximate": solar_pos.get("solar_midnight_approximate", False),
         },
         "organ_clock": organ_clock,
         "derivative": derivative,

@@ -141,12 +141,25 @@ def get_lgbf_substitution(
     }
 
 
+# Night branches in order from sunset: 戌 Xū, 亥 Hài, 子 Zǐ, 丑 Chǒu, 寅 Yín, 卯 Mǎo
+_NIGHT_BRANCHES = [10, 11, 0, 1, 2, 3]
+
+
 def get_earthly_branch_from_solar(dt: datetime, lat: float, lon: float, tz: str) -> int:
     """
-    Determine the current Earthly Branch index from solar position.
+    Determine the current Earthly Branch index from solar position —
+    wing-relative unequal sixths [Guidebook §4.6; ruled canon 2026-07-24].
 
-    The 12 branches divide the 24-hour cycle starting from solar midnight.
-    Each branch covers 2 solar hours.
+    The day wing (sunrise → sunset) divides into 6 equal parts carrying
+    branches 辰(4) 巳(5) 午(6) 未(7) 申(8) 酉(9); the night wing (sunset →
+    next sunrise) divides into 6 equal parts carrying 戌(10) 亥(11) 子(0)
+    丑(1) 寅(2) 卯(3). Branch boundaries therefore fall AT sunrise and
+    sunset, and every branch is an unequal hour-pair that stretches with
+    the season — never a fixed 2-hour window.
+
+    Replaces the fixed 2h-from-solar-midnight scheme (AUDIT_2026-07-24
+    A-7/A-8): with no midnight anchor, the branch is continuous across
+    civil midnight by construction.
 
     Args:
         dt: Current datetime (naive or aware)
@@ -162,16 +175,26 @@ def get_earthly_branch_from_solar(dt: datetime, lat: float, lon: float, tz: str)
         dt = dt.astimezone(timezone)
 
     solar = get_solar_positions(dt, lat, lon, tz)
-    midnight = solar["solar_midnight"]
+    sunrise, sunset = solar["sunrise"], solar["sunset"]
 
-    # If before today's solar midnight, use yesterday's
-    if dt < midnight:
-        yesterday = dt - timedelta(days=1)
-        solar_y = get_solar_positions(yesterday, lat, lon, tz)
-        midnight = solar_y["solar_midnight"]
+    if sunrise <= dt < sunset:
+        # Day wing: sixths of sunrise→sunset carry branches 4–9.
+        part = (sunset - sunrise) / 6
+        pos = int((dt - sunrise) / part)
+        return 4 + min(max(pos, 0), 5)
 
-    elapsed_hours = (dt - midnight).total_seconds() / 3600
-    return int(elapsed_hours / 2) % 12
+    if dt < sunrise:
+        # Night wing that began at YESTERDAY's sunset.
+        prev = get_solar_positions(dt - timedelta(days=1), lat, lon, tz)
+        night_start, night_end = prev["sunset"], sunrise
+    else:
+        # Night wing that ends at TOMORROW's sunrise.
+        nxt = get_solar_positions(dt + timedelta(days=1), lat, lon, tz)
+        night_start, night_end = sunset, nxt["sunrise"]
+
+    part = (night_end - night_start) / 6
+    pos = int((dt - night_start) / part)
+    return _NIGHT_BRANCHES[min(max(pos, 0), 5)]
 
 
 def get_lgbf_remainder(dt: datetime, lat: float, lon: float, tz: str) -> Dict:
