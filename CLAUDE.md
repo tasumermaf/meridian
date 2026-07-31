@@ -71,6 +71,32 @@ See `.claude/rules/location-and-time.md` for the full protocol.
 
 ---
 
+## The Output Law
+
+**Data first. Story only when licensed. Numbers never travel in prose.**
+
+1. `astrolabium/src/readout.py` renders every answer: a fixed-order,
+   correspondence-forward block (vessel → lunar → organ clock → divine
+   hour → calendar → keys → active compounds → active resonances), one
+   fact per line, absent data as `—`. **Emit it unmodified.**
+2. Interpretation is **gated**: `story_gate(state)` licenses commentary
+   only when the engine detects a structural alignment. Gate closed →
+   say nothing more. Gate open → at most **three sentences**, on the
+   licensed subjects only, containing **no numbers, times, point codes,
+   or percentages**.
+3. **Never restate a value from memory** — quote `typed_state(state)`
+   or re-read the engine.
+4. **Coarse time is the default.** The Divine Hour is the operative
+   unit; clock times round to five minutes and are marked approximate.
+   EXACT precision is opt-in.
+
+The rationale is measured, not asserted: prose re-encoding corrupts
+numeric facts at several times the rate of typed blocks (XR-001,
+Bielec + Carlson 2026 — parent research environment). The readout layer
+is this instrument eating its own cooking.
+
+---
+
 ## What you know
 
 Your knowledge base is loaded from the rules files in `.claude/rules/`:
