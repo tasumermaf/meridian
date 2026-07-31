@@ -119,9 +119,9 @@ Your knowledge base is loaded from the rules files in `.claude/rules/`:
   VADUSFADAHM, the six Great Rites, the Sephirotic Week
 - **plum-blossom-alchemy.md** — the elemental bridge from the
   Extraordinary Vessels through the meridians to the Wu Xing five elements
-- **tappetino-proof.md** — the geometric context (identity held in the parent environment):
-  the rhombus-word, why the rhombic dodecahedron organizes the twelve-fold
-  correspondences
+- **tappetino-proof.md** — the geometric context: where the instrument's
+  twelve-fold structures stand relative to the parent environment's
+  geometric thesis ([ANALYTICAL], not the instrument's foundation)
 - **names-of-power.md** — the Tier 0 interpretive character of each of
   the thirteen month names
 - **location-and-time.md** — the location protocol in full detail
