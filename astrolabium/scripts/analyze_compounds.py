@@ -5,9 +5,22 @@ Answers:
   1. How many unique alchemical compounds (2+ simultaneous phenomena) occurred?
   2. What is the highest-complexity compound this year?
   3. Full histogram of compound complexity.
+
+Output (AUDIT_2026-07-24 B-29, applied 2026-07-30): results are WRITTEN to
+data/compound_recipes_v2.json — console output is a summary view only, the
+JSON artifact is authoritative. The artifact pins the exact detector type
+lists (compound + boolean resonance) because active-set fingerprints are
+only comparable under an identical detector set: the §8 figures of
+periodic_table v4/v5.0 were generated under a 17-type set and could not be
+reproduced once the set grew to 28.
+
+Usage:
+    cd astrolabium/code
+    python -m scripts.analyze_compounds [--output data/compound_recipes_v2.json]
 """
 
 import sys
+import json
 import time
 from datetime import datetime, timedelta
 from collections import defaultdict, Counter
@@ -15,8 +28,11 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from src.astrolabium import calculate_complete_state
-from src.frequency import COMPOUND_TYPES
+from src.astrolabium import calculate_complete_state  # noqa: F401 (re-export)
+# Shared DST-skip helper: naive civil scans land on nonexistent/ambiguous
+# instants twice a year per DST zone; the engine refuses to fabricate a
+# state for them (AUDIT_2026-07-24 C-03). Skip and report the count as data.
+from src.frequency import COMPOUND_TYPES, _state_skipping_dst
 from src.resonance import RESONANCE_BOOLEAN_TYPES
 from src.engine.calendar import get_divine_year
 
@@ -26,6 +42,8 @@ TZ = "Europe/Rome"
 INTERVAL = 15  # minutes
 
 ALL_BOOLEAN = COMPOUND_TYPES + RESONANCE_BOOLEAN_TYPES
+
+DEFAULT_OUTPUT = Path(__file__).parent.parent / "data" / "compound_recipes_v2.json"
 
 
 def _get_active_set(state: dict) -> frozenset:
@@ -47,11 +65,19 @@ def _get_active_set(state: dict) -> frozenset:
     return frozenset(active)
 
 
-def main():
+def main(output_path=None, start_dt=None, end_dt=None):
+    """
+    Scan the Divine Year (or an explicit range), print the summary, and
+    write the recipe artifact. start_dt/end_dt overrides exist for smoke
+    tests; the default is the full Divine Year containing 2026-03-02.
+    """
     now = datetime(2026, 3, 2, 12, 0)
     year_info = get_divine_year(now)
-    start_dt = year_info["year_start"]
-    end_dt = year_info["next_year_start"]
+    if start_dt is None:
+        start_dt = year_info["year_start"]
+    if end_dt is None:
+        end_dt = year_info["next_year_start"]
+    output_path = Path(output_path) if output_path else DEFAULT_OUTPUT
 
     delta = timedelta(minutes=INTERVAL)
     current = start_dt
@@ -66,9 +92,14 @@ def main():
     max_state_summary = None
 
     t0 = time.time()
+    skipped = 0
 
     while current < end_dt:
-        state = calculate_complete_state(current, LAT, LON, TZ)
+        state = _state_skipping_dst(current, LAT, LON, TZ)
+        if state is None:
+            skipped += 1
+            current += delta
+            continue
         total += 1
         active = _get_active_set(state)
         n = len(active)
@@ -106,6 +137,7 @@ def main():
     print(f"COMPOUND ANALYSIS — Divine Year {year_info['year']}")
     print(f"{'='*70}")
     print(f"Total steps: {total:,}")
+    print(f"Skipped nonexistent/ambiguous DST instants: {skipped}")
     print(f"Computation time: {elapsed:.1f}s")
     print()
 
@@ -129,30 +161,32 @@ def main():
     print(f"Unique compound recipes: {len(compound_registry):,}")
     print()
 
+    max_count = compound_registry.get(max_compound, 0)
+
     print(f"HIGHEST COMPLEXITY COMPOUND")
     print(f"  Complexity: {max_complexity} simultaneous phenomena")
-    print(f"  First occurrence: {max_timestamp.isoformat()}")
+    if max_timestamp is not None:
+        print(f"  First occurrence: {max_timestamp.isoformat()}")
     print(f"  Components:")
     for t in sorted(max_compound):
         cat = "compound" if t in COMPOUND_TYPES else "resonance"
         print(f"    - {t} ({cat})")
-    print(f"  State at occurrence:")
-    for k, v in max_state_summary.items():
-        print(f"    {k}: {v}")
+    if max_state_summary:
+        print(f"  State at occurrence:")
+        for k, v in max_state_summary.items():
+            print(f"    {k}: {v}")
     print()
-
-    # Find all instances of max complexity
-    max_count = compound_registry.get(max_compound, 0)
     print(f"  This exact compound occurred: {max_count} times ({max_count * INTERVAL} minutes total)")
     print()
 
-    # Top 10 most frequent compounds
+    # Top 15 most frequent compounds
+    ranked_recipes = sorted(
+        compound_registry.items(), key=lambda x: (-x[1], sorted(x[0]))
+    )
     print(f"TOP 15 MOST FREQUENT COMPOUNDS (by occurrence count)")
     print(f"{'Rank':>4}  {'Count':>6}  {'Size':>4}  Components")
     print(f"{'-'*80}")
-    for rank, (compound, count) in enumerate(
-        sorted(compound_registry.items(), key=lambda x: -x[1])[:15], 1
-    ):
+    for rank, (compound, count) in enumerate(ranked_recipes[:15], 1):
         components = ", ".join(sorted(compound))
         print(f"{rank:>4}  {count:>6,}  {len(compound):>4}  {components}")
 
@@ -172,6 +206,68 @@ def main():
         for compound, count in rare_complex[:10]:
             print(f"  [{count}x] ({len(compound)} components): {', '.join(sorted(compound))}")
 
+    # ── Write the artifact (B-29) ──
+    results = {
+        "meta": {
+            "artifact": "compound_recipes_v2",
+            "version": "2.0.0",
+            "generated": datetime.utcnow().isoformat() + "Z",
+            "divine_year": year_info["year"],
+            "anchor_gregorian": year_info["anchor_gregorian"],
+            "start": start_dt.isoformat(),
+            "end": end_dt.isoformat(),
+            "interval_minutes": INTERVAL,
+            "total_steps": total,
+            "skipped_nonexistent_steps": skipped,
+            "location": {"name": "Damanhur", "lat": LAT, "lon": LON, "tz": TZ},
+            "computation_time_seconds": round(elapsed, 1),
+            # Pinned detector set (B-29): active-set fingerprints are only
+            # comparable under an identical detector type list.
+            "detector_set": {
+                "compound_types": list(COMPOUND_TYPES),
+                "resonance_boolean_types": list(RESONANCE_BOOLEAN_TYPES),
+                "total_boolean_types": len(ALL_BOOLEAN),
+            },
+        },
+        "complexity_histogram": {
+            str(n): complexity_hist[n] for n in sorted(complexity_hist.keys())
+        },
+        "total_compound_steps": total_compound_steps,
+        "unique_recipe_count": len(compound_registry),
+        "singleton_recipe_count": len(singletons),
+        "max_complexity": {
+            "size": max_complexity,
+            "components": sorted(max_compound),
+            "first_occurrence": (
+                max_timestamp.isoformat() if max_timestamp is not None else None
+            ),
+            "occurrence_count": max_count,
+            "state_at_occurrence": max_state_summary,
+        },
+        # Every unique recipe, ranked by occurrence count.
+        "recipes": [
+            {"components": sorted(c), "size": len(c), "count": cnt}
+            for c, cnt in ranked_recipes
+        ],
+    }
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(output_path, "w", encoding="utf-8") as f:
+        json.dump(results, f, indent=2, default=str)
+
+    print(f"\nArtifact written to {output_path}")
+    return results
+
 
 if __name__ == "__main__":
-    main()
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description="Compound recipe analysis over one Divine Year",
+    )
+    parser.add_argument(
+        "--output", type=str, default=None,
+        help=f"Output JSON path (default: {DEFAULT_OUTPUT})",
+    )
+    args = parser.parse_args()
+    main(output_path=args.output)

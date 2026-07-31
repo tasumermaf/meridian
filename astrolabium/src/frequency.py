@@ -12,7 +12,25 @@ from collections import defaultdict
 from typing import List
 
 from .astrolabium import calculate_complete_state
-from .resonance import RESONANCE_BOOLEAN_TYPES, RESONANCE_STATE_TYPES
+from .resonance import RESONANCE_BOOLEAN_TYPES
+
+
+def _state_skipping_dst(current, lat, lon, tz):
+    """
+    calculate_complete_state, returning None for civil instants that do
+    not exist (DST spring-forward gap) or are ambiguous (fall-back hour).
+
+    Scan loops march naive civil time in fixed steps and land on these
+    instants twice a year per DST zone. The engine refuses to fabricate a
+    state for them (AUDIT_2026-07-24 C-03); scanners skip them and — in
+    scan_compounds — report the skip count as data.
+    """
+    try:
+        return calculate_complete_state(current, lat, lon, tz)
+    except ValueError as e:
+        if "does not exist" in str(e) or "ambiguous" in str(e):
+            return None
+        raise
 
 COMPOUND_TYPES = [
     # Category 1: Law Unity
@@ -87,6 +105,15 @@ def scan_compounds(
     month_group_dist = defaultdict(int)
     iao_dist = defaultdict(int)
     yang_count_dist = defaultdict(int)
+    # divine_hour_law_unity (AUDIT_2026-07-24 D-09, added 2026-07-30):
+    # hour-index distribution over Two-Body-Unity steps — the R_RHY_02
+    # state value finally has a path to frequency figures.
+    dh_law_unity_dist = defaultdict(int)
+
+    # Solar Key activity counters (AUDIT_2026-07-24 C-18, added 2026-07-30):
+    # artifact-backed gold/silver key-active tallies.
+    gold_key_active_count = 0
+    silver_key_active_count = 0
 
     # Distributions
     primeval_dist = defaultdict(int)
@@ -96,8 +123,13 @@ def scan_compounds(
     vessel_dist = defaultdict(int)
     organ_dist = defaultdict(int)
 
+    skipped = 0
     while current <= end_dt:
-        state = calculate_complete_state(current, lat, lon, tz)
+        state = _state_skipping_dst(current, lat, lon, tz)
+        if state is None:
+            skipped += 1
+            current += delta
+            continue
         total += 1
 
         # Law distributions
@@ -181,6 +213,19 @@ def scan_compounds(
         if yc is not None:
             yang_count_dist[yc] += 1
 
+        # divine_hour_law_unity: non-null exactly when two_body_unity fires
+        dhlu = resonances.get("rhythmic", {}).get("divine_hour_law_unity")
+        if dhlu is not None:
+            dh_law_unity_dist[dhlu.get("hour_index")] += 1
+
+        # Solar Key activity
+        solar_key = state.get("solar_key", {})
+        if solar_key.get("active"):
+            if solar_key.get("key") == "gold":
+                gold_key_active_count += 1
+            elif solar_key.get("key") == "silver":
+                silver_key_active_count += 1
+
         current += delta
 
     # Build result
@@ -210,6 +255,7 @@ def scan_compounds(
 
     return {
         "total_steps": total,
+        "skipped_nonexistent_steps": skipped,
         "interval_minutes": interval_minutes,
         "start": start_dt.isoformat(),
         "end": end_dt.isoformat(),
@@ -221,6 +267,23 @@ def scan_compounds(
             "month_group": dict(month_group_dist),
             "iao_position": dict(iao_dist),
             "yang_count": {str(k): v for k, v in sorted(yang_count_dist.items())},
+            "divine_hour_law_unity": {
+                str(k): v
+                for k, v in sorted(
+                    dh_law_unity_dist.items(),
+                    key=lambda kv: (kv[0] is None, kv[0]),
+                )
+            },
+        },
+        "solar_key_activity": {
+            "gold_key_active": {
+                "count": gold_key_active_count,
+                "pct": _pct(gold_key_active_count),
+            },
+            "silver_key_active": {
+                "count": silver_key_active_count,
+                "pct": _pct(silver_key_active_count),
+            },
         },
         "yin_day_blocked": {
             "count": yin_blocked_count,
@@ -271,7 +334,10 @@ def find_windows(
     prev_time = None
 
     while current <= end_dt:
-        state = calculate_complete_state(current, lat, lon, tz)
+        state = _state_skipping_dst(current, lat, lon, tz)
+        if state is None:
+            current += delta
+            continue
 
         if is_resonance:
             active = _is_resonance_active(state, compound)
@@ -349,7 +415,10 @@ def next_compound(
     limit = start_dt + timedelta(hours=max_hours)
 
     while current < limit:
-        state = calculate_complete_state(current, lat, lon, tz)
+        state = _state_skipping_dst(current, lat, lon, tz)
+        if state is None:
+            current += delta
+            continue
 
         if is_resonance:
             found = _is_resonance_active(state, compound)

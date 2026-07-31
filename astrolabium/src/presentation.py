@@ -243,10 +243,11 @@ def _present_vessel(raw: dict) -> dict:
     law = raw.get("law", "")
     trigram = raw.get("trigram", "")
 
+    # C-05 (2026-07-30): dynamic prose description removed — presentation is
+    # prose-free; static register glosses and vocabulary tables remain.
     return {
         "vessel": english,
         "law": law,
-        "description": f"The {english} is open, carrying {law}.",
         "trigram": raw.get("symbol", ""),
         "trigram_nature": TRIGRAM_NATURE.get(trigram, ""),
         "polarity": raw.get("polarity"),
@@ -313,10 +314,8 @@ def _present_keys(raw: dict) -> dict:
         result["law"] = law
         result["event"] = event
         result["vessel"] = vessel_name
-        result["description"] = (
-            f"The {key_display} Key is active — "
-            f"{law} through the {vessel_name}."
-        )
+        # C-05 (2026-07-30): dynamic Key description sentence removed —
+        # the readout carries the Key facts; no prose in this layer.
         result["window_start"] = raw.get("window_start")
         result["window_end"] = raw.get("window_end")
         result["radius_minutes"] = raw.get("radius_minutes")

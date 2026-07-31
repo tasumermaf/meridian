@@ -288,6 +288,51 @@ class TestResonanceFrequency:
         assert "month_group" in rd
         assert "iao_position" in rd
         assert "yang_count" in rd
+        assert "divine_hour_law_unity" in rd
+
+    def test_divine_hour_law_unity_tally_matches_unity_count(self):
+        """
+        divine_hour_law_unity distribution (AUDIT_2026-07-24 D-09, added
+        2026-07-30) sums to the two_body_unity count: R_RHY_02 is non-null
+        exactly when Two-Body Unity fires, so the hour-index tally is a
+        partition of the unity steps.
+        """
+        start = datetime(2026, 3, 1, 0, 0)
+        end = datetime(2026, 3, 8, 0, 0)
+        result = scan_compounds(start, end, LAT, LON, TZ, interval_minutes=60)
+
+        dist = result["resonance_distributions"]["divine_hour_law_unity"]
+        unity_count = result["compounds"]["two_body_unity"]["count"]
+        assert sum(dist.values()) == unity_count
+        # The 7-day scan is known to find unity (test_week_scan_finds_unity),
+        # so the distribution must be non-empty with valid hour indices.
+        assert unity_count > 0
+        for k, v in dist.items():
+            assert v > 0
+            assert int(k) in range(1, 9)  # Divine Hours 1-8
+
+    def test_scan_includes_solar_key_activity(self):
+        """
+        Gold/silver key-active counters (AUDIT_2026-07-24 C-18, added
+        2026-07-30) are present, well-formed, and consistent: a full-day
+        scan at fine interval crosses both cusping windows.
+        """
+        start = datetime(2026, 3, 1, 0, 0)
+        end = datetime(2026, 3, 2, 0, 0)
+        result = scan_compounds(start, end, LAT, LON, TZ, interval_minutes=15)
+
+        ska = result["solar_key_activity"]
+        for key_name in ("gold_key_active", "silver_key_active"):
+            assert key_name in ska
+            assert ska[key_name]["count"] >= 0
+            assert 0 <= ska[key_name]["pct"] <= 100
+            assert ska[key_name]["count"] <= result["total_steps"]
+
+        # Symmetric ±civil-twilight windows around sunrise and sunset span
+        # well over 15 minutes each — a 24h scan at 15-min steps must land
+        # inside both.
+        assert ska["gold_key_active"]["count"] > 0
+        assert ska["silver_key_active"]["count"] > 0
 
     def test_resonance_counts_non_negative(self):
         """All resonance counts and percentages >= 0."""

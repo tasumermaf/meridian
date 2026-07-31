@@ -3,7 +3,7 @@ Astrolabium API — FastAPI wrapper for the temporal state calculator.
 
 Endpoints:
   GET /state          — Complete state for a moment in time (raw)
-  GET /display        — Practitioner-ready state (Damanhurian vocabulary)
+  GET /display        — THE OUTPUT LAW surface: readout + typed state + story gate
   GET /projection     — Time series of states (raw)
   GET /frequency      — Compound frequency analysis over a range
   GET /windows        — Contiguous windows for a compound type
@@ -31,9 +31,10 @@ from ..frequency import (
 )
 from ..resonance import RESONANCE_BOOLEAN_TYPES, RESONANCE_STATE_TYPES, ALL_RESONANCE_TYPES
 from ..presentation import present_state
+from ..readout import COARSE, EXACT, readout, story_gate, typed_state
 from .. import registry
 
-VERSION = "3.2.0"
+VERSION = "3.3.0"  # 3.3.0 (2026-07-30): /display serves the Output Law shape (AUDIT B-05)
 
 MAX_PROJECTION_STEPS = 10_000
 MAX_SEARCH_HOURS = 8760  # one year
@@ -175,9 +176,12 @@ def get_state(
     """
     Complete Astrolabium state for a moment in time.
 
-    Returns all temporal layers: solar, organ clock, derivative (LGBF),
-    primeval (lunar), solar keys, divine hour, stem-branch, compounds,
-    and resonances.
+    Returns all temporal layers: solar, organ clock, derivative
+    (Extraordinary Vessel layer), primeval (lunar), solar keys,
+    divine hour, stem-branch, compounds, and resonances.
+
+    This is the documented raw endpoint. For practitioner-facing output,
+    use /display (the Output Law surface).
     """
     target = _resolve_datetime(dt, tz)
     state = calculate_complete_state(target, lat, lon, tz)
@@ -190,20 +194,44 @@ def get_display(
     lon: float = Query(..., ge=-180, le=180, description="Longitude"),
     tz: str = Query(..., description="Timezone (e.g., America/Los_Angeles)"),
     dt: Optional[str] = Query(None, description="ISO datetime (default: now)"),
+    precision: str = Query(
+        "coarse",
+        description="'coarse' (default: clock times to five minutes, hour "
+                    "position as a phrase) or 'exact' (minute-exact, opt-in).",
+    ),
 ):
     """
-    Practitioner-ready Astrolabium state.
+    THE OUTPUT LAW surface (AUDIT B-05, 2026-07-30).
 
-    Same computation as /state, presented in Damanhurian-first vocabulary:
-    Extraordinary Vessels by English name, trigrams by symbol and nature,
-    acupuncture points by medical designation, compounds and resonances
-    with human-readable descriptions. Includes a top-level `practice`
-    section synthesizing quest-vowel-mudra-adonaj_ba guidance from all
-    temporal bodies. No Chinese characters, no shorthand.
+    Returns the practitioner-facing answer in the Output Law shape:
+
+      readout     — the correspondence-forward text block, rendered
+                    verbatim by any client (data first, fixed order,
+                    one fact per line, absent data as em dash)
+      typed_state — the KEY = value machine core; quote values from
+                    here, never re-narrate them from prose
+      story_gate  — whether interpretation is licensed for this moment,
+                    about which subjects, and under what rule
+      display     — prose-free structured state in Damanhurian-first
+                    vocabulary (per C-05), for structured panels
+
+    `precision` mirrors the CLI: COARSE is the default because the Divine
+    Hour, not the clock, is the operative unit. Pass 'exact' only when the
+    minute is genuinely load-bearing.
     """
+    if precision not in (COARSE, EXACT):
+        raise HTTPException(
+            status_code=422,
+            detail=f"Invalid precision: {precision!r}. Use 'coarse' or 'exact'.",
+        )
     target = _resolve_datetime(dt, tz)
     state = calculate_complete_state(target, lat, lon, tz)
-    return present_state(state)
+    return {
+        "readout": readout(state, precision=precision),
+        "typed_state": typed_state(state),
+        "story_gate": story_gate(state),
+        "display": present_state(state),
+    }
 
 
 @app.get("/projection")

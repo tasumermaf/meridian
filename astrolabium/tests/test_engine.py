@@ -9,7 +9,8 @@ import pytest
 from datetime import datetime
 import pytz
 
-from src.engine.solar import get_solar_positions, get_daylight_duration, get_civil_twilight_duration
+from src.engine.solar import get_solar_positions, get_daylight_duration
+from src.engine.twilight import get_cusping_windows
 from src.engine.stem_branch import (
     get_daily_stem_branch,
     get_hourly_stem,
@@ -19,7 +20,6 @@ from src.engine.stem_branch import (
     VESSEL_REMAINDER_MAP,
 )
 from src.engine.lunar import get_lunar_elongation, get_phase_index, get_illumination
-from src.engine.twilight import get_cusping_windows
 
 
 # ── Test location: Los Angeles ──
@@ -58,9 +58,13 @@ class TestSolar:
         assert summer_hrs > winter_hrs
 
     def test_twilight_in_range(self):
+        # Twilight duration is now surfaced only through the live cusping
+        # windows (dead helper deleted per AUDIT_2026-07-24 D-01).
         dt = datetime(2026, 3, 1, 12, 0, 0)
-        minutes = get_civil_twilight_duration(dt, LA_LAT, LA_LON, LA_TZ)
-        assert 20 < minutes < 45  # Typical civil twilight range
+        windows = get_cusping_windows(dt, LA_LAT, LA_LON, LA_TZ)
+        assert not windows["twilight_undefined"]
+        for w in ("gold_window", "silver_window"):
+            assert 20 < windows[w]["radius_minutes"] < 45  # Typical civil twilight range
 
     def test_polar_latitude_raises(self):
         """
@@ -267,3 +271,74 @@ class TestTwilight:
         result = get_cusping_windows(sunset, LA_LAT, LA_LON, LA_TZ)
         assert result["active"] is True
         assert result["key"] == "silver"
+
+
+class TestWingRelativeBranches:
+    """
+    Regression tests for the wing-relative branch scheme
+    (AUDIT_2026-07-24 A-7/A-8, ruled canon 2026-07-24).
+    """
+
+    def test_branch_continuous_across_civil_midnight(self):
+        """A-7: the branch never flips AT civil midnight (no midnight anchor)."""
+        tz = pytz.timezone(LA_TZ)
+        before = tz.localize(datetime(2026, 7, 29, 23, 59))
+        after = tz.localize(datetime(2026, 7, 30, 0, 1))
+        b_before = get_earthly_branch_from_solar(before, LA_LAT, LA_LON, LA_TZ)
+        b_after = get_earthly_branch_from_solar(after, LA_LAT, LA_LON, LA_TZ)
+        # Two minutes apart: identical, or an adjacent night-sequence step —
+        # never the old discontinuous 11->0 civil-midnight jump AND
+        # 0 is allowed only if 23:59 was already 0's neighbor 11 at a real
+        # sixth boundary; both instants sit mid-night so they must be equal
+        # or consecutive in the night order [10, 11, 0, 1, 2, 3].
+        night_order = [10, 11, 0, 1, 2, 3]
+        i, j = night_order.index(b_before), night_order.index(b_after)
+        assert j - i in (0, 1)
+
+    def test_day_wing_boundaries_fall_at_sunrise_and_sunset(self):
+        """A-8: branch 4 begins AT sunrise; branch 10 begins AT sunset."""
+        tz = pytz.timezone(LA_TZ)
+        dt = tz.localize(datetime(2026, 3, 20, 12, 0))
+        pos = get_solar_positions(dt, LA_LAT, LA_LON, LA_TZ)
+        assert get_earthly_branch_from_solar(pos["sunrise"], LA_LAT, LA_LON, LA_TZ) == 4
+        assert get_earthly_branch_from_solar(pos["sunset"], LA_LAT, LA_LON, LA_TZ) == 10
+
+    def test_equinox_matches_guidebook_worked_positions(self):
+        """A-8: engine agrees with Guidebook §4.6 at the equinox probes."""
+        from datetime import timedelta
+        tz = pytz.timezone(LA_TZ)
+        dt = tz.localize(datetime(2026, 3, 20, 12, 0))
+        pos = get_solar_positions(dt, LA_LAT, LA_LON, LA_TZ)
+        cases = [
+            (pos["sunrise"] + timedelta(minutes=10), 4),
+            (pos["solar_noon"] + timedelta(minutes=30), 7),
+            (pos["sunset"] - timedelta(minutes=10), 9),
+        ]
+        for probe, expected in cases:
+            assert get_earthly_branch_from_solar(probe, LA_LAT, LA_LON, LA_TZ) == expected
+
+    def test_day_wing_spans_branches_4_through_9(self):
+        """A-8: every day wing carries exactly branches 4-9, in order."""
+        from datetime import timedelta
+        tz = pytz.timezone(LA_TZ)
+        dt = tz.localize(datetime(2026, 12, 21, 12, 0))  # winter solstice
+        pos = get_solar_positions(dt, LA_LAT, LA_LON, LA_TZ)
+        seen = []
+        t = pos["sunrise"]
+        while t < pos["sunset"]:
+            b = get_earthly_branch_from_solar(t, LA_LAT, LA_LON, LA_TZ)
+            if not seen or seen[-1] != b:
+                seen.append(b)
+            t += timedelta(minutes=10)
+        assert seen == [4, 5, 6, 7, 8, 9]
+
+    def test_white_nights_latitude_serves(self):
+        """B-02: sun rises and sets at 63.4N midsummer -> engine serves."""
+        tz = pytz.timezone("Europe/Oslo")
+        dt = tz.localize(datetime(2026, 6, 21, 12, 0))
+        pos = get_solar_positions(dt, 63.4305, 10.3951, "Europe/Oslo")
+        assert pos["sunrise"] < pos["sunset"]
+        windows = get_cusping_windows(pos["sunrise"], 63.4305, 10.3951, "Europe/Oslo")
+        assert windows["active"] is True
+        assert windows["key"] == "gold"
+        assert windows["twilight_undefined"] is True  # flagged, never silent
