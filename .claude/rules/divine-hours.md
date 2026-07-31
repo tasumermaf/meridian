@@ -161,8 +161,8 @@ of crossing midnight.
   other temporal bodies
 - `.claude/rules/trigram-laws.md` — Solar Keys and the cusping
   relationship to Hours I and V
-- `docs/sources/Of_the_Three_Responses_Chapter_4.md` — primary source
-  on the eight-fold division
+- The primary source on the eight-fold division (*Of the Three
+  Responses*, Ch. 4) is held in the parent Falco environment
 - `docs/specs/operators_manual.md` — Part 1 of the Operator's Manual,
   which describes the user-facing presentation of the hours
 - `docs/specs/guidebook.md` — Part 2, which contains the full computational
