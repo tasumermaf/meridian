@@ -1,6 +1,6 @@
 ![Astrolabium Caudae Rubrae](assets/banner.png)
 
-[![Tests](https://img.shields.io/badge/tests-567%20passing-brightgreen)](astrolabium/tests/)
+[![Tests](https://img.shields.io/badge/tests-608%20passing-brightgreen)](astrolabium/tests/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](astrolabium/pyproject.toml)
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](LICENSE)
 [![Built by TASUMER MAF](https://img.shields.io/badge/built%20by-TASUMER%20MAF-D4A845)](https://github.com/tasumermaf)
@@ -28,7 +28,7 @@ Rubrae** (*L'Astrolabio Coda Rossa*, the Red Tail Astrolabe).
 | Divine months (12 regular + 1 intercalary) | 13    |
 | Great rites                                | 6     |
 | Earthly branches (organ-clock windows)     | 12    |
-| Engine tests passing                       | **567** |
+| Engine tests passing                       | **608** |
 
 The geometry is the argument. Every count above lands on a rhombic
 dodecahedron face count, an LGBF vessel count, or the unequal-hour
@@ -98,7 +98,7 @@ fire is most precisely controllable.
 git clone https://github.com/tasumermaf/meridian.git
 cd meridian/astrolabium
 pip install -r requirements.txt
-pytest                       # 567 passing
+pytest                       # 608 passing
 ```
 
 Run the API:
@@ -106,6 +106,13 @@ Run the API:
 ```bash
 cd astrolabium
 uvicorn src.api.main:app --reload
+```
+
+Read the current moment from the command line (the Output Law layer —
+data first, story gated):
+
+```bash
+python astrolabium/scripts/readout_cli.py --lat 45.42 --lon 7.78 --tz Europe/Rome
 ```
 
 Compute a reading from Python directly:
@@ -170,7 +177,7 @@ meridian/
 │   │   ├── frequency.py             # time-series + windowing
 │   │   ├── resonance.py             # compound detection
 │   │   └── presentation.py          # state rendering
-│   ├── tests/                       # 567 passing
+│   ├── tests/                       # 608 passing
 │   ├── data/registers.json          # all interpretive data, locked
 │   ├── frontend/                    # web UI (vanilla JS + components)
 │   ├── scripts/                     # CLI helpers

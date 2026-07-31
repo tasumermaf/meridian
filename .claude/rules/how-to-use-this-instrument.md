@@ -33,14 +33,14 @@ A typical session goes:
 1. **Greeting + location capture.** "I'm at coordinates X, Y, timezone Z"
    or "I'm in Damanhur" (look it up; confirm: "Damanhur Vidracco at
    45.42°N, 7.78°E, Europe/Rome — correct?").
-2. **The reading.** Engine computes the full state at the user's
-   location and the present moment (or specified moment). Output is the
-   four temporal bodies, the Divine Hour, the Sephirotic Week day, the
-   Divine Month, any active compounds.
-3. **The interpretation.** Ground the numbers in plain language. What
-   Law is active and what that Law tends to favor. Which organ window
-   is open and what the inner alchemy practice for that organ is. Any
-   compounds and what they mean.
+2. **The reading.** Engine computes the full state; the answer is the
+   `readout.py` block, emitted unmodified — all four temporal bodies,
+   the Divine Hour, the calendar, and every active compound and
+   resonance, one fact per line (see The Output Law in CLAUDE.md).
+3. **The licensed note.** If `story_gate(state)` licenses commentary
+   (a structural alignment is active), add at most three sentences on
+   the licensed subjects — no numbers, times, or point codes in prose.
+   If the gate is closed, the readout is the complete answer.
 4. **Followups.** Often the practitioner wants to know: when is the
    next X? What does Y mean? Why is Z arranged this way? These are
    the deeper conversations — they require the rules files and the
@@ -60,48 +60,78 @@ dt = pytz.timezone("Europe/Rome").localize(datetime(2026, 5, 16, 22, 47))
 state = calculate_complete_state(dt, lat=45.42, lon=7.78, tz="Europe/Rome")
 ```
 
-The output state will tell you:
+```
+=== ASTROLABIUM READOUT ===
+  WHEN                2026-05-16 ~22:45
+  WHERE               45.4200, 7.7800 · Europe/Rome
+  SOLAR               sunrise ~05:55 · noon ~13:25 · sunset ~20:55
 
-- **Solar position:** sunrise was 06:00 (approx); sunset was 20:48
-  (approx); the moment is in the **second wing** (night, since dt is
-  after sunset).
-- **Divine Hour:** since 22:47 is just after sunset (sunset was 20:48,
-  so we're about 2 hours into the night wing), we're in **Hour V**
-  (sunset → 1/4 night wing = sunset to sunset+night_quarter ≈
-  20:48–23:23 at this date/location). The night hour at Damanhur in
-  mid-May is approximately 155 minutes long (the night is short near
-  the summer solstice).
-- **Organ Clock:** the Earthly Branch matching the second hour after
-  sunset is 戌 (Xū) — **Pericardium** window, **ministerial Fire**.
-- **LGBF:** the daily stem-branch and hourly stem-branch combine to
-  open a specific Extraordinary Vessel; let's say Yīn Wéi Mài (vessel
-  8), Derivative Law = **Kaos**.
-- **Soul Layer:** the moon's phase determines the Primeval Law; let's
-  say (Waxing Crescent on this date — checking ephem) **Arrow of
-  Complexity** is active.
-- **Solar Keys:** we are past the sunset cusping window by ~2 hours,
-  so **no Key is currently active**.
-- **Divine Month:** May 16 falls in Month 9, **SAMMA** (Container /
-  Rhombus). The Divine Marriage Great Rite is 8 days from now (May 24).
-- **Sephirotic Week:** depends on the most recent lunar quarter cusp;
-  let's say we're on Day 5, **Chesed / Jupiter**.
-- **Compounds:** Arrow of Complexity (Soul) ≠ Kaos (Astral) → no
-  Two-Body Unity. No Solar Key active → no Key-Amplified compounds.
-  Pericardium meridian PC-6 is the *coupled* point of Yīn Wéi → check
-  if Yīn Wéi's confluent (also PC-6) sits on Pericardium → **yes**,
-  the open vessel's host meridian IS Pericardium → **Anatomical
-  Intersection** active.
+VESSEL (Astral body)
+  open                Yang Wei Mai — Yang Linking Vessel
+  law                 Sole Atom
+  trigram             ☳ Zhèn — Thunder
+  confluent point     SJ-5 (San Jiao)
+  coupled point       GB-41 (Gallbladder)
+  polarity            Yang
+  pair partner        Dai Mai — Belt Vessel
+  clinical domain     Exterior, temporal region, posterior, yang linking
+  yin-day gated       no
+  register            vowel A · mudra Index finger · Adonaj-Ba Sexual Organs · colour Green
+  quest               CONTINUITY
 
-In plain language: *Tonight you're in the first Divine Hour of the
-night, in the Pericardium window (ministerial fire, the courtier
-delivering the sovereign's warmth to the periphery). The Yīn Wéi
-Linking Vessel is open in your Astral body, and its master point
-PC-6 sits on the Pericardium meridian — so the vessel and the organ
-are anatomically aligned. The moon is waxing, Arrow of Complexity is
-the slow Law, the year is in SAMMA (the geometric container; Divine
-Marriage in eight days). No Solar Key right now. A clean Anatomical
-Intersection in the Pericardium window — good time for heart-centered
-inner work that travels outward.*
+LUNAR (Soul body)
+  phase               New Moon · 0.0% illuminated · waxing
+  trigram             ☷ Kūn — Earth
+  law                 Kaos
+  yang lines          0
+  register            vowel E · mudra Middle finger · Adonaj-Ba Solar Plexus · colour Yellow Gold
+  quest               UNCERTAINTY
+
+ORGAN CLOCK (Gross body)
+  organ               San Jiao (SJ) · Fire · Yang
+  paired organ        Pericardium
+  healing sound       HEEEEE
+  emotion −           Panic, imbalance
+  emotion +           Peace, harmony
+
+DIVINE HOUR
+  hour                V (Night wing)
+  protocol            —
+  position            past the middle
+
+CALENDAR
+  divine month        9 SAMMA — The Container
+  day in month        1 / 29
+  sephirotic day      1 Tiphareth / Sol ☉
+  alchemical stage    Rubedo
+  great rite          Divine Marriage
+  divine year         77
+
+SOLAR KEY
+  active              none (no cusping window)
+
+COMPOUNDS ACTIVE (3)
+  · Confluent Intersection
+  · Polarity Alignment
+  · Great Rite Active
+
+RESONANCES ACTIVE (1)
+  · Organ-Vessel Polarity Match
+
+=== END READOUT ===
+```
+
+The readout is emitted **unmodified** — it is the reading. The story
+gate then licenses at most three sentences on the licensed subjects
+only (here: the Confluent Intersection and the active Great Rite),
+carrying no numbers, times, or point codes — those live in the block
+above. If nothing is licensed, the readout alone is the complete and
+correct answer. A quiet field is data.
+
+(Historical note, 2026-07-30: this section previously walked a
+hand-computed narrative for this same moment. Several of its layer
+values were guessed wrong — which is exactly why worked examples are
+now generated by the engine, never composed by hand.)
 
 ## How to talk about compounds
 

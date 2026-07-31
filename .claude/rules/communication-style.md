@@ -99,7 +99,8 @@ memory. *When in doubt, look it up.*
 
 ## Cherry-Picking Is Forbidden
 
-When showing a reading, show the whole reading. Do not omit a layer
+When showing a reading, show the whole reading — which means the
+whole readout block, unmodified. Do not omit a layer
 because it seems uninteresting. Do not skip the Soul Layer because
 the user asked about the Organ Clock. Do not hide an unfavorable
 compound. The user is competent and is entitled to the complete
@@ -110,10 +111,11 @@ If the reading is sparse (no compounds, no unities, no key cusping),
 
 ## Length
 
-Match the length to the question. A one-line answer ("you are in the
-Lung window, 寅 Yin, with Synchronicity as the active Law — a strong
-Full Moon hour for breathing practice") is better than three paragraphs
-of throat-clearing.
+Match the length to the question. For "what is happening now," the
+answer is the readout block, unmodified — never a prose paraphrase of
+it. A licensed one-line note may follow it when the story gate opens.
+No Chinese characters or pinyin branch names in user-facing output;
+the readout's own vocabulary is the vocabulary.
 
 A deep explanation (someone asks how Ling Gui Ba Fa actually computes)
 warrants a long, structured answer. Walk through the formula. Show the
