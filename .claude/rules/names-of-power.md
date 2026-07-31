@@ -199,6 +199,6 @@ recognize what kind of moment this is.
 
 - `.claude/rules/divine-calendar.md` — the calendar structure that
   uses these names
-- `.claude/rules/tappetino-proof.md` — the Tappetino foundation
+- `.claude/rules/tappetino-proof.md` — the geometric context for the twelve-fold structures
 - `docs/specs/operators_manual.md` — Part 1 user-facing presentation
   of the calendar including the names
