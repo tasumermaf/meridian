@@ -5,17 +5,17 @@ Eat your own cooking. Every image is produced by the project's own code
 from the project's own data. The geometry is the argument.
 
 Outputs:
-  assets/banner.png              — Rhombic dodecahedron, 12 faces, 12 months
+  assets/banner.png              — repository banner (the twelve-fold wheel)
   assets/divine-hours-wheel.png  — 8-fold unequal hour division at a location
   assets/lunar-architecture.png  — 6+2 Cantong qi trigram-law cycle
   assets/temporal-bodies.png     — The four temporal bodies, concentric
 
-Palette derived from the prime-law correspondence (eight tracked primes →
-eight Primeval Laws). See docs/PRIME_LAW_PALETTE.md.
+Palette: the eight ADONAJ BA Law colours. The prime-Law derivation is
+held in the parent Falco research environment.
 
 Background    #0D0D0D  void
 Bone          #E8E8E0  text
-Gold          #D4A845  Divinity (17), the sunrise key
+Gold          #D4A845  heading accent (the sunrise-key Law is Fall of Events)
 Silver        #9FA7B3  the sunset key
 Dim accent    #2A2A3A  panel edges
 """
@@ -62,14 +62,14 @@ plt.rcParams["font.monospace"] = ["Consolas", "Microsoft YaHei", "Segoe UI Symbo
 
 # ── Palette (prime-law correspondence) ──
 LAW_COLORS = {
-    "Synchronicity":        "#B34444",  # 67  Qian   Full Moon       (primary thread red)
-    "Kaos":                 "#2A3D6B",  # 23  Kun    New Moon        (dimensional ground)
-    "Divinity":             "#D4A845",  # 17  Li     Silver Key      (divine spark gold)
-    "Geometric Essence":    "#6B8E5E",  # 31  Xun                    (form green)
-    "Sole Atom":            "#3D3D6B",  # 11  Zhen                   (continuity indigo)
-    "Fall of Events":       "#3A6B8E",  # 19  Kan    Gold Key        (events blue)
-    "Time Matrix":          "#9E6B4F",  # 29  Dui                    (rhythm bronze)
-    "Arrow of Complexity":  "#8A6B8E",  # 89  Gen                    (expansion mauve)
+    "Synchronicity":        "#FF9500",  # 89  Qian ☰  Full Moon       orange / Heart
+    "Sole Atom":            "#00E676",  # 19  Zhen ☳  First Crescent  green  / Sexual Organs
+    "Divinity":             "#E8E8F0",  # 31  Li ☲    Silver Key      white  / Crown
+    "Geometric Essence":    "#E74C3C",  # 67  Xun ☴  Waning Gibbous  brick  / Sacrum
+    "Time Matrix":          "#A8B4C0",  # 29  Dui ☱  First Quarter   silver / Mobile 8th
+    "Fall of Events":       "#7B68EE",  # 11  Kan ☵  Gold Key        indigo / Third Eye
+    "Kaos":                 "#FFD700",  # 23  Kun ☷  New Moon        gold   / Solar Plexus
+    "Arrow of Complexity":  "#00BFFF",  # 17  Gen ☶  Last Quarter    azure  / Throat
 }
 BG          = "#0D0D0D"
 BONE        = "#E8E8E0"
@@ -82,11 +82,11 @@ DIM         = "#2A2A3A"
 # Six cyclic Laws (in lunar-phase order, starting at New Moon)
 SIX_PHASE_LAWS = [
     ("Kaos",                "Kun",  "☷", "New Moon"),
-    ("Arrow of Complexity", "Zhen", "☳", "Waxing Crescent"),
+    ("Sole Atom",           "Zhen", "☳", "Waxing Crescent"),
     ("Time Matrix",         "Dui",  "☱", "First Quarter / Waxing Gibbous"),
     ("Synchronicity",       "Qian", "☰", "Full Moon"),
     ("Geometric Essence",   "Xun",  "☴", "Waning Gibbous"),
-    ("Sole Atom",           "Gen",  "☶", "Last Quarter / Waning Crescent"),
+    ("Arrow of Complexity", "Gen",  "☶", "Last Quarter / Waning Crescent"),
 ]
 
 # Twelve Earthly Branches (organ-clock windows), in canonical order from 子
